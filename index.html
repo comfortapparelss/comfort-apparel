@@ -54,7 +54,7 @@ nav{padding:14px 5%;display:flex;justify-content:space-between;align-items:cente
 <div class="hero">
   <div>
     <h1>OVERSIZED<br>TEES<br>POLOS &<br>HOODIES</h1>
-    <p style="color:#888;margin:16px 0;font-size:13px;line-height:1.6">Tees Rs.1250 | Polos Rs.1850 | Hoodies Rs.2999<br> • COD All Pakistan <br>Wear Comfort Live Better</p>
+    <p style="color:#888;margin:16px 0;font-size:13px;line-height:1.6">Tees Rs.1250 | Polos Rs.1850 | Hoodies Rs.2999<br> COD All Pakistan <br>Wear Comfort Live Better</p>
     <button onclick="document.getElementById('shop').scrollIntoView({behavior:'smooth'})" style="background:#fff;color:#000;border:0;padding:12px 24px;border-radius:100px;font-weight:800;cursor:pointer;margin-top:8px">SHOP NOW</button>
   </div>
   <div style="display:grid;place-items:center">
@@ -80,25 +80,25 @@ nav{padding:14px 5%;display:flex;justify-content:space-between;align-items:cente
 <script>
 const products=[
  // 9 TEES - Rs.1250
- {id:1,name:"Red Dragon Oversized Tee",price:1250,img:"dragon.png",tag:"BESTSELLER",cat:"tee"},
+ {id:1,name:"Red Dragon Oversized Tee",price:1250,img:"dragon.png",tag:"NEW",cat:"tee"},
  {id:2,name:"Born Broke Die Rich Tee",price:1250,img:"born-broke.png",tag:"NEW",cat:"tee"},
- {id:3,name:"Pink Bloom Floral Tee",price:1250,img:"floral.png",tag:"FOR HER",cat:"tee"},
- {id:4,name:"Astronaut Moon Tee",price:1250,img:"astronaut.png",tag:"LIMITED",cat:"tee"},
- {id:5,name:"Cobalt Samurai Tee",price:1250,img:"samurai.png",tag:"SAMURAI",cat:"tee"},
- {id:6,name:"Born To Brew Coffee Tee",price:1250,img:"brew.png",tag:"COFFEE",cat:"tee"},
- {id:7,name:"Everything Will Be OK Tee",price:1250,img:"ok.png",tag:"POSITIVE",cat:"tee"},
- {id:8,name:"Retro Desert Adventure Tee",price:1250,img:"nature.png",tag:"ADVENTURE",cat:"tee"},
- {id:9,name:"What's The Tea Tee",price:1250,img:"t.png",tag:"TRENDING",cat:"tee"},
+ {id:3,name:"Pink Bloom Floral Tee",price:1250,img:"floral.png",tag:"NEW",cat:"tee"},
+ {id:4,name:"Astronaut Moon Tee",price:1250,img:"astronaut.png",tag:"NEW",cat:"tee"},
+ {id:5,name:"Cobalt Samurai Tee",price:1250,img:"samurai.png",tag:"NEW",cat:"tee"},
+ {id:6,name:"Born To Brew Coffee Tee",price:1250,img:"brew.png",tag:"NEW",cat:"tee"},
+ {id:7,name:"Everything Will Be OK Tee",price:1250,img:"ok.png",tag:"NEW",cat:"tee"},
+ {id:8,name:"Retro Desert Adventure Tee",price:1250,img:"nature.png",tag:"NEW",cat:"tee"},
+ {id:9,name:"What's The Tea Tee",price:1250,img:"t.png",tag:"NEW",cat:"tee"},
  // 2 POLOS ONLY - Rs.1850
- {id:10,name:"Black Oversized Polo - 100% Cotton",price:1850,img:"polo-black.png",tag:"OVERSIZED FIT",cat:"polo"},
- {id:11,name:"White Oversized Polo - 100% Cotton",price:1850,img:"polo-white.png",tag:"OVERSIZED FIT",cat:"polo"},
+ {id:10,name:"Black Polo - 100% Cotton",price:1850,img:"polo-black.png",tag:"SLIM FIT",cat:"polo"},
+ {id:11,name:"White Polo - 100% Cotton",price:1850,img:"polo-white.png",tag:"SLIM FIT",cat:"polo"},
  // 6 HOODIES - Rs.2999 / 3299
- {id:20,name:"Slow Coffee Club Hoodie",price:2999,img:"hoodie-coffee.png",tag:"BESTSELLER ☕",cat:"hoodie"},
- {id:21,name:"Floral Bloom Hoodie",price:2999,img:"hoodie-floral.png",tag:"FOR HER",cat:"hoodie"},
- {id:22,name:"Blue Butterfly Hoodie",price:2999,img:"hoodie-butterfly.png",tag:"Y2K",cat:"hoodie"},
- {id:23,name:"#FILTER Cat Hoodie",price:2999,img:"hoodie-filter-cat.png",tag:"STREETWEAR",cat:"hoodie"},
- {id:24,name:"Authentic / Lost Hoodie",price:3299,img:"hoodie-authentic-front.png",tag:"FRONT+BACK",cat:"hoodie"},
- {id:25,name:"Bear Rampage Hoodie",price:2999,img:"hoodie-bear.png",tag:"400GSM",cat:"hoodie"},
+ {id:20,name:"Slow Coffee Club Hoodie",price:2999,img:"hoodie-coffee.png",tag:"NEW",cat:"hoodie"},
+ {id:21,name:"Floral Bloom Hoodie",price:2999,img:"hoodie-floral.png",tag:"NEW",cat:"hoodie"},
+ {id:22,name:"Blue Butterfly Hoodie",price:2999,img:"hoodie-butterfly.png",tag:"NEW",cat:"hoodie"},
+ {id:23,name:"#FILTER Cat Hoodie",price:2999,img:"hoodie-filter-cat.png",tag:"NEW",cat:"hoodie"},
+ {id:24,name:"Authentic / Lost Hoodie",price:3299,img:"hoodie-authentic-front.png",tag:"NEW",cat:"hoodie"},
+ {id:25,name:"Bear Rampage Hoodie",price:2999,img:"hoodie-bear.png",tag:"NEW",cat:"hoodie"},
 ];
 
 let currentCat='all'; let cart=JSON.parse(localStorage.getItem('ca_cart')||'[]'); let selectedSizes={};
