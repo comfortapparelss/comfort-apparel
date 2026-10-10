@@ -3,95 +3,50 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>Comfort Apparel - Oversized Tees & Hoodies</title>
-<link href="https://fonts.googleapis.com/css2?family=Syne:wght@700;800&family=Inter:wght@400;600&display=swap" rel="stylesheet">
+<title>Comfort Apparel</title>
 <style>
-*{margin:0;padding:0;box-sizing:border-box}
-body{font-family:'Inter',sans-serif;background:#0a0a0a;color:#fff}
-h1,h2,h3{font-family:'Syne',sans-serif;letter-spacing:-1px}
-nav{display:flex;justify-content:space-between;align-items:center;padding:18px 6%;background:#0a0a0a;border-bottom:1px solid #222;position:sticky;top:0;z-index:100}
-.logo{font-weight:800;font-size:26px}.logo span{color:#888;font-weight:400}
-nav a{color:#fff;text-decoration:none;margin-left:22px;font-size:14px;opacity:.8}
-.hero{display:grid;grid-template-columns:1.2fr 0.8fr;gap:20px;padding:60px 6%}
-.hero h1{font-size:64px;line-height:0.9;text-transform:uppercase}
-.hero h1 .stroke{-webkit-text-stroke:1px #fff;color:transparent}
-.hero h1 .lime{color:#E8FF3F}
-.tag{display:inline-block;background:#E8FF3F;color:#000;padding:7px 16px;border-radius:100px;font-weight:800;font-size:11px;letter-spacing:1px;margin-bottom:20px}
-.btn{padding:16px 28px;border-radius:100px;border:none;font-weight:800;cursor:pointer;text-decoration:none;display:inline-flex;align-items:center;gap:8px}
-.btn-lime{background:#E8FF3F;color:#000}
-.btn-dark{background:transparent;border:1px solid #444;color:#fff}
-.shop{padding:60px 6%}
-.grid{display:grid;grid-template-columns:repeat(auto-fit,minmax(260px,1fr));gap:22px;margin-top:30px}
-.card{background:#141414;border:1px solid #222;border-radius:20px;overflow:hidden;transition:.25s}
-.card:hover{transform:translateY(-5px);border-color:#444}
-.card .img{height:340px;background:#1a1a1a;display:flex;align-items:center;justify-content:center;position:relative}
-.card .img img{width:100%;height:100%;object-fit:cover}
-.badge{position:absolute;top:14px;left:14px;background:#fff;color:#000;font-size:10px;font-weight:800;padding:5px 10px;border-radius:100px;z-index:2}
-.price{font-size:22px;font-weight:800}
-.marquee{background:#E8FF3F;color:#000;padding:12px 0;overflow:hidden;white-space:nowrap;font-weight:800;font-family:'Syne';letter-spacing:1px}
-.whatsapp-float{position:fixed;bottom:22px;right:22px;background:#25D366;width:62px;height:62px;border-radius:50%;display:flex;align-items:center;justify-content:center;font-size:32px;text-decoration:none;z-index:999;box-shadow:0 10px 30px rgba(0,0,0,.5)}
-footer{padding:50px 6%;border-top:1px solid #222;display:flex;flex-wrap:wrap;justify-content:space-between;gap:20px;color:#777}
-footer a{color:#fff;text-decoration:none}
-@media(max-width:900px){.hero{grid-template-columns:1fr}.hero h1{font-size:42px}}
+*{margin:0;padding:0;box-sizing:border-box;font-family:system-ui}
+body{background:#0a0a0a;color:#fff}
+nav{padding:20px 5%;display:flex;justify-content:space-between;border-bottom:1px solid #222;position:sticky;top:0;background:#0a0a0a;z-index:10}
+.logo{font-weight:800;font-size:22px}
+.hero{padding:70px 5%;text-align:center}
+.hero h1{font-size:50px;font-weight:900;line-height:1}
+.hero p{color:#888;margin:15px auto}
+.btn{background:#fff;color:#000;padding:12px 24px;border-radius:100px;text-decoration:none;font-weight:700;display:inline-block;margin-top:10px}
+.grid{padding:30px 5%;display:grid;grid-template-columns:repeat(auto-fill,minmax(260px,1fr));gap:20px}
+.card{background:#151515;border-radius:20px;overflow:hidden;border:1px solid #222}
+.card img{width:100%;aspect-ratio:1/1;object-fit:cover;background:#fff}
+.card-body{padding:15px}
+.card h3{font-size:15px;margin-bottom:5px}
+.price b{font-size:17px}
+footer{padding:30px;text-align:center;color:#555;border-top:1px solid #222;margin-top:40px;font-size:12px}
 </style>
 </head>
 <body>
-<a class="whatsapp-float" href="https://wa.me/923372510256" target="_blank">💬</a>
-<nav>
-<div class="logo">COMFORT <span>APPAREL</span></div>
-<div>
-<a href="#shop">SHOP</a>
-<a href="https://instagram.com/comfort.apparelss" target="_blank">INSTA</a>
-<a href="https://wa.me/923372510256">CONTACT</a>
+<nav><div class="logo">COMFORT APPAREL</div></nav>
+<div class="hero"><h1>OVERSIZED<br>COLLECTION</h1><p>100% Cotton - Premium Streetwear</p><a class="btn" href="#shop">Shop Now - Rs. 1250</a></div>
+
+<div class="grid" id="shop">
+
+<div class="card"><img src="dragon.png"><div class="card-body"><h3>Red Dragon Tee</h3><div class="price"><b>Rs. 1250</b> <span style="color:#666;text-decoration:line-through;margin-left:6px">Rs. 2500</span></div></div></div>
+
+<div class="card"><img src="born-broke.png"><div class="card-body"><h3>Born Broke Die Rich Tee</h3><div class="price"><b>Rs. 1250</b> <span style="color:#666;text-decoration:line-through;margin-left:6px">Rs. 2500</span></div></div></div>
+
+<div class="card"><img src="floral.png"><div class="card-body"><h3>Pink Bloom Floral Tee</h3><div class="price"><b>Rs. 1250</b></div></div></div>
+
+<div class="card"><img src="astronaut.png"><div class="card-body"><h3>Astronaut Moon Tee</h3><div class="price"><b>Rs. 1250</b></div></div></div>
+
+<div class="card"><img src="samurai.png"><div class="card-body"><h3>Cobalt Samurai Tee</h3><div class="price"><b>Rs. 1250</b></div></div></div>
+
+<div class="card"><img src="brew.png"><div class="card-body"><h3>Born To Brew Coffeehouse Tee</h3><div class="price"><b>Rs. 1250</b></div></div></div>
+
+<div class="card"><img src="adventure.png"><div class="card-body"><h3>The Adventure Tee</h3><div class="price"><b>Rs. 1250</b></div></div></div>
+
+<div class="card"><img src="ok.png"><div class="card-body"><h3>OK Everything Will Be Tee</h3><div class="price"><b>Rs. 1250</b></div></div></div>
+
+<div class="card"><img src="tea.png"><div class="card-body"><h3>What's The Tea Tee</h3><div class="price"><b>Rs. 1250</b></div></div></div>
+
 </div>
-</nav>
-<section class="hero">
-<div>
-<div class="tag">WINTER DROP LIVE • @COMFORT.APPARELSS</div>
-<h1>OVERSIZED<br><span class="stroke">IS NOT A</span><br><span class="lime">SIZE IT'S A<br>VIBE.</span></h1>
-<p style="margin:20px 0;color:#999;max-width:440px;line-height:1.6">320 GSM heavy fleece hoodies + 240 GSM boxy tees. Dropped shoulders, premium stitching. Made in Karachi for comfort lovers.</p>
-<div style="display:flex;gap:12px;flex-wrap:wrap">
-<a class="btn btn-lime" href="https://wa.me/923372510256?text=Salam%20Comfort%20Apparel!%20Mujhe%20oversized%20collection%20dekhni%20hai" target="_blank">ORDER ON WHATSAPP →</a>
-<a class="btn btn-dark" href="https://instagram.com/comfort.apparelss" target="_blank">IG: @comfort.apparelss</a>
-</div>
-<div style="margin-top:22px;display:flex;gap:18px;font-size:12px;color:#666;letter-spacing:1px">
-<span>✔ COD ALL PAKISTAN</span><span>✔ 7-DAY EXCHANGE</span>
-</div>
-</div>
-<div style="background:#141414;border-radius:24px;overflow:hidden;border:1px solid #222">
-<img src="Retro Desert Adventure T-Shirt Mockup.png" style="width:100%;min-height:520px;object-fit:cover;">
-</div>
-</section>
-</section>
-<div class="marquee">• OVERSIZED TEES • HOODIES • 320 GSM • BOXY FIT • @COMFORT.APPARELSS • WHATSAPP 0337-2510256 •</div>
-<section id="shop" class="shop">
-<div style="display:flex;justify-content:space-between;align-items:end">
-<div><h2 style="font-size:38px">SHOP THE DROP</h2><p style="color:#666">Apni photos yahan lagao</p></div>
-<div style="color:#666;font-size:13px">4 PRODUCTS</div>
-</div>
-<div class="grid">
-<div class="card">
-<div class="img"><span class="badge">BESTSELLER</span><img src="https://images.unsplash.com/photo-1578683010236-d716f9a3f461?w=600"></div>
-<div style="padding:18px"><h3>Essential Oversized Tee - Black</h3><p style="color:#666;font-size:12px;margin:6px 0">240 GSM • 100% Cotton</p><div style="display:flex;justify-content:space-between;align-items:center;margin-top:12px"><span class="price">Rs.1,999</span><a class="btn btn-lime" style="padding:10px 18px;font-size:12px" href="https://wa.me/923372510256?text=Mujhe%20Black%20Tee%20chahiye">BUY ON WA</a></div></div>
-</div>
-<div class="card">
-<div class="img"><span class="badge">320 GSM</span><img src="https://images.unsplash.com/photo-1618354691373-d851c5c3a990?w=600"></div>
-<div style="padding:18px"><h3>Heavy Hoodie - Off White</h3><p style="color:#666;font-size:12px;margin:6px 0">Fleece Inside • Boxy</p><div style="display:flex;justify-content:space-between;align-items:center;margin-top:12px"><span class="price">Rs.4,499</span><a class="btn btn-lime" style="padding:10px 18px;font-size:12px" href="https://wa.me/923372510256?text=Mujhe%20Off%20White%20Hoodie%20chahiye">BUY ON WA</a></div></div>
-</div>
-<div class="card">
-<div class="img"><span class="badge">NEW</span><img src="https://images.unsplash.com/photo-1556821840-3a63f95609a7?w=600"></div>
-<div style="padding:18px"><h3>Heavy Hoodie - Jet Black</h3><p style="color:#666;font-size:12px;margin:6px 0">Oversized Fit • Unisex</p><div style="display:flex;justify-content:space-between;align-items:center;margin-top:12px"><span class="price">Rs.4,499</span><a class="btn btn-lime" style="padding:10px 18px;font-size:12px" href="https://wa.me/923372510256?text=Mujhe%20Black%20Hoodie%20chahiye">BUY ON WA</a></div></div>
-</div>
-<div class="card">
-<div class="img"><span class="badge">LIMITED</span><img src="https://images.unsplash.com/photo-1583743814966-8936f5b7be1a?w=600"></div>
-<div style="padding:18px"><h3>Boxy Tee - Charcoal</h3><p style="color:#666;font-size:12px;margin:6px 0">Drop Shoulder</p><div style="display:flex;justify-content:space-between;align-items:center;margin-top:12px"><span class="price">Rs.2,199</span><a class="btn btn-lime" style="padding:10px 18px;font-size:12px" href="https://wa.me/923372510256?text=Mujhe%20Charcoal%20Tee%20chahiye">BUY ON WA</a></div></div>
-</div>
-</div>
-</section>
-<footer>
-<div><strong style="color:#fff;font-size:18px">COMFORT APPAREL</strong><br>Oversized Tees & Hoodies<br>Karachi, Pakistan<br><br><a href="https://wa.me/923372510256">WhatsApp: 0337-2510256</a></div>
-<div><strong style="color:#fff">FOLLOW US</strong><br><a href="https://instagram.com/comfort.apparelss" target="_blank">Instagram: @comfort.apparelss</a><br><br>Cash on Delivery<br>All over Pakistan</div>
-<div style="font-size:12px">©️ 2026 Comfort Apparel</div>
-</footer>
+<footer>© Comfort Apparel Karachi - All Rights Reserved</footer>
 </body>
 </html>
