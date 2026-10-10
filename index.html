@@ -111,7 +111,7 @@ function renderProducts(){
  document.getElementById('catCount').textContent=filtered.length+' items';
  document.getElementById('shopGrid').innerHTML=filtered.map(p=>{
   const def=selectedSizes[p.id]||'M';
-  return `<div class="card"><img src="${p.img}" onerror="this.src='https://via.placeholder.com/400?text=NO+IMAGE'"><div class="card-body"><span class="tag">${p.tag}</span><h3 style="font-size:14px;line-height:1.3">${p.name}</h3><div style="margin:8px 0"><b>Rs. ${p.price}</b> <s style="color:#555;font-size:12px;margin-left:5px">Rs.${p.price+1000}</s></div><span class="size-label">SELECT SIZE</span><div class="size-row">${['S','M','L','XL','XXL'].map(s=>`<button class="size-btn ${s===def?'active':''}" onclick="selectSize(${p.id},'${s}',this)">${s}</button>`).join('')}</div><button class="add-btn" onclick="addToCart(${p.id})">Add to Cart</button></div></div>`;
+  return `<div class="card"><img src="${p.img}" onerror="this.src='https://via.placeholder.com/400?text=NO+IMAGE'"><div class="card-body"><span class="tag">${p.tag}</span><h3 style="font-size:14px;line-height:1.3">${p.name}</h3><div style="margin:8px 0"><b>Rs. ${p.price}</b> </div><span class="size-label">SELECT SIZE</span><div class="size-row">${['S','M','L','XL'].map(s=>`<button class="size-btn ${s===def?'active':''}" onclick="selectSize(${p.id},'${s}',this)">${s}</button>`).join('')}</div><button class="add-btn" onclick="addToCart(${p.id})">Add to Cart</button></div></div>`;
  }).join('');
 }
 function addToCart(id){
