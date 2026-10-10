@@ -115,7 +115,7 @@ function renderProducts(){
  }).join('');
 }
 function addToCart(id){
- const size=selectedSizes[id]||'M';
+ #const size=selectedSizes[id]||'M';
  const prod=products.find(x=>x.id===id);
  const key=id+'_'+size;
  const ex=cart.find(c=>c.key===key);
