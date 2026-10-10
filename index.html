@@ -1,0 +1,130 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Comfort Apparel - COD Only</title>
+<style>
+*{margin:0;padding:0;box-sizing:border-box;font-family:system-ui,sans-serif}
+body{background:#0a0a0a;color:#fff}
+nav{padding:18px 5%;display:flex;justify-content:space-between;align-items:center;border-bottom:1px solid #1a1a1a;position:sticky;top:0;background:rgba(10,10,10,.95);z-index:20}
+.logo{font-weight:900;font-size:22px}
+.cart-btn{background:#fff;color:#000;border:0;padding:8px 18px;border-radius:100px;font-weight:800;cursor:pointer;position:relative}
+.cart-count{position:absolute;top:-6px;right:-6px;background:red;color:#fff;font-size:10px;width:18px;height:18px;border-radius:50%;display:grid;place-items:center}
+.hero{padding:60px 5%;display:grid;grid-template-columns:1.2fr 0.8fr;gap:30px;max-width:1300px;margin:0 auto;align-items:center}
+.hero h1{font-size:52px;font-weight:900;line-height:.9}
+.hero p{color:#888;margin:15px 0 20px}
+.btn{background:#fff;color:#000;padding:14px 30px;border-radius:100px;font-weight:800;text-decoration:none;display:inline-block}
+.grid{padding:30px 5%;display:grid;grid-template-columns:repeat(auto-fill,minmax(260px,1fr));gap:20px;max-width:1300px;margin:0 auto}
+.card{background:#141414;border-radius:22px;overflow:hidden;border:1px solid #222;display:flex;flex-direction:column}
+.card img{width:100%;aspect-ratio:1/1;object-fit:cover;background:#fff}
+.card-body{padding:15px;flex:1;display:flex;flex-direction:column}
+.tag{background:#222;color:#fff;font-size:10px;padding:4px 10px;border-radius:100px;width:fit-content;margin-bottom:8px}
+.price{margin:8px 0 12px}.price b{font-size:18px}.price s{color:#555;font-size:13px;margin-left:6px}
+.add-btn{margin-top:auto;background:#fff;color:#000;border:0;padding:12px;border-radius:12px;font-weight:800;cursor:pointer;width:100%}
+.cart-overlay{position:fixed;inset:0;background:rgba(0,0,0,.6);display:none;z-index:50}
+.cart-drawer{position:fixed;top:0;right:0;width:400px;max-width:95%;height:100%;background:#111;border-left:1px solid #222;z-index:60;transform:translateX(100%);transition:.35s;display:flex;flex-direction:column}
+.cart-drawer.open{transform:translateX(0)}.cart-overlay.show{display:block}
+.cart-head{padding:20px;display:flex;justify-content:space-between;border-bottom:1px solid #222}
+.cart-items{flex:1;overflow:auto;padding:16px;display:flex;flex-direction:column;gap:12px}
+.cart-item{display:flex;gap:12px;background:#1a1a1a;padding:10px;border-radius:14px}
+.cart-item img{width:60px;height:60px;border-radius:10px;background:#fff;object-fit:cover}
+.qty{display:flex;gap:8px;align-items:center;margin-top:6px}.qty button{background:#222;color:#fff;border:0;width:24px;height:24px;border-radius:6px;cursor:pointer}
+.cart-foot{padding:20px;border-top:1px solid #222;max-height:70vh;overflow:auto}
+.input{width:100%;background:#1a1a1a;border:1px solid #333;color:#fff;padding:12px;border-radius:12px;margin-bottom:10px}
+.row{display:flex;justify-content:space-between;margin:8px 0;color:#aaa}.row b{color:#fff}
+.checkout-btn{background:#22c55e;color:#000;border:0;width:100%;padding:14px;border-radius:12px;font-weight:900;cursor:pointer;font-size:16px;margin-top:10px}
+.success{display:none;position:fixed;inset:0;background:rgba(0,0,0,.9);z-index:80;place-items:center;padding:20px}
+.success.show{display:grid}
+.success-box{background:#151515;border:1px solid #222;padding:30px;border-radius:24px;max-width:400px;text-align:center;width:100%}
+.close-btn{background:#222;color:#fff;border:0;width:32px;height:32px;border-radius:50%;cursor:pointer}
+</style>
+</head>
+<body>
+<nav><div class="logo">COMFORT APPAREL</div><button class="cart-btn" onclick="openCart()">CART <span class="cart-count" id="cartCount">0</span></button></nav>
+<div class="hero"><div><h1>OVERSIZED<br>DROP.<br>RS. 1250</h1><p>Premium 280 GSM - COD All Pakistan</p><a class="btn" href="#shop">SHOP NOW</a></div><div style="border-radius:28px;overflow:hidden;border:1px solid #222"><img src="dragon.png" style="width:100%"></div></div>
+<div class="grid" id="shop"></div>
+<div class="cart-overlay" id="overlay" onclick="closeCart()"></div>
+<div class="cart-drawer" id="drawer">
+<div class="cart-head"><b>Your Cart</b><button class="close-btn" onclick="closeCart()">✕</button></div>
+<div class="cart-items" id="cartItems"></div>
+<div class="cart-foot">
+<div class="row"><span>Subtotal</span><b id="subtotal">Rs. 0</b></div>
+<div class="row"><span>Delivery</span><span id="delivery">Rs. 199</span></div>
+<div class="row" style="border-top:1px solid #222;padding-top:10px"><span>Total (COD)</span><b id="total">Rs. 0</b></div>
+<hr style="border:0;border-top:1px solid #222;margin:15px 0">
+<h4 style="margin-bottom:10px">Delivery Details - COD Only</h4>
+<input class="input" id="custName" placeholder="Full Name *">
+<input class="input" id="custPhone" placeholder="Phone 03XX-XXXXXXX *">
+<input class="input" id="custAddr" placeholder="Full Address *">
+<select id="custCity" class="input">
+<option value="">Select City *</option>
+<option>Karachi</option><option>Lahore</option><option>Islamabad</option><option>Rawalpindi</option><option>Faisalabad</option><option>Multan</option><option>Peshawar</option><option>Quetta</option><option>Other</option>
+</select>
+<button class="checkout-btn" id="placeBtn" onclick="placeOrder()">PLACE ORDER - CASH ON DELIVERY</button>
+</div>
+</div>
+<div class="success" id="success"><div class="success-box"><h2>✓</h2><h2>Order Confirmed!</h2><p id="orderIdText" style="color:#888;margin:12px 0"></p><p style="color:#aaa;font-size:13px">COD order placed. We will call in 24h.</p><button class="checkout-btn" style="background:#fff;margin-top:20px" onclick="closeSuccess()">Continue Shopping</button></div></div>
+<footer style="padding:40px;text-align:center;color:#555;border-top:1px solid #1a1a1a;font-size:12px">© Comfort Apparel | comfort.apparelss@gmail.com</footer>
+<script>
+const products=[
+{id:1,name:"Red Dragon Oversized Tee",price:1250,img:"dragon.png",tag:"BESTSELLER"},
+{id:2,name:"Born Broke Die Rich Tee",price:1250,img:"born-broke.png",tag:"NEW"},
+{id:3,name:"Pink Bloom Floral Tee",price:1250,img:"floral.png",tag:"FOR HER"},
+{id:4,name:"Astronaut Moon Tee",price:1250,img:"astronaut.png",tag:"LIMITED"},
+{id:5,name:"Cobalt Samurai Tee",price:1250,img:"samurai.png",tag:"SAMURAI"},
+{id:6,name:"Born To Brew Tee",price:1250,img:"brew.png",tag:"COFFEE"},
+{id:7,name:"The Adventure Tee",price:1250,img:"adventure.png",tag:"RETRO"},
+{id:8,name:"OK Everything Will Be Tee",price:1250,img:"ok.png",tag:"POSITIVE"},
+{id:9,name:"What's The Tea Tee",price:1250,img:"tea.png",tag:"TRENDING"},
+];
+let cart=JSON.parse(localStorage.getItem('ca_cart')||'[]');
+function renderProducts(){document.getElementById('shop').innerHTML=products.map(p=>`<div class="card"><img src="${p.img}"><div class="card-body"><span class="tag">${p.tag}</span><h3>${p.name}</h3><div class="price"><b>Rs. ${p.price}</b> <s>Rs.2500</s></div><button class="add-btn" onclick="addToCart(${p.id})">Add to Cart</button></div></div>`).join('');}
+function addToCart(id){const ex=cart.find(c=>c.id===id);if(ex)ex.qty++;else cart.push({...products.find(x=>x.id===id),qty:1});save();openCart();}
+function save(){localStorage.setItem('ca_cart',JSON.stringify(cart));renderCart();}
+function renderCart(){const count=cart.reduce((s,i)=>s+i.qty,0);document.getElementById('cartCount').textContent=count;const sub=cart.reduce((s,i)=>s+i.price*i.qty,0);const del=sub>3000||sub==0?0:199;document.getElementById('subtotal').textContent='Rs. '+sub;document.getElementById('delivery').textContent=del==0?'FREE':'Rs. '+del;document.getElementById('total').textContent='Rs. '+(sub+del);const wrap=document.getElementById('cartItems');if(!cart.length){wrap.innerHTML='<p style="color:#666;text-align:center;margin-top:40px">Cart is empty</p>';return;}wrap.innerHTML=cart.map((c,i)=>`<div class="cart-item"><img src="${c.img}"><div style="flex:1"><h4 style="font-size:13px">${c.name}</h4><p style="font-size:12px;color:#888">Rs.${c.price}</p><div class="qty"><button onclick="changeQty(${i},-1)">-</button><span>${c.qty}</span><button onclick="changeQty(${i},1)">+</button><button onclick="removeItem(${i})" style="margin-left:10px;background:#3a1a1a">✕</button></div></div></div>`).join('');}
+function changeQty(i,d){cart[i].qty+=d;if(cart[i].qty<=0)cart.splice(i,1);save();}
+function removeItem(i){cart.splice(i,1);save();}
+function openCart(){document.getElementById('drawer').classList.add('open');document.getElementById('overlay').classList.add('show');renderCart();}
+function closeCart(){document.getElementById('drawer').classList.remove('open');document.getElementById('overlay').classList.remove('show');}
+async function placeOrder(){
+ if(!cart.length) return alert('Cart empty');
+ const name=document.getElementById('custName').value.trim();
+ const phone=document.getElementById('custPhone').value.trim();
+ const addr=document.getElementById('custAddr').value.trim();
+ const city=document.getElementById('custCity').value;
+ if(!name||!phone||!addr||!city) return alert('Fill all fields');
+ const orderId='CA-'+Math.floor(100000+Math.random()*900000);
+ const sub=cart.reduce((s,i)=>s+i.price*i.qty,0);
+ const del=sub>3000?0:199;
+ const total=sub+del;
+ let itemsText=cart.map(c=>`${c.name} x${c.qty} = Rs.${c.price*c.qty}`).join('\n');
+ document.getElementById('placeBtn').textContent='PLACING...';
+ try{
+  const fd=new FormData();
+  fd.append('_subject', `NEW COD ORDER ${orderId} - Rs.${total}`);
+  fd.append('_captcha','false');
+  fd.append('Order ID', orderId);
+  fd.append('Payment', 'CASH ON DELIVERY');
+  fd.append('Name', name);
+  fd.append('Phone', phone);
+  fd.append('City', city);
+  fd.append('Address', addr);
+  fd.append('Items', itemsText);
+  fd.append('Total COD', 'Rs. '+total);
+  await fetch('https://formsubmit.co/ajax/comfort.apparelss@gmail.com', {method:'POST', body:fd});
+  document.getElementById('orderIdText').innerHTML=`Order ID: <b>${orderId}</b><br>Total: Rs.${total}<br><span style="color:#22c55e">Email sent!</span>`;
+  document.getElementById('success').classList.add('show');
+  cart=[];save();closeCart();
+ }catch(e){
+  document.getElementById('orderIdText').innerHTML=`Order ID: <b>${orderId}</b><br>Total: Rs.${total}`;
+  document.getElementById('success').classList.add('show');
+  cart=[];save();closeCart();
+ }
+ document.getElementById('placeBtn').textContent='PLACE ORDER - CASH ON DELIVERY';
+}
+function closeSuccess(){document.getElementById('success').classList.remove('show');}
+renderProducts();renderCart();
+</script>
+</body>
+</html>
