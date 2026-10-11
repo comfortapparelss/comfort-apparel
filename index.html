@@ -237,7 +237,7 @@ async function placeOrder(){
       body:fd
     });
 
-    document.getElementById('orderIdText').innerHTML=`Thank you for ordering! ❤️<br><br>You will get confirmation message soon.<br><br>Order ID: <b>${orderId}</b><br>Total: Rs.${total} COD (Delivery Rs.250)`;
+    document.getElementById('orderIdText').innerHTML=`Thank you for ordering! ❤️<br><br>You will get confirmation message soon.<br><br>Order ID: <b>${orderId}</b><br>Total: Rs.${total} ;
     document.getElementById('success').classList.add('show');
     cart=[]; save(); closeCart();
     document.getElementById('custName').value='';
