@@ -214,30 +214,40 @@ async function placeOrder(){
   const sub=cart.reduce((s,i)=>s+i.price*i.qty,0);
   const del=sub>3000?0:199;
   const total=sub+del;
-  let itemsText=cart.map(x=> x.name+' (SIZE:'+x.size+', COLOR:'+x.color+') x'+x.qty+' - Rs.'+(x.price*x.qty)).join(' | ');
+  let itemsText=cart.map(x=> x.name+' (SIZE:'+x.size+', COLOR:'+x.color+') x'+x.qty+' - Rs.'+(x.price*x.qty)).join(', ');
 
   document.getElementById('placeBtn').textContent='PLACING...';
-  
-  const fd=new FormData();
-  fd.append('_subject', 'NEW ORDER '+orderId+' - Rs.'+total+' - '+name);
-  fd.append('_template','table');
-  fd.append('_captcha','false');
-  fd.append('_replyto', email); // Important for client to get autoresponse
-  fd.append('_autoresponse', `Hi ${name}!\n\nThank you for your order at Comfort Apparel!\n\nORDER CONFIRMED: ${orderId}\n\nItems: ${itemsText}\nTotal: Rs.${total} - Cash on Delivery\nShipping to: ${addr}, ${city}\nPhone: ${phone}\n\nWe will contact you on WhatsApp shortly for confirmation.\n\nWear Comfort Live Better!\nTeam Comfort Apparel\nWhatsApp: 0337-2510256`);
-
-  fd.append('Order ID',orderId);
-  fd.append('Customer Name',name);
-  fd.append('Customer Email',email);
-  fd.append('Phone',phone);
-  fd.append('Address',addr);
-  fd.append('City',city);
-  fd.append('Items',itemsText);
-  fd.append('Total','Rs.'+total+' (COD)');
 
   try{
-    const res = await fetch('https://formsubmit.co/ajax/comfort.apparelss@gmail.com',{method:'POST',body:fd});
-    const data = await res.json();
-    console.log('SUCCESS:', data);
+    // 1. OWNER EMAIL - Full table
+    const fd1=new FormData();
+    fd1.append('_subject','NEW ORDER '+orderId+' - Rs.'+total+' - '+name);
+    fd1.append('_template','table');
+    fd1.append('_captcha','false');
+    fd1.append('Order ID',orderId);
+    fd1.append('Customer Name',name);
+    fd1.append('Customer Email',email);
+    fd1.append('Phone',phone);
+    fd1.append('Address',addr+', '+city);
+    fd1.append('Items',itemsText);
+    fd1.append('Total','Rs.'+total+' (COD)');
+    await fetch('https://formsubmit.co/ajax/comfort.apparelss@gmail.com',{method:'POST',body:fd1});
+
+    // 2. CUSTOMER EMAIL - Thank You Confirmation (DIFFERENT - from FormSubmit)
+    const fd2=new FormData();
+    fd2.append('_subject','Thank you for ordering! Order '+orderId+' Confirmed - Comfort Apparel');
+    fd2.append('_template','table');
+    fd2.append('_captcha','false');
+    fd2.append('Message','Hi '+name+'! Thank you for ordering from Comfort Apparel!');
+    fd2.append('Order ID',orderId);
+    fd2.append('Status','CONFIRMED');
+    fd2.append('Items',itemsText);
+    fd2.append('Total','Rs.'+total+' - Cash on Delivery');
+    fd2.append('Delivery Address',addr+', '+city);
+    fd2.append('We will contact you on',phone+' via WhatsApp');
+    
+    // This sends TO customer, FROM FormSubmit
+    await fetch('https://formsubmit.co/ajax/'+email,{method:'POST',body:fd2});
 
     document.getElementById('orderIdText').innerHTML=`Thank you for ordering! ❤️<br><br>Order ID: <b>${orderId}</b><br>Total: Rs.${total}<br><br>Confirmation email sent to <b>${email}</b>`;
     document.getElementById('success').classList.add('show');
@@ -248,8 +258,8 @@ async function placeOrder(){
     document.getElementById('custAddr').value='';
     document.getElementById('custCity').value='';
   }catch(e){
-    console.error(e);
-    alert('Failed: '+e.message);
+    console.log(e);
+    alert('Error: '+e.message);
   }
   document.getElementById('placeBtn').textContent='PLACE ORDER - COD';
 }
