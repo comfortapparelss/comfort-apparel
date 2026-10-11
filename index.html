@@ -238,8 +238,8 @@ async function placeOrder(){
     const res = await fetch('https://formsubmit.co/ajax/comfort.apparelss@gmail.com',{method:'POST',body:fd});
     const data = await res.json();
     console.log('SUCCESS:', data);
-    
-    document.getElementById('orderIdText').innerHTML=`Order ID: <b>${orderId}</b><br>Total: Rs.${total}<br><br>Owner will get full order table<br>Client (${email}) will get confirmation mail`;
+
+    document.getElementById('orderIdText').innerHTML=`Thank you for ordering! ❤️<br><br>Order ID: <b>${orderId}</b><br>Total: Rs.${total}<br><br>Confirmation email sent to <b>${email}</b>`;
     document.getElementById('success').classList.add('show');
     cart=[]; save(); closeCart();
     document.getElementById('custName').value='';
