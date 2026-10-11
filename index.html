@@ -69,7 +69,7 @@ nav{padding:14px 5%;display:flex;justify-content:space-between;align-items:cente
 </div>
 
 <div id="shop">
-<div style="padding:15px 5%;max-width:1300px;margin:0 auto;display:flex;justify-content:space-between"><h2 id="catTitle" style="font-weight:900">All Collection</h2><span id="catCount" style="color:#666"></span></div>
+<div style="padding:15px 5%;max-width:1300px;margin:0 auto;display:flex;justify-content:space-between"><h2 id="catTitle" style="font-weight:900">Select a Category</h2><span id="catCount" style="color:#666"></span></div>
 <div class="grid" id="shopGrid"></div>
 </div>
 
@@ -123,8 +123,8 @@ if(!currentCat){
  document.getElementById('catCount').textContent='';
  return;
 }
-const filtered=currentCat==='all'?products:products.filter(p=>p.cat===currentCat);
-document.getElementById('catTitle').textContent=currentCat==='all'?'All Collection - '+filtered.length+' products':currentCat;
+const filtered=products.filter(p=>p.cat===currentCat);
+document.getElementById('catTitle').textContent=currentCat+' - '+filtered.length+' products';
 document.getElementById('catCount').textContent=filtered.length+' items';
 document.getElementById('shopGrid').innerHTML=filtered.map(p=>{
 const defSize=selectedSizes[p.id]||'M';
