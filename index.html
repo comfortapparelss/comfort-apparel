@@ -4,6 +4,8 @@
 <meta charset="UTF-8"><meta name="viewport" content="width=device-width, initial-scale=1">
 <title>Comfort Apparel - Wear Comfort Live Better</title>
 <style>
+.size-btn.active{ background:#fff!important; color:#000!important; border-color:#fff!important; }
+.color-btn.active{ background:#fff!important; color:#000!important; }
 *{margin:0;padding:0;box-sizing:border-box;font-family:system-ui,sans-serif}
 body{background:#0a0a0a;color:#fff}
 nav{padding:14px 5%;display:flex;justify-content:space-between;align-items:center;border-bottom:1px solid #1a1a1a;position:sticky;top:0;background:#0a0a0a;z-index:30}
@@ -110,9 +112,7 @@ const products=[
 let currentCat=''; let cart=JSON.parse(localStorage.getItem('ca_cart')||'[]'); let selectedSizes={}; let selectedColors={};
 
 function filterCat(cat,el){currentCat=cat; document.querySelectorAll('.cat-btn').forEach(b=>b.classList.remove('active')); el.classList.add('active'); renderProducts();}
-function selectsSize(id,size,el){selectedSizes[id]=size; const card=el.closest('.card'); card.querySelectorAll('.size-btn').forEach(b=>b.classList.remove('active')); el.classList.add('active');}
-function selectSize(id,size,el){return selectsSize(id,size,el);}
-function setColor(id,color,el){
+function selectsSize(id,size,el){selectedSizes[id]=size; const card=el.closest('.card'); if(card){ card.querySelectorAll('.size-btn').forEach(b=>{ b.classList.remove('active'); b.style.background='transparent'; b.style.color='#fff'; }); } el.classList.add('active'); el.style.background='#fff'; el.style.color='#000';}
 selectedColors[id]=color;
 el.parentElement.querySelectorAll('span').forEach(s=>{s.style.background='transparent';s.style.color='#fff'});
 el.style.background='#fff'; el.style.color='#000';
