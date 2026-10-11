@@ -17,25 +17,14 @@ nav{padding:14px 5%;display:flex;justify-content:space-between;align-items:cente
 .cat-btn{background:#1a1a1a;border:1px solid #222;color:#888;padding:10px 20px;border-radius:100px;font-weight:700;cursor:pointer;white-space:nowrap}
 .cat-btn.active{background:#fff;color:#000}
 .grid{padding:10px 5% 40px;display:grid;grid-template-columns:repeat(auto-fill,minmax(240px,1fr));gap:18px;max-width:1300px;margin:0 auto}
-.card{background:#141414;border-radius:20px;overflow:hidden;border:1px solid #222;display:flex;flex-direction:column}
-.card img{width:100%;aspect-ratio:1/1;object-fit:cover;background:#fff}
-.card-body{padding:14px;flex:1;display:flex;flex-direction:column}
-.tag{font-size:10px;padding:4px 10px;border-radius:100px;width:fit-content;margin-bottom:8px;background:#222}
-.add-btn{margin-top:auto;background:#fff;color:#000;border:0;padding:11px;border-radius:11px;font-weight:800;cursor:pointer;width:100%}
-.size-row{display:flex;gap:6px;margin:8px 0 10px}
-.size-btn{background:#1a1a1a;border:1px solid #333;color:#888;padding:5px 10px;border-radius:8px;font-size:11px;font-weight:700;cursor:pointer;min-width:32px;transition:.2s}
-.size-btn.active{background:#fff;color:#000;border-color:#fff}
-.size-label{font-size:10px;color:#666;margin-top:2px;letter-spacing:1.5px;font-weight:700}
+.card{background:#141414;border-radius:20px;overflow:hidden;border:1px solid #222;display:flex;flex-direction:column;padding:12px}
+.card img{width:100%;aspect-ratio:1/1;object-fit:cover;background:#fff;border-radius:12px}
 .cart-overlay{position:fixed;inset:0;background:rgba(0,0,0,.6);display:none;z-index:50}
 .cart-drawer{position:fixed;top:0;right:0;width:400px;max-width:95%;height:100%;background:#111;border-left:1px solid #222;z-index:60;transform:translateX(100%);transition:.35s;display:flex;flex-direction:column}
 .cart-drawer.open{transform:translateX(0)}
 .cart-overlay.show{display:block}
 .cart-head{padding:20px;display:flex;justify-content:space-between;border-bottom:1px solid #222}
 .cart-items{flex:1;overflow:auto;padding:16px;display:flex;flex-direction:column;gap:12px}
-.cart-item{display:flex;gap:12px;background:#1a1a1a;padding:10px;border-radius:14px}
-.cart-item img{width:60px;height:60px;border-radius:10px;background:#fff;object-fit:cover}
-.qty{display:flex;gap:8px;align-items:center;margin-top:6px}
-.qty button{background:#222;color:#fff;border:0;width:24px;height:24px;border-radius:6px;cursor:pointer}
 .cart-foot{padding:20px;border-top:1px solid #222}
 .input{width:100%;background:#1a1a1a;border:1px solid #333;color:#fff;padding:11px;border-radius:11px;margin-bottom:10px}
 .row{display:flex;justify-content:space-between;margin:8px 0;color:#aaa}
@@ -52,38 +41,30 @@ nav{padding:14px 5%;display:flex;justify-content:space-between;align-items:cente
 <div style="display:flex;align-items:center;gap:10px"><img src="logo.png" style="width:42px;height:42px;border-radius:50%;border:1px solid #333;object-fit:cover"><span style="font-weight:900;letter-spacing:1px">COMFORT APPAREL</span></div>
 <button class="cart-btn" onclick="openCart()">CART <span class="cart-count" id="cartCount">0</span></button>
 </nav>
-
 <div class="hero">
   <div>
     <h1>OVERSIZED<br>TEES<br>POLOS &<br>HOODIES</h1>
     <p style="color:#888;margin:16px 0;font-size:13px;line-height:1.6">Redefine everyday comfort with Oversized Tees, Premium Hoodies and Polos. Minimal style, maximum comfort.<br>Wear Comfort Live Better</p>
     <button onclick="document.getElementById('shop').scrollIntoView({behavior:'smooth'})" style="background:#fff;color:#000;border:0;padding:12px 24px;border-radius:100px;font-weight:800;cursor:pointer;margin-top:8px">SHOP NOW</button>
   </div>
-  <div style="display:grid;place-items:center">
-    <img src="logo.png" style="width:100%;max-width:460px;height:auto;border-radius:24px;border:1px solid #222;display:block">
-  </div>
+  <div style="display:grid;place-items:center"><img src="logo.png" style="width:100%;max-width:460px;height:auto;border-radius:24px;border:1px solid #222;display:block"></div>
 </div>
-
 <div class="categories">
 <button class="cat-btn" onclick="filterCat('tee',this)">Oversized Tees</button>
 <button class="cat-btn" onclick="filterCat('polo',this)">Polo Shirts</button>
 <button class="cat-btn" onclick="filterCat('hoodie',this)">Hoodies</button>
 </div>
-
 <div id="shop">
 <div style="padding:15px 5%;max-width:1300px;margin:0 auto;display:flex;justify-content:space-between"><h2 id="catTitle" style="font-weight:900">Select a Category</h2><span id="catCount" style="color:#666"></span></div>
 <div class="grid" id="shopGrid"></div>
 </div>
-
 <div class="cart-overlay" id="overlay" onclick="closeCart()"></div>
 <div class="cart-drawer" id="drawer"><div class="cart-head"><b>Your Cart</b><button onclick="closeCart()" style="background:#222;color:#fff;border:0;width:32px;height:32px;border-radius:50%;cursor:pointer">✕</button></div><div class="cart-items" id="cartItems"></div><div class="cart-foot"><div class="row"><span>Subtotal</span><b id="subtotal">Rs.0</b></div><div class="row"><span>Delivery</span><span id="delivery">Rs.199</span></div><div class="row" style="border-top:1px solid #222;padding-top:10px"><span>Total</span><b id="total">Rs.0</b></div><input class="input" id="custName" placeholder="Full Name *"><input class="input" id="custPhone" placeholder="Phone *"><input class="input" id="custAddr" placeholder="Full Address *"><select id="custCity" class="input"><option value="">Select City *</option><option>Karachi</option><option>Lahore</option><option>Islamabad</option><option>Rawalpindi</option><option>Faisalabad</option><option>Multan</option><option>Peshawar</option><option>Quetta</option><option>Other</option></select><button class="checkout-btn" id="placeBtn" onclick="placeOrder()">PLACE ORDER - COD</button></div></div>
 <div class="success" id="success"><div class="success-box"><h2>✓ Order Confirmed!</h2><p id="orderIdText" style="color:#888;margin:12px 0"></p><button class="checkout-btn" style="background:#fff" onclick="document.getElementById('success').classList.remove('show')">Continue Shopping</button></div></div>
-
 <script>
 const products=[
- // 9 TEES - Rs.1250
- {id:1,name:"Red Dragon ",price:1250,img:"dragon.png",tag:"NEW",cat:"tee", colors:["Black","Black Acid","White"]},
- {id:2,name:"Born Broke Die Rich ",price:1250,img:"born-broke.png",tag:"NEW",cat:"tee", colors:["Black","Black Acid","White"]},
+ {id:1,name:"Red Dragon",price:1250,img:"dragon.png",tag:"NEW",cat:"tee", colors:["Black","Black Acid","White"]},
+ {id:2,name:"Born Broke Die Rich",price:1250,img:"born-broke.png",tag:"NEW",cat:"tee", colors:["Black","Black Acid","White"]},
  {id:3,name:"Pink Bloom Floral",price:1250,img:"floral.png",tag:"NEW",cat:"tee", colors:["Black","Black Acid","White"]},
  {id:4,name:"Sunflower",price:1250,img:"sunflower.png",tag:"NEW",cat:"tee", colors:["Black","Black Acid","White"]},
  {id:5,name:"Inspiration",price:1250,img:"inspiration.png",tag:"NEW",cat:"tee", colors:["Black","Black Acid","White"]},
@@ -93,42 +74,40 @@ const products=[
  {id:9,name:"Born To Brew Coffee",price:1250,img:"brew.png",tag:"NEW",cat:"tee", colors:["White","Black","Black Acid"]},
  {id:10,name:"Everything Will Be OK",price:1250,img:"ok.png",tag:"NEW",cat:"tee", colors:["White","Black","Black Acid"]},
  {id:11,name:"Retro Desert Adventure",price:1250,img:"nature.png",tag:"NEW",cat:"tee", colors:["White","Black","Black Acid"]},
- {id:12,name:"What's The Tea?",price:1250,img:"t.png",tag:"NEW",cat:"tee", colors:["White","Black","Black Acid"]},
- // 3 POLOS ONLY - Rs.1850
- {id:13,name:"Black Premium Polo ",price:1850,img:"polo-black.png",tag:"SLIM FIT",cat:"polo"},
- {id:14,name:"White Premium Polo ",price:1850,img:"polo-white.png",tag:"SLIM FIT",cat:"polo"},
- {id:15,name:"Blue Premium Polo ",price:1850,img:"polo-navy.png",tag:"SLIM FIT",cat:"polo"},
- // 8 HOODIES - Rs.2999 / 3299
+ {id:12,name:"Whats The Tea?",price:1250,img:"t.png",tag:"NEW",cat:"tee", colors:["White","Black","Black Acid"]},
+ {id:13,name:"Black Premium Polo",price:1850,img:"polo-black.png",tag:"SLIM FIT",cat:"polo"},
+ {id:14,name:"White Premium Polo",price:1850,img:"polo-white.png",tag:"SLIM FIT",cat:"polo"},
+ {id:15,name:"Blue Premium Polo",price:1850,img:"polo-navy.png",tag:"SLIM FIT",cat:"polo"},
  {id:20,name:"Slow Coffee Club",price:2999,img:"hoodie-coffee.png",tag:"NEW",cat:"hoodie",colors:["Black","Black Acid"]},
  {id:21,name:"Floral Bloom",price:2999,img:"hoodie-floral.png",tag:"NEW",cat:"hoodie",colors:["Black","Black Acid"]},
  {id:22,name:"Blue Butterfly",price:2999,img:"hoodie-butterfly.png",tag:"NEW",cat:"hoodie",colors:["Black","Black Acid"]},
- {id:23,name:"#FILTER Cat",price:2999,img:"hoodie-filter-cat.png",tag:"NEW",cat:"hoodie",colors:["Black","Black Acid"]},
+ {id:23,name:"FILTER Cat",price:2999,img:"hoodie-filter-cat.png",tag:"NEW",cat:"hoodie",colors:["Black","Black Acid"]},
  {id:24,name:"Authentic",price:3299,img:"hoodie-authentic-front.png",tag:"NEW",cat:"hoodie",colors:["Black","Black Acid"]},
- {id:25,name:"Bear Rampage ",price:2999,img:"hoodie-bear.png",tag:"NEW",cat:"hoodie",colors:["Black","Black Acid"]},
- {id:26,name:"Time Has Passed ",price:2999,img:"hoodie-time-back.png",tag:"NEW",cat:"hoodie",colors:["Black","Black Acid"]},
- {id:25,name:"Lost ",price:2999,img:"hoodie-lost-back.png",tag:"NEW",cat:"hoodie",colors:["Black","Black Acid"]},
+ {id:25,name:"Bear Rampage",price:2999,img:"hoodie-bear.png",tag:"NEW",cat:"hoodie",colors:["Black","Black Acid"]},
+ {id:26,name:"Time Has Passed",price:2999,img:"hoodie-time-back.png",tag:"NEW",cat:"hoodie",colors:["Black","Black Acid"]},
+ {id:27,name:"Lost",price:2999,img:"hoodie-lost-back.png",tag:"NEW",cat:"hoodie",colors:["Black","Black Acid"]},
 ];
-
 let currentCat=''; let cart=JSON.parse(localStorage.getItem('ca_cart')||'[]'); let selectedSizes={}; let selectedColors={};
-
-function filterCat(cat,el){currentCat=cat; document.querySelectorAll('.cat-btn').forEach(b=>b.classList.remove('active')); el.classList.add('active'); renderProducts();}
+function filterCat(cat,el){
+  currentCat=cat;
+  document.querySelectorAll('.cat-btn').forEach(b=>b.classList.remove('active'));
+  el.classList.add('active');
+  renderProducts();
+}
 function selectsSize(id,size,el){
   selectedSizes[id]=size;
-  // remove white from all sizes in same product
   el.parentElement.querySelectorAll('.size-btn').forEach(b=>{
     b.classList.remove('active');
     b.style.background='transparent';
     b.style.color='#fff';
     b.style.borderColor='#555';
   });
-  // add white only to clicked one
   el.classList.add('active');
   el.style.background='#fff';
   el.style.color='#000';
   el.style.borderColor='#fff';
 }
 function selectSize(id,size,el){return selectsSize(id,size,el);}
-
 function setColor(id,color,el){
   selectedColors[id]=color;
   el.parentElement.querySelectorAll('.color-btn').forEach(s=>{
@@ -140,101 +119,137 @@ function setColor(id,color,el){
   el.style.background='#fff';
   el.style.color='#000';
 }
-
 function renderProducts(){
-if(!currentCat){
- document.getElementById('shopGrid').innerHTML='';
- document.getElementById('catTitle').textContent='Select a Category';
- document.getElementById('catCount').textContent='';
- return;
-}
-const filtered=products.filter(p=>p.cat===currentCat);
-document.getElementById('catTitle').textContent=currentCat+' - '+filtered.length+' products';
-document.getElementById('catCount').textContent=filtered.length+' items';
-document.getElementById('shopGrid').innerHTML=filtered.map(p=>{
-const defSize=selectedSizes[p.id]||'M';
-const defColor=selectedColors[p.id]||(p.colors?p.colors[0]:'Black');
-const isHoodieOrTee = (p.cat==='hoodie' || p.cat==='tee' || p.cat==='tshirt' || p.cat==='t-shirt' || p.cat==='tees');
-const colorHTML = isHoodieOrTee? `<div style="margin-top:8px"><small style="color:#888">COLOR: </small><div style="display:flex;gap:5px;margin-top:3px;flex-wrap:wrap">${p.colors?p.colors.map(c=>`<span class="color-btn" onclick="setColor(${p.id},'${c}',this)" style="border:1px solid #444;padding:3px 8px;font-size:11px;cursor:pointer;background:${defColor===c?'#fff':'transparent'};color:${defColor===c?'#000':'#fff'}">${c}</span>`).join(''):''}</div></div>` : '';
-
-return `<div class="card"><img src="${p.img}" onerror="this.src='https://via.placeholder.com/400?text=NO+IMAGE'"><h3>${p.name}</h3><p>Rs. ${p.price}</p><div style="margin-top:8px"><small style="color:#888">SIZE: </small><div style="display:flex;gap:5px;margin-top:3px">${['S','M','L','XL'].map(s=>`<span class="size-btn ${defSize===s?'active':''}" onclick="selectSize(${p.id},'${s}',this)" style="border:1px solid #444;padding:3px 8px;font-size:11px;cursor:pointer;background:${defSize===s?'#fff':'transparent'};color:${defSize===s?'#000':'#fff'}">${s}</span>`).join('')}</div></div>${colorHTML}<button onclick="addToCart(${p.id})" style="width:100%;margin-top:10px;padding:8px;background:#fff;color:#000;border:none;cursor:pointer">ADD TO CART</button></div>`;
-}).join('');
+  if(!currentCat){
+    document.getElementById('shopGrid').innerHTML='';
+    document.getElementById('catTitle').textContent='Select a Category';
+    document.getElementById('catCount').textContent='';
+    return;
+  }
+  const filtered=products.filter(p=>p.cat===currentCat);
+  document.getElementById('catTitle').textContent=currentCat+' - '+filtered.length+' products';
+  document.getElementById('catCount').textContent=filtered.length+' items';
+  document.getElementById('shopGrid').innerHTML=filtered.map(p=>{
+    const defSize=selectedSizes[p.id]||'M';
+    const defColor=selectedColors[p.id]||(p.colors?p.colors[0]:'Black');
+    const isHoodieOrTee = (p.cat==='hoodie' || p.cat==='tee');
+    const colorHTML = isHoodieOrTee? '<div style="margin-top:8px"><small style="color:#888">COLOR: </small><div style="display:flex;gap:5px;margin-top:3px;flex-wrap:wrap">'+(p.colors?p.colors.map(c=>'<span class="color-btn" onclick="setColor('+p.id+',\''+c+'\',this)" style="border:1px solid #444;padding:3px 8px;font-size:11px;cursor:pointer;background:'+(defColor===c?'#fff':'transparent')+';color:'+(defColor===c?'#000':'#fff')+'">'+c+'</span>').join(''):'')+'</div></div>' : '';
+    return '<div class="card"><img src="'+p.img+'" onerror="this.src=\'https://via.placeholder.com/400?text=NO+IMAGE\'"><h3 style="margin:8px 0 4px">'+p.name+'</h3><p>Rs. '+p.price+'</p><div style="margin-top:8px"><small style="color:#888">SIZE: </small><div style="display:flex;gap:5px;margin-top:3px">'+['S','M','L','XL'].map(s=>'<span class="size-btn '+(defSize===s?'active':'')+'" onclick="selectSize('+p.id+',\''+s+'\',this)" style="border:1px solid #444;padding:3px 8px;font-size:11px;cursor:pointer;background:'+(defSize===s?'#fff':'transparent')+';color:'+(defSize===s?'#000':'#fff')+'">'+s+'</span>').join('')+'</div></div>'+colorHTML+'<button onclick="addToCart('+p.id+')" style="width:100%;margin-top:10px;padding:8px;background:#fff;color:#000;border:none;cursor:pointer;border-radius:8px;font-weight:800">ADD TO CART</button></div>';
+  }).join('');
 }
 function addToCart(id){
-const size=selectedSizes[id]||'M';
-const color=selectedColors[id]||'Black';
-const prod=products.find(x=>x.id===id);
-const key=id+'-'+size+'-'+color;
-const ex=cart.find(c=>c.key===key);
-if(ex) ex.qty++; else cart.push({...prod,size:size,color:color,key:key,qty:1});
-save(); openCart();
+  const size=selectedSizes[id]||'M';
+  const color=selectedColors[id]||'Black';
+  const prod=products.find(x=>x.id===id);
+  const key=id+'-'+size+'-'+color;
+  const ex=cart.find(c=>c.key===key);
+  if(ex) ex.qty++; else cart.push({...prod,size:size,color:color,key:key,qty:1});
+  save(); openCart();
 }
-function save(){localStorage.setItem('ca_cart',JSON.stringify(cart));renderCart();}
+function save(){
+  localStorage.setItem('ca_cart',JSON.stringify(cart));
+  renderCart();
+}
 function renderCart(){
- const count=cart.reduce((s,i)=>s+i.qty,0); document.getElementById('cartCount').textContent=count;
- const sub=cart.reduce((s,i)=>s+i.price*i.qty,0); const del=sub>3000||sub==0?0:199;
- document.getElementById('subtotal').textContent='Rs. '+sub; document.getElementById('delivery').textContent=del==0?'FREE':'Rs. '+del; document.getElementById('total').textContent='Rs. '+(sub+del);
- const wrap=document.getElementById('cartItems');
- if(!cart.length){wrap.innerHTML='<p style="color:#666;text-align:center;margin-top:40px">Cart empty<br><small>Select size first, then add</small></p>';return;}
-wrap.innerHTML = cart.map(i=>`
-<div style="display:flex;gap:10px;margin-bottom:12px;border-bottom:1px solid #222;padding-bottom:10px">
-  <img src="${i.img}" style="width:60px;height:60px;object-fit:cover">
-  <div style="flex:1">
-    <div style="font-size:14px">${i.name}</div>
-    <div style="font-size:12px;color:#aaa;margin-top:2px">Size: ${i.size} | Color: ${i.color}</div>
-    <div style="font-size:13px;margin-top:4px">Rs. ${i.price} x ${i.qty}</div>
-  </div>
-  <button onclick="removeFromCart('${i.key}')" style="background:none;border:none;color:#fff;cursor:pointer">X</button>
-</div>
-`).join('');
-function changeQty(i,d){cart[i].qty+=d; if(cart[i].qty<=0) cart.splice(i,1); save();}
-function removeItem(i){cart.splice(i,1);save();}
-function openCart(){document.getElementById('drawer').classList.add('open');document.getElementById('overlay').classList.add('show');renderCart();}
-function closeCart(){document.getElementById('drawer').classList.remove('open');document.getElementById('overlay').classList.remove('show');}
-async function placeOrder(){
-if(!cart.length) return alert('Cart empty');
-const name=document.getElementById('custName').value.trim(); const phone=document.getElementById('custPhone').value.trim(); const addr=document.getElementById('custAddr').value.trim(); const city=document.getElementById('custCity').value.trim();
-if(!name||!phone||!addr||!city) return alert('Fill all delivery fields');
-const orderId='CA-'+Math.floor(100000+Math.random()*900000);
-const sub=cart.reduce((s,i)=>s+i.price*i.qty,0); const del=sub>3000?0:199; const total=sub+del;
-let itemsText=cart.map(function(x){return x.name+' (SIZE:'+x.size+', COLOR:'+x.color+') x'+x.qty+' - Rs.'+(x.price*x.qty)}).join(', ');
-document.getElementById('placeBtn').textContent='PLACING...';
-try{const fd=new FormData(); fd.append('_subject','NEW ORDER '+orderId+' - Rs.'+total);
-fd.append('OrderID',orderId); fd.append('Name',name); fd.append('Phone',phone); fd.append('Address',addr); fd.append('City',city); fd.append('Items',itemsText); fd.append('Total','Rs.'+total);
-document.getElementById('orderIdText').innerHTML='Order ID: <b>'+orderId+'</b><br>Total: Rs.'+total+'<br><br>Items: '+itemsText;
-document.getElementById('success').classList.add('show'); cart=[]; save(); closeCart();
-document.getElementById('custName').value=''; document.getElementById('custPhone').value=''; document.getElementById('custAddr').value=''; document.getElementById('custCity').value='';
-}catch(e){alert('Error placing order');}
-document.getElementById('placeBtn').textContent='PLACE ORDER';
+  const count=cart.reduce((s,i)=>s+i.qty,0);
+  document.getElementById('cartCount').textContent=count;
+  const sub=cart.reduce((s,i)=>s+i.price*i.qty,0);
+  const del=sub>3000||sub==0?0:199;
+  document.getElementById('subtotal').textContent='Rs. '+sub;
+  document.getElementById('delivery').textContent=del==0?'FREE':'Rs. '+del;
+  document.getElementById('total').textContent='Rs. '+(sub+del);
+  const wrap=document.getElementById('cartItems');
+  if(!cart.length){
+    wrap.innerHTML='<p style="color:#666;text-align:center;margin-top:40px">Cart empty<br><small>Select size first, then add</small></p>';
+    return;
+  }
+  wrap.innerHTML = cart.map(i=>`
+    <div style="display:flex;gap:10px;margin-bottom:12px;border-bottom:1px solid #222;padding-bottom:10px">
+      <img src="${i.img}" style="width:60px;height:60px;object-fit:cover">
+      <div style="flex:1">
+        <div style="font-size:14px">${i.name}</div>
+        <div style="font-size:12px;color:#aaa;margin-top:2px">Size: ${i.size} | Color: ${i.color}</div>
+        <div style="font-size:13px;margin-top:4px">Rs. ${i.price} x ${i.qty}</div>
+        <div style="display:flex;gap:8px;margin-top:6px">
+          <button onclick="changeQty('${i.key}',-1)" style="background:#222;color:#fff;border:0;width:24px;height:24px;border-radius:6px;cursor:pointer">-</button>
+          <span>${i.qty}</span>
+          <button onclick="changeQty('${i.key}',1)" style="background:#222;color:#fff;border:0;width:24px;height:24px;border-radius:6px;cursor:pointer">+</button>
+        </div>
+      </div>
+      <button onclick="removeFromCart('${i.key}')" style="background:none;border:none;color:#fff;cursor:pointer">X</button>
+    </div>
+  `).join('');
 }
-renderProducts(); renderCart();
+function changeQty(key,d){
+  const item=cart.find(c=>c.key===key);
+  if(!item) return;
+  item.qty+=d;
+  if(item.qty<=0) cart=cart.filter(c=>c.key!==key);
+  save();
+}
+function removeFromCart(key){
+  cart=cart.filter(c=>c.key!==key);
+  save();
+}
+function openCart(){
+  document.getElementById('drawer').classList.add('open');
+  document.getElementById('overlay').classList.add('show');
+  renderCart();
+}
+function closeCart(){
+  document.getElementById('drawer').classList.remove('open');
+  document.getElementById('overlay').classList.remove('show');
+}
+async function placeOrder(){
+  if(!cart.length) return alert('Cart empty');
+  const name=document.getElementById('custName').value.trim();
+  const phone=document.getElementById('custPhone').value.trim();
+  const addr=document.getElementById('custAddr').value.trim();
+  const city=document.getElementById('custCity').value.trim();
+  if(!name||!phone||!addr||!city) return alert('Fill all delivery fields');
+  const orderId='CA-'+Math.floor(100000+Math.random()*900000);
+  const sub=cart.reduce((s,i)=>s+i.price*i.qty,0);
+  const del=sub>3000?0:199;
+  const total=sub+del;
+  let itemsText=cart.map(function(x){return x.name+' (SIZE:'+x.size+', COLOR:'+x.color+') x'+x.qty+' - Rs.'+(x.price*x.qty)}).join(', ');
+  document.getElementById('placeBtn').textContent='PLACING...';
+  try{
+    const fd=new FormData();
+    fd.append('_subject','NEW ORDER '+orderId+' - Rs.'+total);
+    fd.append('OrderID',orderId);
+    fd.append('Name',name);
+    fd.append('Phone',phone);
+    fd.append('Address',addr);
+    fd.append('City',city);
+    fd.append('Items',itemsText);
+    fd.append('Total','Rs.'+total);
+    document.getElementById('orderIdText').innerHTML='Order ID: <b>'+orderId+'</b><br>Total: Rs.'+total+'<br><br>Items: '+itemsText;
+    document.getElementById('success').classList.add('show');
+    cart=[]; save(); closeCart();
+    document.getElementById('custName').value='';
+    document.getElementById('custPhone').value='';
+    document.getElementById('custAddr').value='';
+    document.getElementById('custCity').value='';
+  }catch(e){
+    alert('Error placing order');
+  }
+  document.getElementById('placeBtn').textContent='PLACE ORDER - COD';
+}
+renderProducts();
+renderCart();
 </script>
 <footer style="background:#111;border-top:1px solid #222;padding:40px 5%;margin-top:50px">
  <div style="display:grid;grid-template-columns:repeat(auto-fit,minmax(200px,1fr));gap:30px;max-width:1200px;margin:auto">
-  
   <div>
    <h3 style="letter-spacing:2px;margin-bottom:15px">COMFORT APPAREL</h3>
    <p style="color:#888;font-size:13px;line-height:1.6">Premium Streetwear | Karachi Based<br>Delivering all over Pakistan<br>COD Available</p>
-   <div style="margin-top:15px;display:flex;gap:12px">
-    <a href="https://instagram.com/comfort.apparelss" target="_blank" style="background:#fff;color:#000;width:32px;height:32px;display:flex;align-items:center;justify-content:center;border-radius:50%;text-decoration:none;font-size:14px;font-weight:900">IG</a>
-    <a href="https://wa.me/923372510256" target="_blank" style="background:#25D366;color:#fff;width:32px;height:32px;display:flex;align-items:center;justify-content:center;border-radius:50%;text-decoration:none;font-size:14px;font-weight:900">WA</a>
-   </div>
   </div>
-
   <div>
    <h4 style="font-size:13px;margin-bottom:12px">CONTACT</h4>
-   <p style="color:#888;font-size:13px;line-height:2">
-    WhatsApp: <a href="https://wa.me/923372510256" style="color:#fff;text-decoration:none">0337-2510256</a><br>
-    Email: comfort.apparelss@gmail.com<br>
-    Instagram: <a href="https://instagram.com/comfort.apparelss" target="_blank" style="color:#fff;text-decoration:none">@comfort.apparelss</a><br>
-    City: Karachi, Pakistan
-   </p>
+   <p style="color:#888;font-size:13px;line-height:2">WhatsApp: 0337-2510256<br>Email: comfort.apparelss@gmail.com<br>City: Karachi, Pakistan</p>
   </div>
-
  </div>
- <div style="text-align:center;margin-top:30px;padding-top:20px;border-top:1px solid #222;color:#555;font-size:11px;letter-spacing:1px">
-  © 2026 COMFORT APPAREL. ALL RIGHTS RESERVED. | Follow us on Instagram for new drops
- </div>
+ <div style="text-align:center;margin-top:30px;padding-top:20px;border-top:1px solid #222;color:#555;font-size:11px">© 2026 COMFORT APPAREL</div>
 </footer>
 </body>
 </html>
