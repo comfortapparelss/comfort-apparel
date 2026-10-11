@@ -111,6 +111,7 @@ let currentCat=''; let cart=JSON.parse(localStorage.getItem('ca_cart')||'[]'); l
 
 function filterCat(cat,el){currentCat=cat; document.querySelectorAll('.cat-btn').forEach(b=>b.classList.remove('active')); el.classList.add('active'); renderProducts();}
 function selectsSize(id,size,el){selectedSizes[id]=size; const card=el.closest('.card'); card.querySelectorAll('.size-btn').forEach(b=>b.classList.remove('active')); el.classList.add('active');}
+function selectSize(id,size,el){return selectsSize(id,size,el);}
 function setColor(id,color,el){
 selectedColors[id]=color;
 el.parentElement.querySelectorAll('span').forEach(s=>{s.style.background='transparent';s.style.color='#fff'});
