@@ -97,37 +97,42 @@ const products=[
  {id:14,name:"White Premium Polo ",price:1850,img:"polo-white.png",tag:"SLIM FIT",cat:"polo"},
  {id:15,name:"Blue Premium Polo ",price:1850,img:"polo-navy.png",tag:"SLIM FIT",cat:"polo"},
  // 8 HOODIES - Rs.2999 / 3299
- {id:20,name:"Slow Coffee Club",price:2999,img:"hoodie-coffee.png",tag:"NEW",cat:"hoodie"},
- {id:21,name:"Floral Bloom",price:2999,img:"hoodie-floral.png",tag:"NEW",cat:"hoodie"},
- {id:22,name:"Blue Butterfly",price:2999,img:"hoodie-butterfly.png",tag:"NEW",cat:"hoodie"},
- {id:23,name:"#FILTER Cat",price:2999,img:"hoodie-filter-cat.png",tag:"NEW",cat:"hoodie"},
- {id:24,name:"Authentic",price:3299,img:"hoodie-authentic-front.png",tag:"NEW",cat:"hoodie"},
- {id:25,name:"Bear Rampage ",price:2999,img:"hoodie-bear.png",tag:"NEW",cat:"hoodie"},
- {id:26,name:"Time Has Passed ",price:2999,img:"hoodie-time-back.png",tag:"NEW",cat:"hoodie"},
- {id:25,name:"Lost ",price:2999,img:"hoodie-lost-back.png",tag:"NEW",cat:"hoodie"}
+ {id:20,name:"Slow Coffee Club",price:2999,img:"hoodie-coffee.png",tag:"NEW",cat:"hoodie",colors:["Black","Black Acid"]},
+ {id:21,name:"Floral Bloom",price:2999,img:"hoodie-floral.png",tag:"NEW",cat:"hoodie",colors:["Black","Black Acid"]},
+ {id:22,name:"Blue Butterfly",price:2999,img:"hoodie-butterfly.png",tag:"NEW",cat:"hoodie",colors:["Black","Black Acid"]},
+ {id:23,name:"#FILTER Cat",price:2999,img:"hoodie-filter-cat.png",tag:"NEW",cat:"hoodie",colors:["Black","Black Acid"]},
+ {id:24,name:"Authentic",price:3299,img:"hoodie-authentic-front.png",tag:"NEW",cat:"hoodie",colors:["Black","Black Acid"]},
+ {id:25,name:"Bear Rampage ",price:2999,img:"hoodie-bear.png",tag:"NEW",cat:"hoodie",colors:["Black","Black Acid"]},
+ {id:26,name:"Time Has Passed ",price:2999,img:"hoodie-time-back.png",tag:"NEW",cat:"hoodie",colors:["Black","Black Acid"]},
+ {id:25,name:"Lost ",price:2999,img:"hoodie-lost-back.png",tag:"NEW",cat:"hoodie",colors:["Black","Black Acid"]},
 ];
 
-let currentCat='all'; let cart=JSON.parse(localStorage.getItem('ca_cart')||'[]'); let selectedSizes={};
+let currentCat='all'; let cart=JSON.parse(localStorage.getItem('ca_cart')||'[]'); let selectedSizes={}; let selectedColors={};
 
 function filterCat(cat,el){currentCat=cat; document.querySelectorAll('.cat-btn').forEach(b=>b.classList.remove('active')); el.classList.add('active'); renderProducts();}
 function selectSize(id,size,el){selectedSizes[id]=size; const card=el.closest('.card-body'); card.querySelectorAll('.size-btn').forEach(b=>b.classList.remove('active')); el.classList.add('active');}
+function setColor(id,color,el){
+selectedColors[id]=color;
+el.parentElement.querySelectorAll('span').forEach(s=>{s.style.background='transparent';s.style.color='#fff'});
+el.style.background='#fff'; el.style.color='#000';
+}
 function renderProducts(){
- const filtered=currentCat==='all'?products:products.filter(p=>p.cat===currentCat);
- document.getElementById('catTitle').textContent=currentCat==='all'?`All Collection - ${filtered.length} products`:currentCat.toUpperCase()+' - '+filtered.length;
- document.getElementById('catCount').textContent=filtered.length+' items';
- document.getElementById('shopGrid').innerHTML=filtered.map(p=>{
-  const def=selectedSizes[p.id]||'M';
-  return `<div class="card"><img src="${p.img}" onerror="this.src='https://via.placeholder.com/400?text=NO+IMAGE'"><div class="card-body"><span class="tag">${p.tag}</span><h3 style="font-size:14px;line-height:1.3">${p.name}</h3><div style="margin:8px 0"><b>Rs. ${p.price}</b> </div><span class="size-label">SELECT SIZE</span><div class="size-row">${['S','M','L','XL'].map(s=>`<button class="size-btn ${s===def?'active':''}" onclick="selectSize(${p.id},'${s}',this)">${s}</button>`).join('')}</div><button class="add-btn" onclick="addToCart(${p.id})">Add to Cart</button></div></div>`;
- }).join('');
+const filtered=currentCat==='all'?products:products.filter(p=>p.cat===currentCat);
+document.getElementById('catTitle').textContent=currentCat==='all'?'All Collection - '+filtered.length+' products':currentCat;
+document.getElementById('catCount').textContent=filtered.length+' items';
+document.getElementById('shopGrid').innerHTML=filtered.map(p=>{
+const defSize=selectedSizes[p.id]||'M';
+const defColor=selectedColors[p.id]||(p.colors?p.colors[0]:'Black');
+return `<div class="card"><img src="${p.img}" onerror="this.src='https://via.placeholder.com/400?text=NO+IMAGE'"><h3>${p.name}</h3><p>Rs. ${p.price}</p><div style="margin-top:8px"><small style="color:#888">SIZE: </small><div style="display:flex;gap:5px;margin-top:3px">${['S','M','L','XL'].map(s=>`<span onclick="selectSize(${p.id},'${s}',this)" style="border:1px solid #444;padding:3px 8px;font-size:11px;cursor:pointer;background:${defSize===s?'#fff':'transparent'};color:${defSize===s?'#000':'#fff'}">${s}</span>`).join('')}</div></div><div style="margin-top:8px"><small style="color:#888">COLOR: </small><div style="display:flex;gap:5px;margin-top:3px;flex-wrap:wrap">${p.colors?p.colors.map(c=>`<span onclick="setColor(${p.id},'${c}',this)" style="border:1px solid #444;padding:3px 8px;font-size:11px;cursor:pointer;background:${defColor===c?'#fff':'transparent'};color:${defColor===c?'#000':'#fff'}">${c}</span>`).join(''):'<span style="font-size:11px">Black</span>'}</div></div><button onclick="addToCart(${p.id})" style="width:100%;margin-top:10px;padding:8px;background:#fff;color:#000;border:none;cursor:pointer">ADD TO CART</button></div>`;
+}).join('');
 }
-function addToCart(id){
- const size=selectedSizes[id]||'M';
- const prod=products.find(x=>x.id===id);
- const key=id+'_'+size;
- const ex=cart.find(c=>c.key===key);
- if(ex) ex.qty++; else cart.push({...prod,size:size,key:key,qty:1});
- save(); openCart();
-}
+const size=selectedSizes[id]||'M';
+const color=selectedColors[id]||'Black';
+const prod=products.find(x=>x.id===id);
+const key=id+'-'+size+'-'+color;
+const ex=cart.find(c=>c.key===key);
+if(ex) ex.qty++; else cart.push({...prod,size:size,color:color,key:key,qty:1});
+save(); openCart();
 function save(){localStorage.setItem('ca_cart',JSON.stringify(cart));renderCart();}
 function renderCart(){
  const count=cart.reduce((s,i)=>s+i.qty,0); document.getElementById('cartCount').textContent=count;
