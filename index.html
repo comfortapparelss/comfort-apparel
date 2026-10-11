@@ -207,47 +207,60 @@ async function placeOrder(){
   const phone=document.getElementById('custPhone').value.trim();
   const addr=document.getElementById('custAddr').value.trim();
   const city=document.getElementById('custCity').value.trim();
-  if(!name||!email||!phone||!addr||!city) return alert('Fill all fields including email');
+  if(!name||!email||!phone||!addr||!city) return alert('Fill all fields');
   if(!email.includes('@')) return alert('Enter valid email');
 
   const orderId='CA-'+Math.floor(100000+Math.random()*900000);
   const sub=cart.reduce((s,i)=>s+i.price*i.qty,0);
   const del=sub>3000?0:199;
   const total=sub+del;
-  let itemsText=cart.map(function(x){return x.name+' (SIZE:'+x.size+', COLOR:'+x.color+') x'+x.qty+' - Rs.'+(x.price*x.qty)}).join(', ');
+  let itemsText=cart.map(x=> x.name+' (SIZE:'+x.size+', COLOR:'+x.color+') x'+x.qty+' - Rs.'+(x.price*x.qty)).join(', ');
 
   document.getElementById('placeBtn').textContent='PLACING...';
-
   try{
-    // 1. Email to YOU (owner)
-    const fdOwner=new FormData();
-    fdOwner.append('_subject','NEW ORDER '+orderId+' - Rs.'+total+' - '+name);
-    fdOwner.append('_template','table');
-    fdOwner.append('OrderID',orderId);
-    fdOwner.append('Customer Name',name);
-    fdOwner.append('Customer Email',email);
-    fdOwner.append('Phone',phone);
-    fdOwner.append('Address',addr);
-    fdOwner.append('City',city);
-    fdOwner.append('Items',itemsText);
-    fdOwner.append('Total','Rs.'+total);
+    const fd=new FormData();
+    fd.append('_subject','NEW ORDER '+orderId+' - Rs.'+total+' - '+name);
+    fd.append('_template','table');
+    fd.append('_captcha','false');
+    fd.append('_replyto',email); // client email for reply
+    fd.append('_from','Comfort Apparel');
     
-    await fetch('https://formsubmit.co/ajax/comfort.apparelss@gmail.com',{method:'POST',body:fdOwner});
+    // THIS IS WHAT CLIENT WILL RECEIVE - Not "Activate Form", but this confirmation:
+    fd.append('_autoresponse', 
+`Hi ${name}!
 
-    // 2. Email to CUSTOMER (confirmation)
-    const fdCustomer=new FormData();
-    fdCustomer.append('_subject','Comfort Apparel - Order Confirmed '+orderId);
-    fdCustomer.append('_template','table');
-    fdCustomer.append('Hi '+name+', Your Order '+orderId+' is confirmed!','Thank you for shopping with Comfort Apparel');
-    fdCustomer.append('Order ID',orderId);
-    fdCustomer.append('Items',itemsText);
-    fdCustomer.append('Total','Rs.'+total+' (COD)');
-    fdCustomer.append('Delivery Address',addr+', '+city);
-    fdCustomer.append('We will contact you on',phone+' soon via WhatsApp for confirmation.');
+Thank you for shopping with Comfort Apparel ❤️
 
-    await fetch('https://formsubmit.co/ajax/'+email,{method:'POST',body:fdCustomer});
+Your Order ${orderId} is CONFIRMED!
 
-    document.getElementById('orderIdText').innerHTML='Order ID: <b>'+orderId+'</b><br>Total: Rs.'+total+'<br><br>Items: '+itemsText+'<br><br>A confirmation email sent to '+email;
+Order Details:
+${itemsText}
+
+Total: Rs.${total} (COD - Cash on Delivery)
+Delivery Address: ${addr}, ${city}
+Phone: ${phone}
+
+We will contact you soon on WhatsApp for confirmation.
+
+Wear Comfort Live Better!
+Team Comfort Apparel
+Instagram: @comfort.apparelss
+WhatsApp: 0337-2510256
+`);
+
+    fd.append('Order ID',orderId);
+    fd.append('Customer Name',name);
+    fd.append('Customer Email',email);
+    fd.append('Phone',phone);
+    fd.append('Address',addr);
+    fd.append('City',city);
+    fd.append('Items',itemsText);
+    fd.append('Total','Rs.'+total+' (COD)');
+
+    // SEND ONLY TO YOU (using your hash - you already activated)
+    await fetch('https://formsubmit.co/ajax/d61f2633d352515222d8473fb430b44e',{method:'POST',body:fd});
+
+    document.getElementById('orderIdText').innerHTML='Order ID: <b>'+orderId+'</b><br>Total: Rs.'+total+'<br><br>Items: '+itemsText+'<br><br>Confirmation sent to '+email;
     document.getElementById('success').classList.add('show');
     cart=[]; save(); closeCart();
     document.getElementById('custName').value='';
@@ -255,10 +268,7 @@ async function placeOrder(){
     document.getElementById('custPhone').value='';
     document.getElementById('custAddr').value='';
     document.getElementById('custCity').value='';
-  }catch(e){
-    console.log(e);
-    alert('Error placing order - try again');
-  }
+  }catch(e){ alert('Error - try again'); console.log(e); }
   document.getElementById('placeBtn').textContent='PLACE ORDER - COD';
 }
 renderProducts();
