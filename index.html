@@ -203,13 +203,13 @@ try{const fd=new FormData(); fd.append('_subject','NEW ORDER '+orderId+' - Rs.'+
 fd.append('OrderID',orderId); fd.append('Name',name); fd.append('Phone',phone); fd.append('Address',addr); fd.append('City',city); fd.append('Items',itemsText); fd.append('Total','Rs.'+total);
 document.getElementById('orderIdText').innerHTML='Order ID: <b>'+orderId+'</b><br>Total: Rs.'+total+'<br><br>Items: '+itemsText;
 document.getElementById('success').classList.add('show'); cart=[]; save(); closeCart();
-document.getElementById('custName').value='';document.getElementById('custPhone').value='';document.getElementById('custAddr').value='';document.getElementById('custCity').value='';
+document.getElementById('custName').value=''; document.getElementById('custPhone').value=''; document.getElementById('custAddr').value=''; document.getElementById('custCity').value='';
 }catch(e){alert('Error placing order');}
 document.getElementById('placeBtn').textContent='PLACE ORDER';
 }
 renderProducts(); renderCart();
 </script>
- <footer style="background:#111;border-top:1px solid #222;padding:40px 5%;margin-top:50px">
+<footer style="background:#111;border-top:1px solid #222;padding:40px 5%;margin-top:50px">
  <div style="display:grid;grid-template-columns:repeat(auto-fit,minmax(200px,1fr));gap:30px;max-width:1200px;margin:auto">
   
   <div>
