@@ -112,9 +112,34 @@ const products=[
 let currentCat=''; let cart=JSON.parse(localStorage.getItem('ca_cart')||'[]'); let selectedSizes={}; let selectedColors={};
 
 function filterCat(cat,el){currentCat=cat; document.querySelectorAll('.cat-btn').forEach(b=>b.classList.remove('active')); el.classList.add('active'); renderProducts();}
-function selectsSize(id,size,el){selectedSizes[id]=size; const c=el.closest('.card'); if(c){c.querySelectorAll('.size-btn').forEach(b=>{b.classList.remove('active'); b.style.background='transparent'; b.style.color='#fff';});} el.classList.add('active'); el.style.background='#fff'; el.style.color='#000';}
+function selectsSize(id,size,el){
+  selectedSizes[id]=size;
+  // remove white from all sizes in same product
+  el.parentElement.querySelectorAll('.size-btn').forEach(b=>{
+    b.classList.remove('active');
+    b.style.background='transparent';
+    b.style.color='#fff';
+    b.style.borderColor='#555';
+  });
+  // add white only to clicked one
+  el.classList.add('active');
+  el.style.background='#fff';
+  el.style.color='#000';
+  el.style.borderColor='#fff';
+}
 function selectSize(id,size,el){return selectsSize(id,size,el);}
-function setColor(id,color,el){selectedColors[id]=color; el.parentElement.querySelectorAll('span').forEach(s=>{s.style.background='transparent'; s.style.color='#fff';}); el.style.background='#fff'; el.style.color='#000';}
+
+function setColor(id,color,el){
+  selectedColors[id]=color;
+  el.parentElement.querySelectorAll('.color-btn').forEach(s=>{
+    s.classList.remove('active');
+    s.style.background='transparent';
+    s.style.color='#fff';
+  });
+  el.classList.add('active');
+  el.style.background='#fff';
+  el.style.color='#000';
+}
 
 function renderProducts(){
 if(!currentCat){
