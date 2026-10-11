@@ -59,7 +59,7 @@ nav{padding:14px 5%;display:flex;justify-content:space-between;align-items:cente
 <div class="grid" id="shopGrid"></div>
 </div>
 <div class="cart-overlay" id="overlay" onclick="closeCart()"></div>
-<div class="cart-drawer" id="drawer"><div class="cart-head"><b>Your Cart</b><button onclick="closeCart()" style="background:#222;color:#fff;border:0;width:32px;height:32px;border-radius:50%;cursor:pointer">✕</button></div><div class="cart-items" id="cartItems"></div><div class="cart-foot"><div class="row"><span>Subtotal</span><b id="subtotal">Rs.0</b></div><div class="row"><span>Delivery</span><span id="delivery">Rs.199</span></div><div class="row" style="border-top:1px solid #222;padding-top:10px"><span>Total</span><b id="total">Rs.0</b></div><input class="input" id="custName" placeholder="Full Name *"><input class="input" id="custPhone" placeholder="Phone *"><input class="input" id="custAddr" placeholder="Full Address *"><select id="custCity" class="input"><option value="">Select City *</option><option>Karachi</option><option>Lahore</option><option>Islamabad</option><option>Rawalpindi</option><option>Faisalabad</option><option>Multan</option><option>Peshawar</option><option>Quetta</option><option>Other</option></select><button class="checkout-btn" id="placeBtn" onclick="placeOrder()">PLACE ORDER - COD</button></div></div>
+<div class="cart-drawer" id="drawer"><div class="cart-head"><b>Your Cart</b><button onclick="closeCart()" style="background:#222;color:#fff;border:0;width:32px;height:32px;border-radius:50%;cursor:pointer">✕</button></div><div class="cart-items" id="cartItems"></div><div class="cart-foot"><div class="row"><span>Subtotal</span><b id="subtotal">Rs.0</b></div><div class="row"><span>Delivery</span><span id="delivery">Rs.199</span></div><div class="row" style="border-top:1px solid #222;padding-top:10px"><span>Total</span><b id="total">Rs.0</b></div><input class="input" id="custName" placeholder="Full Name *"><input class="input" id="custEmail" placeholder="Your Email for Order Confirmation *" type="email"><input class="input" id="custPhone" placeholder="Phone *"><input class="input" id="custAddr" placeholder="Full Address *"><select id="custCity" class="input"><option value="">Select City *</option><option>Karachi</option><option>Lahore</option><option>Islamabad</option><option>Rawalpindi</option><option>Faisalabad</option><option>Multan</option><option>Peshawar</option><option>Quetta</option><option>Other</option></select><button class="checkout-btn" id="placeBtn" onclick="placeOrder()">PLACE ORDER - COD</button></div></div>
 <div class="success" id="success"><div class="success-box"><h2>✓ Order Confirmed!</h2><p id="orderIdText" style="color:#888;margin:12px 0"></p><button class="checkout-btn" style="background:#fff" onclick="document.getElementById('success').classList.remove('show')">Continue Shopping</button></div></div>
 <script>
 const products=[
@@ -203,36 +203,61 @@ function closeCart(){
 async function placeOrder(){
   if(!cart.length) return alert('Cart empty');
   const name=document.getElementById('custName').value.trim();
+  const email=document.getElementById('custEmail').value.trim();
   const phone=document.getElementById('custPhone').value.trim();
   const addr=document.getElementById('custAddr').value.trim();
   const city=document.getElementById('custCity').value.trim();
-  if(!name||!phone||!addr||!city) return alert('Fill all delivery fields');
+  if(!name||!email||!phone||!addr||!city) return alert('Fill all fields including email');
+  if(!email.includes('@')) return alert('Enter valid email');
+
   const orderId='CA-'+Math.floor(100000+Math.random()*900000);
   const sub=cart.reduce((s,i)=>s+i.price*i.qty,0);
   const del=sub>3000?0:199;
   const total=sub+del;
   let itemsText=cart.map(function(x){return x.name+' (SIZE:'+x.size+', COLOR:'+x.color+') x'+x.qty+' - Rs.'+(x.price*x.qty)}).join(', ');
+
   document.getElementById('placeBtn').textContent='PLACING...';
+
   try{
-    const fd=new FormData();
-    fd.append('_subject','NEW ORDER '+orderId+' - Rs.'+total);
-    fd.append('OrderID',orderId);
-    fd.append('Name',name);
-    fd.append('Phone',phone);
-    fd.append('Address',addr);
-    fd.append('City',city);
-    fd.append('Items',itemsText);
-    fd.append('Total','Rs.'+total);
-    await fetch('https://formsubmit.co/ajax/comfort.apparelss@gmail.com',{method:'POST',body:fd});
-    document.getElementById('orderIdText').innerHTML='Order ID: <b>'+orderId+'</b><br>Total: Rs.'+total+'<br><br>Items: '+itemsText;
+    // 1. Email to YOU (owner)
+    const fdOwner=new FormData();
+    fdOwner.append('_subject','NEW ORDER '+orderId+' - Rs.'+total+' - '+name);
+    fdOwner.append('_template','table');
+    fdOwner.append('OrderID',orderId);
+    fdOwner.append('Customer Name',name);
+    fdOwner.append('Customer Email',email);
+    fdOwner.append('Phone',phone);
+    fdOwner.append('Address',addr);
+    fdOwner.append('City',city);
+    fdOwner.append('Items',itemsText);
+    fdOwner.append('Total','Rs.'+total);
+    
+    await fetch('https://formsubmit.co/ajax/comfort.apparelss@gmail.com',{method:'POST',body:fdOwner});
+
+    // 2. Email to CUSTOMER (confirmation)
+    const fdCustomer=new FormData();
+    fdCustomer.append('_subject','Comfort Apparel - Order Confirmed '+orderId);
+    fdCustomer.append('_template','table');
+    fdCustomer.append('Hi '+name+', Your Order '+orderId+' is confirmed!','Thank you for shopping with Comfort Apparel');
+    fdCustomer.append('Order ID',orderId);
+    fdCustomer.append('Items',itemsText);
+    fdCustomer.append('Total','Rs.'+total+' (COD)');
+    fdCustomer.append('Delivery Address',addr+', '+city);
+    fdCustomer.append('We will contact you on',phone+' soon via WhatsApp for confirmation.');
+
+    await fetch('https://formsubmit.co/ajax/'+email,{method:'POST',body:fdCustomer});
+
+    document.getElementById('orderIdText').innerHTML='Order ID: <b>'+orderId+'</b><br>Total: Rs.'+total+'<br><br>Items: '+itemsText+'<br><br>A confirmation email sent to '+email;
     document.getElementById('success').classList.add('show');
     cart=[]; save(); closeCart();
     document.getElementById('custName').value='';
+    document.getElementById('custEmail').value='';
     document.getElementById('custPhone').value='';
     document.getElementById('custAddr').value='';
     document.getElementById('custCity').value='';
   }catch(e){
-    alert('Error placing order');
+    console.log(e);
+    alert('Error placing order - try again');
   }
   document.getElementById('placeBtn').textContent='PLACE ORDER - COD';
 }
