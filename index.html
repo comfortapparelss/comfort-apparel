@@ -223,8 +223,7 @@ async function placeOrder(){
     fd.append('_subject','NEW ORDER '+orderId+' - Rs.'+total+' - '+name);
     fd.append('_template','table');
     fd.append('_captcha','false');
-    fd.append('_replyto',email);
-    fd.append('_autoresponse', `Hi ${name}!\n\nThank you for shopping with Comfort Apparel ❤️\n\nYour Order ${orderId} is CONFIRMED!\n\nItems: ${itemsText}\n\nTotal: Rs.${total} (COD)\nDelivery: ${addr}, ${city}\nPhone: ${phone}\n\nWe will contact you soon via WhatsApp for confirmation.\n\nWear Comfort Live Better!\nTeam Comfort Apparel`);
+    fd.append('_cc', email); // <-- THIS SENDS SAME EMAIL TO CLIENT - NO ACTIVATE FORM
     fd.append('Order ID',orderId);
     fd.append('Customer Name',name);
     fd.append('Customer Email',email);
@@ -234,22 +233,25 @@ async function placeOrder(){
     fd.append('Items',itemsText);
     fd.append('Total','Rs.'+total+' (COD)');
 
-    // FIXED - Using raw email (was working in your screenshot) not hash
     const res = await fetch('https://formsubmit.co/ajax/comfort.apparelss@gmail.com',{method:'POST',body:fd});
     const data = await res.json();
-    console.log('Email Response:', data);
+    console.log('Response:', data);
 
-    document.getElementById('orderIdText').innerHTML='Order ID: <b>'+orderId+'</b><br>Total: Rs.'+total+'<br><br>Items: '+itemsText+'<br><br>Confirmation sent to '+email;
-    document.getElementById('success').classList.add('show');
-    cart=[]; save(); closeCart();
-    document.getElementById('custName').value='';
-    document.getElementById('custEmail').value='';
-    document.getElementById('custPhone').value='';
-    document.getElementById('custAddr').value='';
-    document.getElementById('custCity').value='';
+    if(data.success){
+      document.getElementById('orderIdText').innerHTML='Order ID: <b>'+orderId+'</b><br>Total: Rs.'+total+'<br><br>Items: '+itemsText+'<br><br>Email sent to you AND client: '+email;
+      document.getElementById('success').classList.add('show');
+      cart=[]; save(); closeCart();
+      document.getElementById('custName').value='';
+      document.getElementById('custEmail').value='';
+      document.getElementById('custPhone').value='';
+      document.getElementById('custAddr').value='';
+      document.getElementById('custCity').value='';
+    }else{
+      alert('Failed: '+JSON.stringify(data));
+    }
   }catch(e){
     console.log(e);
-    alert('Error - Try again. Check Console (F12)');
+    alert('Error - Check Console F12: '+e.message);
   }
   document.getElementById('placeBtn').textContent='PLACE ORDER - COD';
 }
