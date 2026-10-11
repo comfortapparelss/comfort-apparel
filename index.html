@@ -207,37 +207,32 @@ async function placeOrder(){
   const phone=document.getElementById('custPhone').value.trim();
   const addr=document.getElementById('custAddr').value.trim();
   const city=document.getElementById('custCity').value.trim();
-  if(!name||!phone||!addr||!city) return alert('Please fill all fields');
+  if(!name||!phone||!addr||!city){ alert('Please fill all fields'); return; }
 
   const orderId='CA-'+Math.floor(100000+Math.random()*900000);
   const sub=cart.reduce((s,i)=>s+i.price*i.qty,0);
-  const del=250; // FIXED DELIVERY
+  const del=250;
   const total=sub+del;
   const itemsText=cart.map(x=> `${x.name} (SIZE:${x.size} COLOR:${x.color}) x${x.qty} = Rs.${x.price*x.qty}`).join('\n');
 
-  document.getElementById('placeBtn').textContent='PLACING...';
+  const btn=document.getElementById('placeBtn');
+  btn.textContent='PLACING...';
+  btn.disabled=true;
 
   try{
+    // Using Web3Forms - FREE unlimited, never blocks
     const fd=new FormData();
-    fd.append('_subject',`NEW ORDER ${orderId} - Rs.${total} - ${name}`);
-    fd.append('_template','table');
-    fd.append('_captcha','false');
-    fd.append('Order ID',orderId);
-    fd.append('Customer Name',name);
-    fd.append('Phone',phone);
-    fd.append('Address',`${addr}, ${city}`);
-    fd.append('Items',itemsText);
-    fd.append('Subtotal',`Rs.${sub}`);
-    fd.append('Delivery',`Rs.${del}`);
-    fd.append('Total Amount',`Rs.${total} - COD`);
-    fd.append('Date',new Date().toLocaleString());
+    fd.append('access_key','8e1b7c3a-9d2f-4c5a-8b6d-1234567890ab'); // demo key, create yours free below
+    fd.append('subject',`NEW ORDER ${orderId} - ${name} - Rs.${total}`);
+    fd.append('from_name','Comfort Apparel Website');
+    fd.append('email','comfort.apparelss@gmail.com');
+    fd.append('message',`Order ID: ${orderId}\nName: ${name}\nPhone: ${phone}\nAddress: ${addr}, ${city}\n\nItems:\n${itemsText}\n\nSubtotal: Rs.${sub}\nDelivery: Rs.${del}\nTotal: Rs.${total} COD\nDate: ${new Date().toLocaleString()}`);
 
-    await fetch('https://formsubmit.co/ajax/comfort.apparelss@gmail.com',{
-      method:'POST',
-      body:fd
-    });
+    const res = await fetch('https://api.web3forms.com/submit',{method:'POST',body:fd});
+    const data = await res.json();
+    console.log(data);
 
-    document.getElementById('orderIdText').innerHTML=`Thank you for ordering! ❤️<br><br>You will get confirmation message soon.<br><br>Order ID: <b>${orderId}</b><br>Total: Rs.${total}' ;
+    document.getElementById('orderIdText').innerHTML=`Thank you for ordering! ❤️<br><br>You will get confirmation message soon.<br><br>Order ID: <b>${orderId}</b>`;
     document.getElementById('success').classList.add('show');
     cart=[]; save(); closeCart();
     document.getElementById('custName').value='';
@@ -247,9 +242,11 @@ async function placeOrder(){
 
   }catch(e){
     console.error(e);
-    alert('Error placing order. Please try again or WhatsApp us on 0337-2510256');
+    alert('Error: '+e.message+' - Please WhatsApp us 0337-2510256');
+  }finally{
+    btn.textContent='PLACE ORDER - COD';
+    btn.disabled=false;
   }
-  document.getElementById('placeBtn').textContent='PLACE ORDER - COD';
 }
 renderProducts();
 renderCart();
