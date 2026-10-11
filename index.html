@@ -223,6 +223,7 @@ async function placeOrder(){
     fd.append('City',city);
     fd.append('Items',itemsText);
     fd.append('Total','Rs.'+total);
+    await fetch('https://formsubmit.co/ajax/comfort.apparelss@gmail.com',{method:'POST',body:fd});
     document.getElementById('orderIdText').innerHTML='Order ID: <b>'+orderId+'</b><br>Total: Rs.'+total+'<br><br>Items: '+itemsText;
     document.getElementById('success').classList.add('show');
     cart=[]; save(); closeCart();
