@@ -155,7 +155,7 @@ function renderCart(){
   const count=cart.reduce((s,i)=>s+i.qty,0);
   document.getElementById('cartCount').textContent=count;
   const sub=cart.reduce((s,i)=>s+i.price*i.qty,0);
-  const del=sub>3000||sub==0?0:199;
+  const del=250;
   document.getElementById('subtotal').textContent='Rs. '+sub;
   document.getElementById('delivery').textContent=del==0?'FREE':'Rs. '+del;
   document.getElementById('total').textContent='Rs. '+(sub+del);
@@ -211,7 +211,7 @@ async function placeOrder(){
 
   const orderId='CA-'+Math.floor(100000+Math.random()*900000);
   const sub=cart.reduce((s,i)=>s+i.price*i.qty,0);
-  const del=sub>3000?0:199;
+  const del=250; // FIXED DELIVERY
   const total=sub+del;
   const itemsText=cart.map(x=> `${x.name} (SIZE:${x.size} COLOR:${x.color}) x${x.qty} = Rs.${x.price*x.qty}`).join('\n');
 
@@ -237,7 +237,7 @@ async function placeOrder(){
       body:fd
     });
 
-    document.getElementById('orderIdText').innerHTML=`Thank you for ordering! ❤️<br><br>You will get confirmation message soon.<br><br>Order ID: <b>${orderId}</b><br>Total: Rs.${total} COD`;
+    document.getElementById('orderIdText').innerHTML=`Thank you for ordering! ❤️<br><br>You will get confirmation message soon.<br><br>Order ID: <b>${orderId}</b><br>Total: Rs.${total} COD (Delivery Rs.250)`;
     document.getElementById('success').classList.add('show');
     cart=[]; save(); closeCart();
     document.getElementById('custName').value='';
