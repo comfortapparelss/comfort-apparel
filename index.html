@@ -202,34 +202,54 @@ function closeCart(){
   document.getElementById('overlay').classList.remove('show');
 }
 async function placeOrder(){
-  // ... same validation ...
+  if(!cart.length) return alert('Cart empty');
+  const name=document.getElementById('custName').value.trim();
+  const phone=document.getElementById('custPhone').value.trim();
+  const addr=document.getElementById('custAddr').value.trim();
+  const city=document.getElementById('custCity').value.trim();
+  if(!name||!phone||!addr||!city) return alert('Please fill all fields');
+
   const orderId='CA-'+Math.floor(100000+Math.random()*900000);
   const sub=cart.reduce((s,i)=>s+i.price*i.qty,0);
-  const total=sub+(sub>3000?0:199);
-  let itemsText=cart.map(x=> x.name+' (SIZE:'+x.size+' COLOR:'+x.color+') x'+x.qty).join(', ');
+  const del=sub>3000?0:199;
+  const total=sub+del;
+  const itemsText=cart.map(x=> `${x.name} (SIZE:${x.size} COLOR:${x.color}) x${x.qty} = Rs.${x.price*x.qty}`).join('\n');
 
-  // 1. OWNER EMAIL
-  const fd=new FormData();
-  fd.append('_subject','NEW ORDER '+orderId);
-  fd.append('_template','table');
-  fd.append('_captcha','false');
-  fd.append('Order ID',orderId);
-  fd.append('Customer',document.getElementById('custName').value);
-  fd.append('Phone',document.getElementById('custPhone').value);
-  fd.append('Items',itemsText);
-  fd.append('Total','Rs.'+total);
-  await fetch('https://formsubmit.co/ajax/comfort.apparelss@gmail.com',{method:'POST',body:fd});
+  document.getElementById('placeBtn').textContent='PLACING...';
 
-  // 2. CLIENT WHATSAPP - Opens in your WhatsApp Business
-  let cleanPhone = document.getElementById('custPhone').value.replace(/\D/g,'');
-  if(cleanPhone.startsWith('0')) cleanPhone = '92'+cleanPhone.substring(1);
-  const msg = `Hi ${document.getElementById('custName').value}! Thank you for ordering from Comfort Apparel! Order ${orderId} Confirmed Rs.${total} COD. We will contact you soon.`;
-  
-  // This opens your WhatsApp Business with client's chat + message typed - you just hit Send
-  window.open(`https://wa.me/${cleanPhone}?text=${encodeURIComponent(msg)}`, '_blank');
+  try{
+    const fd=new FormData();
+    fd.append('_subject',`NEW ORDER ${orderId} - Rs.${total} - ${name}`);
+    fd.append('_template','table');
+    fd.append('_captcha','false');
+    fd.append('Order ID',orderId);
+    fd.append('Customer Name',name);
+    fd.append('Phone',phone);
+    fd.append('Address',`${addr}, ${city}`);
+    fd.append('Items',itemsText);
+    fd.append('Subtotal',`Rs.${sub}`);
+    fd.append('Delivery',`Rs.${del}`);
+    fd.append('Total Amount',`Rs.${total} - COD`);
+    fd.append('Date',new Date().toLocaleString());
 
-  document.getElementById('orderIdText').innerHTML=`Thank you! Order ${orderId}<br>WhatsApp opened - Press Send`;
-  document.getElementById('success').classList.add('show');
+    await fetch('https://formsubmit.co/ajax/comfort.apparelss@gmail.com',{
+      method:'POST',
+      body:fd
+    });
+
+    document.getElementById('orderIdText').innerHTML=`Thank you for ordering! ❤️<br><br>You will get confirmation message soon.<br><br>Order ID: <b>${orderId}</b><br>Total: Rs.${total} COD`;
+    document.getElementById('success').classList.add('show');
+    cart=[]; save(); closeCart();
+    document.getElementById('custName').value='';
+    document.getElementById('custPhone').value='';
+    document.getElementById('custAddr').value='';
+    document.getElementById('custCity').value='';
+
+  }catch(e){
+    console.error(e);
+    alert('Error placing order. Please try again or WhatsApp us on 0337-2510256');
+  }
+  document.getElementById('placeBtn').textContent='PLACE ORDER - COD';
 }
 renderProducts();
 renderCart();
