@@ -192,17 +192,20 @@ function removeItem(i){cart.splice(i,1);save();}
 function openCart(){document.getElementById('drawer').classList.add('open');document.getElementById('overlay').classList.add('show');renderCart();}
 function closeCart(){document.getElementById('drawer').classList.remove('open');document.getElementById('overlay').classList.remove('show');}
 async function placeOrder(){
- if(!cart.length) return alert('Cart empty');
- const name=document.getElementById('custName').value.trim(); const phone=document.getElementById('custPhone').value.trim(); const addr=document.getElementById('custAddr').value.trim(); const city=document.getElementById('custCity').value;
- if(!name||!phone||!addr||!city) return alert('Fill all delivery fields');
- const orderId='CA-'+Math.floor(100000+Math.random()*900000);
- const sub=cart.reduce((s,i)=>s+i.price*i.qty,0); const del=sub>3000?0:199; const total=sub+del;
- let itemsText=cart.map(function(x){return x.name+' (SIZE:'+x.size+', COLOR:'+x.color+') x'+x.qty}).join(', ');
- document.getElementById('placeBtn').textContent='PLACING...';
- try{const fd=new FormData(); fd.append('_subject',`NEW ORDER ${orderId} - Rs.${total}`); fd.append('_captcha','false'); fd.append('OrderID',orderId); fd.append('Name',name); fd.append('Phone',phone); fd.append('City',city); fd.append('Address',addr); fd.append('Items',itemsText); fd.append('Total','Rs.'+total); await fetch('https://formsubmit.co/ajax/comfort.apparelss@gmail.com',{method:'POST',body:fd});}catch(e){}
- document.getElementById('orderIdText').innerHTML=`Order ID: <b>${orderId}</b><br>Total: Rs.${total}<br><br><small style="color:#aaa">${itemsText}</small>`;
- document.getElementById('success').classList.add('show'); cart=[]; save(); closeCart(); document.getElementById('placeBtn').textContent='PLACE ORDER - COD';
- document.getElementById('custName').value='';document.getElementById('custPhone').value='';document.getElementById('custAddr').value='';document.getElementById('custCity').value='';
+if(!cart.length) return alert('Cart empty');
+const name=document.getElementById('custName').value.trim(); const phone=document.getElementById('custPhone').value.trim(); const addr=document.getElementById('custAddr').value.trim(); const city=document.getElementById('custCity').value.trim();
+if(!name||!phone||!addr||!city) return alert('Fill all delivery fields');
+const orderId='CA-'+Math.floor(100000+Math.random()*900000);
+const sub=cart.reduce((s,i)=>s+i.price*i.qty,0); const del=sub>3000?0:199; const total=sub+del;
+let itemsText=cart.map(function(x){return x.name+' (SIZE:'+x.size+', COLOR:'+x.color+') x'+x.qty+' - Rs.'+(x.price*x.qty)}).join(', ');
+document.getElementById('placeBtn').textContent='PLACING...';
+try{const fd=new FormData(); fd.append('_subject','NEW ORDER '+orderId+' - Rs.'+total);
+fd.append('OrderID',orderId); fd.append('Name',name); fd.append('Phone',phone); fd.append('Address',addr); fd.append('City',city); fd.append('Items',itemsText); fd.append('Total','Rs.'+total);
+document.getElementById('orderIdText').innerHTML='Order ID: <b>'+orderId+'</b><br>Total: Rs.'+total+'<br><br>Items: '+itemsText;
+document.getElementById('success').classList.add('show'); cart=[]; save(); closeCart();
+document.getElementById('custName').value='';document.getElementById('custPhone').value='';document.getElementById('custAddr').value='';document.getElementById('custCity').value='';
+}catch(e){alert('Error placing order');}
+document.getElementById('placeBtn').textContent='PLACE ORDER';
 }
 renderProducts(); renderCart();
 </script>
