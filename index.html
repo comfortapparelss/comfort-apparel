@@ -88,7 +88,10 @@ const products=[
  {id:26,name:"Time Has Passed",price:2999,img:"hoodie-time-back.png",tag:"NEW",cat:"hoodie",colors:["Black","Black Acid"]},
  {id:27,name:"Lost",price:2999,img:"hoodie-lost-back.png",tag:"NEW",cat:"hoodie",colors:["Black","Black Acid"]},
 ];
-let currentCat=''; let cart=JSON.parse(localStorage.getItem('ca_cart')||'[]'); let selectedSizes={}; let selectedColors={};
+let currentCat='';
+let cart=JSON.parse(localStorage.getItem('ca_cart')||'[]');
+let selectedSizes={};
+let selectedColors={};
 function filterCat(cat,el){
   currentCat=cat;
   document.querySelectorAll('.cat-btn').forEach(b=>b.classList.remove('active'));
@@ -97,28 +100,14 @@ function filterCat(cat,el){
 }
 function selectsSize(id,size,el){
   selectedSizes[id]=size;
-  el.parentElement.querySelectorAll('.size-btn').forEach(b=>{
-    b.classList.remove('active');
-    b.style.background='transparent';
-    b.style.color='#fff';
-    b.style.borderColor='#555';
-  });
+  el.parentElement.querySelectorAll('.size-btn').forEach(b=>{ b.classList.remove('active'); });
   el.classList.add('active');
-  el.style.background='#fff';
-  el.style.color='#000';
-  el.style.borderColor='#fff';
 }
-function selectSize(id,size,el){return selectsSize(id,size,el);}
+function selectSize(id,size,el){ return selectsSize(id,size,el); }
 function setColor(id,color,el){
   selectedColors[id]=color;
-  el.parentElement.querySelectorAll('.color-btn').forEach(s=>{
-    s.classList.remove('active');
-    s.style.background='transparent';
-    s.style.color='#fff';
-  });
+  el.parentElement.querySelectorAll('.color-btn').forEach(s=>{ s.classList.remove('active'); });
   el.classList.add('active');
-  el.style.background='#fff';
-  el.style.color='#000';
 }
 function renderProducts(){
   if(!currentCat){
@@ -134,76 +123,52 @@ function renderProducts(){
     const defSize=selectedSizes[p.id]||'M';
     const defColor=selectedColors[p.id]||(p.colors?p.colors[0]:'Black');
     const isHoodieOrTee = (p.cat==='hoodie' || p.cat==='tee');
-    const colorHTML = isHoodieOrTee? '<div style="margin-top:8px"><small style="color:#888">COLOR: </small><div style="display:flex;gap:5px;margin-top:3px;flex-wrap:wrap">'+(p.colors?p.colors.map(c=>'<span class="color-btn" onclick="setColor('+p.id+',\''+c+'\',this)" style="border:1px solid #444;padding:3px 8px;font-size:11px;cursor:pointer;background:'+(defColor===c?'#fff':'transparent')+';color:'+(defColor===c?'#000':'#fff')+'">'+c+'</span>').join(''):'')+'</div></div>' : '';
-    return '<div class="card"><img src="'+p.img+'" onerror="this.src=\'https://via.placeholder.com/400?text=NO+IMAGE\'"><h3 style="margin:8px 0 4px">'+p.name+'</h3><p>Rs. '+p.price+'</p><div style="margin-top:8px"><small style="color:#888">SIZE: </small><div style="display:flex;gap:5px;margin-top:3px">'+['S','M','L','XL'].map(s=>'<span class="size-btn '+(defSize===s?'active':'')+'" onclick="selectSize('+p.id+',\''+s+'\',this)" style="border:1px solid #444;padding:3px 8px;font-size:11px;cursor:pointer;background:'+(defSize===s?'#fff':'transparent')+';color:'+(defSize===s?'#000':'#fff')+'">'+s+'</span>').join('')+'</div></div>'+colorHTML+'<button onclick="addToCart('+p.id+')" style="width:100%;margin-top:10px;padding:8px;background:#fff;color:#000;border:none;cursor:pointer;border-radius:8px;font-weight:800">ADD TO CART</button></div>';
+    const colorHTML = isHoodieOrTee? `<div style="margin-top:8px"><small style="color:#888">COLOR: </small><div style="display:flex;gap:5px;margin-top:3px;flex-wrap:wrap">`+(p.colors?p.colors.map(c=>`<span class="color-btn ${defColor===c?'active':''}" onclick="setColor(${p.id},'${c}',this)" style="border:1px solid #444;padding:3px 8px;font-size:11px;cursor:pointer;background:${defColor===c?'#fff':'transparent'};color:${defColor===c?'#000':'#fff'}">${c}</span>`).join(''):'')+`</div></div>` : '';
+    return `<div class="card"><img src="${p.img}" onerror="this.src='https://via.placeholder.com/400?text=NO+IMAGE'"><h3 style="margin:8px 0 4px">${p.name}</h3><p>Rs. ${p.price}</p><div style="margin-top:8px"><small style="color:#888">SIZE: </small><div style="display:flex;gap:5px;margin-top:3px">${['S','M','L','XL'].map(s=>`<span class="size-btn ${defSize===s?'active':''}" onclick="selectSize(${p.id},'${s}',this)" style="border:1px solid #444;padding:3px 8px;font-size:11px;cursor:pointer;background:${defSize===s?'#fff':'transparent'};color:${defSize===s?'#000':'#fff'}">${s}</span>`).join('')}</div></div>${colorHTML}<button onclick="addToCart(${p.id})" style="width:100%;margin-top:10px;padding:8px;background:#fff;color:#000;border:none;cursor:pointer;border-radius:8px;font-weight:800">ADD TO CART</button></div>`;
   }).join('');
 }
-function addToCart(name, price, size, color, image){
-  size = size || document.getElementById('selectedSize')?.value || '';
-  color = color || '';
-  let existingIndex = cart.findIndex(item =>
-    item.name === name &&
-    (item.size || '') === (size || '') &&
-    (item.color || '') === (color || '')
-  );
-  if(existingIndex > -1){
-    cart[existingIndex].qty += 1;
-  } else {
-    cart.push({ name: name, price: parseInt(price), size: size, color: color, qty: 1, image: image || '' });
-  }
-  save(); updateCartUI(); openCart();
+function addToCart(id){
+  const p = products.find(x=>x.id===id);
+  if(!p) return alert('Product not found');
+  const size = selectedSizes[id] || 'M';
+  const color = selectedColors[id] || (p.colors? p.colors[0] : 'Black');
+  let existingIndex = cart.findIndex(item => item.id === id && item.size === size && item.color === color);
+  if(existingIndex > -1){ cart[existingIndex].qty += 1; }
+  else { cart.push({ id: p.id, name: p.name, price: p.price, size: size, color: color, qty: 1, img: p.img }); }
+  save(); openCart();
 }
-function save(){
-  localStorage.setItem('ca_cart',JSON.stringify(cart));
-  renderCart();
-}
+function save(){ localStorage.setItem('ca_cart', JSON.stringify(cart)); renderCart(); }
 function renderCart(){
   const count=cart.reduce((s,i)=>s+i.qty,0);
   document.getElementById('cartCount').textContent=count;
   const sub=cart.reduce((s,i)=>s+i.price*i.qty,0);
   const del=250;
   document.getElementById('subtotal').textContent='Rs. '+sub;
-  document.getElementById('delivery').textContent=del==0?'FREE':'Rs. '+del;
+  document.getElementById('delivery').textContent='Rs. '+del;
   document.getElementById('total').textContent='Rs. '+(sub+del);
   const wrap=document.getElementById('cartItems');
-  if(!cart.length){
-    wrap.innerHTML='<p style="color:#666;text-align:center;margin-top:40px">Cart empty<br><small>Select size first, then add</small></p>';
-    return;
-  }
-  wrap.innerHTML = cart.map(i=>`
+  if(!cart.length){ wrap.innerHTML='<p style="color:#666;text-align:center;margin-top:40px">Cart empty</p>'; return; }
+  wrap.innerHTML = cart.map((item, idx)=>`
     <div style="display:flex;gap:10px;margin-bottom:12px;border-bottom:1px solid #222;padding-bottom:10px">
-      <img src="${i.img}" style="width:60px;height:60px;object-fit:cover">
+      <img src="${item.img}" style="width:60px;height:60px;object-fit:cover">
       <div style="flex:1">
-        <div style="font-size:14px">${i.name}</div>
-        <div style="font-size:12px;color:#aaa;margin-top:2px">Size: ${i.size} | Color: ${i.color}</div>
-        <div style="font-size:13px;margin-top:4px">Rs. ${i.price} x ${i.qty}</div>
-        <div style="display:flex;gap:8px;margin-top:6px">
-          <button onclick="changeQty('${i.key}',-1)" style="background:#222;color:#fff;border:0;width:24px;height:24px;border-radius:6px;cursor:pointer">-</button>
-          <span>${i.qty}</span>
-          <button onclick="changeQty('${i.key}',1)" style="background:#222;color:#fff;border:0;width:24px;height:24px;border-radius:6px;cursor:pointer">+</button>
+        <div style="font-size:14px">${item.name}</div>
+        <div style="font-size:12px;color:#aaa;margin-top:2px">Size: ${item.size} | Color: ${item.color}</div>
+        <div style="font-size:13px;margin-top:4px">Rs. ${item.price} x ${item.qty}</div>
+        <div style="display:flex;gap:8px;margin-top:6px;align-items:center">
+          <button onclick="updateQty(${idx},-1)" style="background:#222;color:#fff;border:0;width:24px;height:24px;border-radius:6px;cursor:pointer">-</button>
+          <span>${item.qty}</span>
+          <button onclick="updateQty(${idx},1)" style="background:#222;color:#fff;border:0;width:24px;height:24px;border-radius:6px;cursor:pointer">+</button>
         </div>
       </div>
-      <button onclick="removeFromCart('${i.key}')" style="background:none;border:none;color:#fff;cursor:pointer">X</button>
+      <button onclick="removeFromCart(${idx})" style="background:none;border:none;color:#fff;cursor:pointer">X</button>
     </div>
   `).join('');
 }
-function updateQty(index, change){
-  cart[index].qty += change;
-  if(cart[index].qty < 1) cart[index].qty = 1;
-  if(cart[index].qty > 999) cart[index].qty = 999;
-  save(); updateCartUI();
-}
-function changeQty(index, delta){ updateQty(index, delta); }
-function save(){ localStorage.setItem('comfortCart', JSON.stringify(cart)); }
-function openCart(){
-  document.getElementById('drawer').classList.add('open');
-  document.getElementById('overlay').classList.add('show');
-  renderCart();
-}
-function closeCart(){
-  document.getElementById('drawer').classList.remove('open');
-  document.getElementById('overlay').classList.remove('show');
-}
+function updateQty(index, change){ cart[index].qty += change; if(cart[index].qty < 1) cart[index].qty = 1; if(cart[index].qty > 999) cart[index].qty = 999; save(); }
+function removeFromCart(index){ cart.splice(index,1); save(); }
+function openCart(){ document.getElementById('drawer').classList.add('open'); document.getElementById('overlay').classList.add('show'); renderCart(); }
+function closeCart(){ document.getElementById('drawer').classList.remove('open'); document.getElementById('overlay').classList.remove('show'); }
 async function placeOrder(){
   if(!cart.length) return alert('Cart empty');
   const name=document.getElementById('custName').value.trim();
@@ -222,20 +187,15 @@ async function placeOrder(){
     fd.append('subject',`NEW ORDER ${orderId} - ${name} - ${cart.length} Items - Rs.${total}`);
     fd.append('from_name','Comfort Apparel Website');
     fd.append('email','comfort.apparels@gmail.com');
-    cart.forEach((x,i)=>{
-      let s = x.size || ''; let c = x.color || '';
-      fd.append(`Item_${i+1}`, `${x.name} | Size:${s} | Color:${c} | Qty:${x.qty} | Rs.${x.price*x.qty}`);
-    });
-    fd.append('Customer_Name', name);
-    fd.append('Phone', phone);
-    fd.append('Address', addr + ', ' + city);
-    fd.append('Total_Items', cart.length);
-    fd.append('Total_Amount', 'Rs.'+total+' COD');
-    fd.append('message', `Order ${orderId} - ${cart.length} items`);
+    cart.forEach((x,i)=>{ fd.append(`Item_${i+1}`, `${x.name} | Size:${x.size} | Color:${x.color} | Qty:${x.qty} | Rs.${x.price*x.qty}`); });
+    fd.append('Customer_Name', name); fd.append('Phone', phone); fd.append('Address', addr + ', ' + city);
+    fd.append('Total_Items', cart.length); fd.append('Total_Amount', 'Rs.'+total+' COD');
+    fd.append('message', `Order ${orderId} - ${cart.length} items - ${cart.map(c=>c.name).join(', ')}`);
     await fetch('https://api.web3forms.com/submit',{method:'POST',body:fd});
     document.getElementById('orderIdText').innerHTML=`Thank you for ordering! ❤️<br><br>You will get confirmation message soon.<br><br>Order ID: <b>${orderId}</b>`;
     document.getElementById('success').classList.add('show');
     cart=[]; save(); closeCart();
+    document.getElementById('custName').value=''; document.getElementById('custPhone').value=''; document.getElementById('custAddr').value=''; document.getElementById('custCity').value='';
   }catch(e){ alert('Error. WhatsApp 0337-2510256'); }
   finally{ btn.textContent='PLACE ORDER - COD'; btn.disabled=false; }
 }
@@ -244,14 +204,8 @@ renderCart();
 </script>
 <footer style="background:#111;border-top:1px solid #222;padding:40px 5%;margin-top:50px">
  <div style="display:grid;grid-template-columns:repeat(auto-fit,minmax(200px,1fr));gap:30px;max-width:1200px;margin:auto">
-  <div>
-   <h3 style="letter-spacing:2px;margin-bottom:15px">COMFORT APPAREL</h3>
-   <p style="color:#888;font-size:13px;line-height:1.6">Premium Streetwear | Karachi Based<br>Delivering all over Pakistan<br>COD Available</p>
-  </div>
-  <div>
-   <h4 style="font-size:13px;margin-bottom:12px">CONTACT</h4>
-   <p style="color:#888;font-size:13px;line-height:2">WhatsApp: 0337-2510256<br>Email: comfort.apparelss@gmail.com<br>City: Karachi, Pakistan</p>
-  </div>
+  <div><h3 style="letter-spacing:2px;margin-bottom:15px">COMFORT APPAREL</h3><p style="color:#888;font-size:13px;line-height:1.6">Premium Streetwear | Karachi Based<br>Delivering all over Pakistan<br>COD Available</p></div>
+  <div><h4 style="font-size:13px;margin-bottom:12px">CONTACT</h4><p style="color:#888;font-size:13px;line-height:2">WhatsApp: 0337-2510256<br>Email: comfort.apparelss@gmail.com<br>City: Karachi, Pakistan</p></div>
  </div>
  <div style="text-align:center;margin-top:30px;padding-top:20px;border-top:1px solid #222;color:#555;font-size:11px">© 2026 COMFORT APPAREL</div>
 </footer>
