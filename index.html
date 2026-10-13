@@ -103,11 +103,34 @@ function selectsSize(id,size,el){
   el.parentElement.querySelectorAll('.size-btn').forEach(b=>{ b.classList.remove('active'); });
   el.classList.add('active');
 }
+function selectsSize(id,size,el){
+  selectedSizes[id]=size;
+  // Fix: search inside the same card, not just parent
+  const card = el.closest('.card');
+  card.querySelectorAll('.size-btn').forEach(b=>{
+    b.classList.remove('active');
+    b.style.background='transparent';
+    b.style.color='#fff';
+    b.style.borderColor='#555';
+  });
+  el.classList.add('active');
+  el.style.background='#fff';
+  el.style.color='#000';
+  el.style.borderColor='#fff';
+}
 function selectSize(id,size,el){ return selectsSize(id,size,el); }
+
 function setColor(id,color,el){
   selectedColors[id]=color;
-  el.parentElement.querySelectorAll('.color-btn').forEach(s=>{ s.classList.remove('active'); });
+  const card = el.closest('.card');
+  card.querySelectorAll('.color-btn').forEach(s=>{
+    s.classList.remove('active');
+    s.style.background='transparent';
+    s.style.color='#fff';
+  });
   el.classList.add('active');
+  el.style.background='#fff';
+  el.style.color='#000';
 }
 function renderProducts(){
   if(!currentCat){
