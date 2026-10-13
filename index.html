@@ -213,7 +213,16 @@ async function placeOrder(){
   const sub=cart.reduce((s,i)=>s+i.price*i.qty,0);
   const del=250;
   const total=sub+del;
-  const itemsText=cart.map(x=> `${x.name} (SIZE:${x.size} COLOR:${x.color}) x${x.qty} = Rs.${x.price*x.qty}`).join('\n');
+  
+  // FIXED - This will work even if size/color names are different
+  const itemsText=cart.map(x=> {
+    let s = x.size || x.selectedSize || x.Size || '';
+    let c = x.color || x.selectedColor || x.Color || '';
+    return `${x.name} ${s ? '(SIZE:'+s+')' : ''} ${c ? '(COLOR:'+c+')' : ''} x${x.qty} = Rs.${x.price*x.qty}`;
+  }).join('\n');
+
+  console.log('Cart sending:', cart);
+  console.log('Items Text:', itemsText);
 
   const btn=document.getElementById('placeBtn');
   btn.textContent='PLACING...';
@@ -224,20 +233,29 @@ async function placeOrder(){
     fd.append('access_key','4ff39135-37fe-40d7-bf48-88b34c668500');
     fd.append('subject',`NEW ORDER ${orderId} - ${name} - Rs.${total}`);
     fd.append('from_name','Comfort Apparel Website');
-    fd.append('email','comfort.apparelss@gmail.com');
-    fd.append('message',`Order ID: ${orderId}\nCustomer: ${name}\nPhone: ${phone}\nAddress: ${addr}, ${city}\n\nItems:\n${itemsText}\n\nSubtotal: Rs.${sub}\nDelivery: Rs.${del}\nTotal: Rs.${total} COD\nDate: ${new Date().toLocaleString()}`);
+    fd.append('email','comfort.apparels@gmail.com');
+    
+    // FIXED - Send as separate fields so Web3Forms MUST show them
+    fd.append('Order ID', orderId);
+    fd.append('Customer Name', name);
+    fd.append('Phone', phone);
+    fd.append('Full Address', addr + ', ' + city);
+    fd.append('Ordered Items - WHAT CLIENT ORDERED', itemsText);
+    fd.append('Subtotal', 'Rs.'+sub);
+    fd.append('Delivery', 'Rs.'+del);
+    fd.append('Total Amount (COD)', 'Rs.'+total);
+    fd.append('Date', new Date().toLocaleString());
+    fd.append('Full Cart JSON (Backup)', JSON.stringify(cart));
+
+    fd.append('message',`Order ID: ${orderId}\nCustomer: ${name}\nPhone: ${phone}\nAddress: ${addr}, ${city}\n\nWHAT CLIENT ORDERED:\n${itemsText}\n\nSubtotal: Rs.${sub}\nDelivery: Rs.${del}\nTotal: Rs.${total} COD\nDate: ${new Date().toLocaleString()}`);
 
     const res = await fetch('https://api.web3forms.com/submit',{method:'POST',body:fd});
     const data = await res.json();
     console.log('Email sent:', data);
 
-    document.getElementById('orderIdText').innerHTML=`Thank you for ordering! ❤️<br><br>You will get confirmation message soon.<br><br>Order ID: <b>${orderId}</b>`;
+    document.getElementById('orderIdText').innerHTML=`Thank you for ordering! ❤️<br><br>Order ID: <b>${orderId}</b>`;
     document.getElementById('success').classList.add('show');
     cart=[]; save(); closeCart();
-    document.getElementById('custName').value='';
-    document.getElementById('custPhone').value='';
-    document.getElementById('custAddr').value='';
-    document.getElementById('custCity').value='';
 
   }catch(e){
     console.error(e);
