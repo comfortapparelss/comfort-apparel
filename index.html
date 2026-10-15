@@ -5,8 +5,6 @@
 <title>Comfort Apparel - Wear Comfort Live Better</title>
 <link rel="icon" href="data:,">
 <style>
-.size-btn.active{ background:#fff!important; color:#000!important; border-color:#fff!important; }
-.color-btn.active{ background:#fff!important; color:#000!important; }
 *{margin:0;padding:0;box-sizing:border-box;font-family:system-ui,sans-serif}
 body{background:#0a0a0a;color:#fff}
 nav{padding:14px 5%;display:flex;justify-content:space-between;align-items:center;border-bottom:1px solid #1a1a1a;position:sticky;top:0;background:#0a0a0a;z-index:30}
@@ -34,6 +32,25 @@ nav{padding:14px 5%;display:flex;justify-content:space-between;align-items:cente
 .success{display:none;position:fixed;inset:0;background:rgba(0,0,0,.9);z-index:80;place-items:center;padding:20px}
 .success.show{display:grid}
 .success-box{background:#151515;border:1px solid #222;padding:30px;border-radius:24px;max-width:400px;text-align:center;width:100%}
+
+/* FIXED SIZE & COLOR BUTTONS */
+.size-btn,.color-btn{
+  border:1px solid #444;
+  padding:6px 12px;
+  font-size:12px;
+  cursor:pointer;
+  border-radius:8px;
+  background:#1a1a1a;
+  color:#aaa;
+  display:inline-block;
+  font-weight:700;
+  user-select:none;
+}
+.size-btn.active,.color-btn.active{
+  background:#fff!important;
+  color:#000!important;
+  border-color:#fff!important;
+}
 @media(max-width:700px){.hero{grid-template-columns:1fr;}}
 </style>
 </head>
@@ -63,6 +80,7 @@ nav{padding:14px 5%;display:flex;justify-content:space-between;align-items:cente
 <div class="cart-overlay" id="overlay" onclick="closeCart()"></div>
 <div class="cart-drawer" id="drawer"><div class="cart-head"><b>Your Cart</b><button onclick="closeCart()" style="background:#222;color:#fff;border:0;width:32px;height:32px;border-radius:50%;cursor:pointer">✕</button></div><div class="cart-items" id="cartItems"></div><div class="cart-foot"><div class="row"><span>Subtotal</span><b id="subtotal">Rs.0</b></div><div class="row"><span>Delivery</span><span id="delivery">Rs.199</span></div><div class="row" style="border-top:1px solid #222;padding-top:10px"><span>Total</span><b id="total">Rs.0</b></div><input class="input" id="custName" placeholder="Full Name *"><input class="input" id="custPhone" placeholder="Phone *"><input class="input" id="custAddr" placeholder="Full Address *"><select id="custCity" class="input"><option value="">Select City *</option><option>Karachi</option><option>Lahore</option><option>Islamabad</option><option>Rawalpindi</option><option>Faisalabad</option><option>Multan</option><option>Peshawar</option><option>Quetta</option><option>Other</option></select><button class="checkout-btn" id="placeBtn" onclick="placeOrder()">PLACE ORDER - COD</button></div></div>
 <div class="success" id="success"><div class="success-box"><h2>✓ Order Confirmed!</h2><p id="orderIdText" style="color:#888;margin:12px 0"></p><button class="checkout-btn" style="background:#fff" onclick="document.getElementById('success').classList.remove('show')">Continue Shopping</button></div></div>
+
 <script>
 const products=[
  {id:1,name:"Rose",price:1250,img:"Rose.png",tag:"NEW",cat:"tee", colors:["Black","Black Acid","White"]},
@@ -99,10 +117,11 @@ const products=[
  {id:39,name:"SpiderWeb",price:2999,img:"spiderweb.png",tag:"NEW",cat:"hoodie",colors:["Black","Black Acid"]},
  {id:50,name:"Baseball Jacket",price:3500,img:"baseball.png",tag:"NEW",cat:"baseball",colors:["Black"]},
 ];
-let currentCat='';
+let currentCat='tee';
 let cart=JSON.parse(localStorage.getItem('ca_cart')||'[]');
 let selectedSizes={};
 let selectedColors={};
+
 function filterCat(cat,el){
   currentCat=cat;
   document.querySelectorAll('.cat-btn').forEach(b=>b.classList.remove('active'));
@@ -112,44 +131,31 @@ function filterCat(cat,el){
 function selectsSize(id,size,el){
   selectedSizes[id]=size;
   const card = el.closest('.card');
-  card.querySelectorAll('.size-btn').forEach(b=>{
-    b.classList.remove('active');
-  });
-  el.classList.add('active');
-}
-function selectsSize(id,size,el){
-  selectedSizes[id]=size;
-  const card = el.closest('.card');
   card.querySelectorAll('.size-btn').forEach(b=>b.classList.remove('active'));
   el.classList.add('active');
 }
+function selectSize(id,size,el){ return selectsSize(id,size,el); }
+
 function setColor(id,color,el){
   selectedColors[id]=color;
   const card = el.closest('.card');
   card.querySelectorAll('.color-btn').forEach(b=>b.classList.remove('active'));
   el.classList.add('active');
 }
+
 function renderProducts(){
-  if(!currentCat){
-    document.getElementById('shopGrid').innerHTML='';
-    document.getElementById('catTitle').textContent='Comfortable, Affordable, Adorable.';
-    document.getElementById('catCount').textContent='';
-    return;
-  }
   const filtered=products.filter(p=>p.cat===currentCat);
   document.getElementById('catTitle').textContent=currentCat+' - '+filtered.length+' products';
   document.getElementById('catCount').textContent=filtered.length+' items';
   document.getElementById('shopGrid').innerHTML=filtered.map(p=>{
     const defSize=selectedSizes[p.id]||'M';
     const defColor=selectedColors[p.id]||(p.colors?p.colors[0]:'Black');
-    const colorHTML = p.colors? `<div style="margin-top:8px"><small style="color:#888">COLOR: </small><div style="display:flex;gap:6px;margin-top:5px;flex-wrap:wrap">`+p.colors.map(c=>`<span class="color-btn ${defColor===c?'active':''}" onclick="setColor(${p.id},'${c}',this)">${c}</span>`).join('')+`</div></div>` : '';
-return `<div class="card"><img src="${p.img}" loading="lazy"><h3 style="margin:8px 0 4px">${p.name}</h3><p>Rs. ${p.price}</p><div style="margin-top:8px"><small style="color:#888">SIZE: </small><div style="display:flex;gap:6px;margin-top:5px">${['S','M','L','XL'].map(s=>`<span class="size-btn ${defSize===s?'active':''}" onclick="selectSize(${p.id},'${s}',this)">${s}</span>`).join('')}</div></div>${colorHTML}<button onclick="addToCart(${p.id})" style="width:100%;margin-top:10px;padding:8px;background:#fff;color:#000;border:none;cursor:pointer;border-radius:8px;font-weight:800">ADD TO CART</button></div>`;
-    return `<div class="card"><img src="${p.img}" loading="lazy" onerror="this.src='https://via.placeholder.com/400?text=NO+IMAGE'"><h3 style="margin:8px 0 4px">${p.name}</h3><p>Rs. ${p.price}</p><div style="margin-top:8px"><small style="color:#888">SIZE: </small><div style="display:flex;gap:5px;margin-top:3px">${['S','M','L','XL'].map(s=>`<span class="size-btn ${defSize===s?'active':''}" onclick="selectSize(${p.id},'${s}',this)" style="border:1px solid #444;padding:3px 8px;font-size:11px;cursor:pointer;background:${defSize===s?'#fff':'transparent'};color:${defSize===s?'#000':'#fff'}">${s}</span>`).join('')}</div></div>${colorHTML}<button onclick="addToCart(${p.id})" style="width:100%;margin-top:10px;padding:8px;background:#fff;color:#000;border:none;cursor:pointer;border-radius:8px;font-weight:800">ADD TO CART</button></div>`;
+    const colorHTML = p.colors? `<div style="margin-top:8px"><small style="color:#888">COLOR:</small><div style="display:flex;gap:6px;margin-top:5px;flex-wrap:wrap">`+p.colors.map(c=>`<span class="color-btn ${defColor===c?'active':''}" onclick="setColor(${p.id},'${c}',this)">${c}</span>`).join('')+`</div></div>` : '';
+    return `<div class="card"><img src="${p.img}" loading="lazy" onerror="this.src='https://via.placeholder.com/400?text=NO+IMAGE'"><h3 style="margin:8px 0 4px">${p.name}</h3><p>Rs. ${p.price}</p><div style="margin-top:8px"><small style="color:#888">SIZE:</small><div style="display:flex;gap:6px;margin-top:5px;flex-wrap:wrap">${['S','M','L','XL'].map(s=>`<span class="size-btn ${defSize===s?'active':''}" onclick="selectSize(${p.id},'${s}',this)">${s}</span>`).join('')}</div></div>${colorHTML}<button onclick="addToCart(${p.id})" style="width:100%;margin-top:10px;padding:8px;background:#fff;color:#000;border:none;cursor:pointer;border-radius:8px;font-weight:800">ADD TO CART</button></div>`;
   }).join('');
 }
 function addToCart(id){
   const p = products.find(x=>x.id===id);
-  if(!p) return alert('Product not found');
   const size = selectedSizes[id] || 'M';
   const color = selectedColors[id] || (p.colors? p.colors[0] : 'Black');
   let existingIndex = cart.findIndex(item => item.id === id && item.size === size && item.color === color);
@@ -159,34 +165,17 @@ function addToCart(id){
 }
 function save(){ localStorage.setItem('ca_cart', JSON.stringify(cart)); renderCart(); }
 function renderCart(){
-  const count=cart.reduce((s,i)=>s+i.qty,0);
-  document.getElementById('cartCount').textContent=count;
+  document.getElementById('cartCount').textContent=cart.reduce((s,i)=>s+i.qty,0);
   const sub=cart.reduce((s,i)=>s+i.price*i.qty,0);
-  const del=250;
   document.getElementById('subtotal').textContent='Rs. '+sub;
-  document.getElementById('delivery').textContent='Rs. '+del;
-  document.getElementById('total').textContent='Rs. '+(sub+del);
+  document.getElementById('delivery').textContent='Rs. 250';
+  document.getElementById('total').textContent='Rs. '+(sub+250);
   const wrap=document.getElementById('cartItems');
   if(!cart.length){ wrap.innerHTML='<p style="color:#666;text-align:center;margin-top:40px">Cart empty</p>'; return; }
-  wrap.innerHTML = cart.map((item, idx)=>`
-    <div style="display:flex;gap:10px;margin-bottom:12px;border-bottom:1px solid #222;padding-bottom:10px">
-      <img src="${item.img}" style="width:60px;height:60px;object-fit:cover">
-      <div style="flex:1">
-        <div style="font-size:14px">${item.name}</div>
-        <div style="font-size:12px;color:#aaa;margin-top:2px">Size: ${item.size} | Color: ${item.color}</div>
-        <div style="font-size:13px;margin-top:4px">Rs. ${item.price} x ${item.qty}</div>
-        <div style="display:flex;gap:8px;margin-top:6px;align-items:center">
-          <button onclick="updateQty(${idx},-1)" style="background:#222;color:#fff;border:0;width:24px;height:24px;border-radius:6px;cursor:pointer">-</button>
-          <span>${item.qty}</span>
-          <button onclick="updateQty(${idx},1)" style="background:#222;color:#fff;border:0;width:24px;height:24px;border-radius:6px;cursor:pointer">+</button>
-        </div>
-      </div>
-      <button onclick="removeFromCart(${idx})" style="background:none;border:none;color:#fff;cursor:pointer">X</button>
-    </div>
-  `).join('');
+  wrap.innerHTML = cart.map((item, idx)=>`<div style="display:flex;gap:10px;margin-bottom:12px;border-bottom:1px solid #222;padding-bottom:10px"><img src="${item.img}" style="width:60px;height:60px;object-fit:cover"><div style="flex:1"><div style="font-size:14px">${item.name}</div><div style="font-size:12px;color:#aaa">Size: ${item.size} | Color: ${item.color}</div><div style="font-size:13px;margin-top:4px">Rs. ${item.price} x ${item.qty}</div><div style="display:flex;gap:8px;margin-top:6px"><button onclick="updateQty(${idx},-1)" style="background:#222;color:#fff;border:0;width:24px;height:24px;border-radius:6px;cursor:pointer">-</button><span>${item.qty}</span><button onclick="updateQty(${idx},1)" style="background:#222;color:#fff;border:0;width:24px;height:24px;border-radius:6px;cursor:pointer">+</button></div></div><button onclick="removeFromCart(${idx})" style="background:none;border:none;color:#fff;cursor:pointer">X</button></div>`).join('');
 }
-function updateQty(index, change){ cart[index].qty += change; if(cart[index].qty < 1) cart[index].qty = 1; if(cart[index].qty > 999) cart[index].qty = 999; save(); }
-function removeFromCart(index){ cart.splice(index,1); save(); }
+function updateQty(i,c){ cart[i].qty+=c; if(cart[i].qty<1)cart[i].qty=1; save(); }
+function removeFromCart(i){ cart.splice(i,1); save(); }
 function openCart(){ document.getElementById('drawer').classList.add('open'); document.getElementById('overlay').classList.add('show'); renderCart(); }
 function closeCart(){ document.getElementById('drawer').classList.remove('open'); document.getElementById('overlay').classList.remove('show'); }
 async function placeOrder(){
@@ -197,48 +186,19 @@ async function placeOrder(){
   const city=document.getElementById('custCity').value.trim();
   if(!name||!phone||!addr||!city){ alert('Please fill all fields'); return; }
   const orderId='CA-'+Math.floor(100000+Math.random()*900000);
-  const sub=cart.reduce((s,i)=>s+i.price*i.qty,0);
-  const del=250; const total=sub+del;
-  const btn=document.getElementById('placeBtn');
-  btn.textContent='PLACING...'; btn.disabled=true;
+  const total=cart.reduce((s,i)=>s+i.price*i.qty,0)+250;
+  const btn=document.getElementById('placeBtn'); btn.textContent='PLACING...'; btn.disabled=true;
   try{
-    const fd=new FormData();
-    fd.append('access_key','4ff39135-37fe-40d7-bf48-88b34c668500');
-    fd.append('subject',`NEW ORDER ${orderId} - ${name} - ${cart.length} Items - Rs.${total}`);
-    fd.append('from_name','Comfort Apparel Website');
-    fd.append('email','comfort.apparels@gmail.com');
-    cart.forEach((x,i)=>{ fd.append(`Item_${i+1}`, `${x.name} | Size:${x.size} | Color:${x.color} | Qty:${x.qty} | Rs.${x.price*x.qty}`); });
-    fd.append('Customer_Name', name); fd.append('Phone', phone); fd.append('Address', addr + ', ' + city);
-    fd.append('Total_Items', cart.length); fd.append('Total_Amount', 'Rs.'+total+' COD');
-    fd.append('message', `Order ${orderId} - ${cart.length} items - ${cart.map(c=>c.name).join(', ')}`);
+    const fd=new FormData(); fd.append('access_key','4ff39135-37fe-40d7-bf48-88b34c668500');
+    fd.append('subject',`NEW ORDER ${orderId} - ${name}`); fd.append('from_name','Comfort Apparel'); fd.append('email','comfort.apparels@gmail.com');
+    cart.forEach((x,i)=>{ fd.append(`Item_${i+1}`, `${x.name} | Size:${x.size} | Color:${x.color} | Qty:${x.qty}`); });
+    fd.append('Customer_Name', name); fd.append('Phone', phone); fd.append('Address', addr + ', ' + city); fd.append('Total_Amount', 'Rs.'+total);
     await fetch('https://api.web3forms.com/submit',{method:'POST',body:fd});
-    document.getElementById('orderIdText').innerHTML=`Thank you for ordering! ❤️<br><br>You will get confirmation message soon.<br><br>Order ID: <b>${orderId}</b>`;
-    document.getElementById('success').classList.add('show');
-    cart=[]; save(); closeCart();
-    document.getElementById('custName').value=''; document.getElementById('custPhone').value=''; document.getElementById('custAddr').value=''; document.getElementById('custCity').value='';
-  }catch(e){ alert('Error. WhatsApp 0337-2510256'); }
-  finally{ btn.textContent='PLACE ORDER - COD'; btn.disabled=false; }
+    document.getElementById('orderIdText').innerHTML=`Thank you! ❤️<br>Order ID: <b>${orderId}</b>`; document.getElementById('success').classList.add('show'); cart=[]; save(); closeCart();
+  }catch(e){ alert('Error. WhatsApp 0337-2510256'); } finally{ btn.textContent='PLACE ORDER - COD'; btn.disabled=false; }
 }
-renderProducts();
-renderCart();
+renderProducts(); renderCart();
+document.querySelectorAll('.cat-btn')[0].classList.add('active');
 </script>
-<footer style="background:#111;border-top:1px solid #222;padding:40px 5%;margin-top:50px">
- <div style="display:grid;grid-template-columns:repeat(auto-fit,minmax(200px,1fr));gap:30px;max-width:1200px;margin:auto">
-  <div>
-   <h3 style="letter-spacing:2px;margin-bottom:15px">COMFORT APPAREL</h3>
-   <p style="color:#888;font-size:13px;line-height:1.6">Premium Streetwear | Karachi Based<br>Delivering all over Pakistan<br>COD Available</p>
-   <div style="display:flex;gap:12px;margin-top:15px">
-     <a href="https://instagram.com/comfort.apparelss" target="_blank" style="width:40px;height:40px;background:#fff;color:#000;border-radius:50%;display:grid;place-items:center;text-decoration:none;font-weight:900">IG</a>
-     <a href="https://wa.me/923372510256" target="_blank" style="width:40px;height:40px;background:#25D366;color:#fff;border-radius:50%;display:grid;place-items:center;text-decoration:none;font-weight:900">WA</a>
-   </div>
-  </div>
-  <div>
-   <h4 style="font-size:13px;margin-bottom:12px">CONTACT</h4>
-   <p style="color:#888;font-size:13px;line-height:2">WhatsApp: 0337-2510256<br>Instagram: @comfort.apparelss<br>Email: comfort.apparelss@gmail.com<br>City: Karachi, Pakistan</p>
-  </div>
- </div>
- <div style="text-align:center;margin-top:30px;padding-top:20px;border-top:1px solid #222;color:#555;font-size:11px">© 2026 COMFORT APPAREL</div>
-</footer>
-<a href="https://wa.me/923372510256" target="_blank" style="position:fixed;bottom:20px;right:20px;width:56px;height:56px;background:#25D366;border-radius:50%;display:grid;place-items:center;z-index:40;box-shadow:0 4px 12px rgba(0,0,0,.4);text-decoration:none;color:#fff;font-weight:900">WA</a>
 </body>
 </html>
