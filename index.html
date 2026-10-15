@@ -74,19 +74,19 @@ const products=[
  {id:7,name:"Stand Out",price:1250,img:"standout.png",tag:"NEW",cat:"tee", colors:["White","Black","Black Acid"]},
  {id:8,name:"Moon",price:1250,img:"moon.png",tag:"NEW",cat:"tee", colors:["White","Black","Black Acid"]},
  {id:9,name:"Born Broke Die Rich",price:1250,img:"born-broke.png",tag:"NEW",cat:"tee", colors:["White","Black","Black Acid"]},
- {id:9,name:"Dragon",price:1250,img:"dragon.png",tag:"NEW",cat:"tee", colors:["White","Black","Black Acid"]},
- {id:10,name:"Reality",price:1250,img:"reality.png",tag:"NEW",cat:"tee", colors:["White","Black","Black Acid"]},
- {id:11,name:"ContourFace",price:1250,img:"contourface.png",tag:"NEW",cat:"tee", colors:["White","Black","Black Acid"]},
- {id:12,name:"Born To Brew Coffee",price:1250,img:"brew.png",tag:"NEW",cat:"tee", colors:["White","Black","Black Acid"]},
- {id:13,name:"Everything Will Be OK",price:1250,img:"ok.png",tag:"NEW",cat:"tee", colors:["White","Black","Black Acid"]},
- {id:14,name:"Astronaut",price:1250,img:"astronaut.png",tag:"NEW",cat:"tee", colors:["White","Black","Black Acid"]},
- {id:15,name:"Customizable",price:1250,img:"customizable.png",tag:"NEW",cat:"tee", colors:["White","Black","Black Acid"]},
- {id:16,name:"Black Premium Polo",price:1850,img:"polo-black.png",tag:"SLIM FIT",cat:"polo"},
- {id:17,name:"White Premium Polo",price:1850,img:"polo-white.png",tag:"SLIM FIT",cat:"polo"},
- {id:18,name:"Blue Premium Polo",price:1850,img:"polo-navy.png",tag:"SLIM FIT",cat:"polo"},
- {id:19,name:"Grey Premium Polo",price:1850,img:"polo-grey.png",tag:"SLIM FIT",cat:"polo"},
- {id:20,name:"Maroon Premium Polo",price:1850,img:"polo-maroon.png",tag:"SLIM FIT",cat:"polo"},
- {id:21,name:"Brown Premium Polo",price:1850,img:"polo-brown.png",tag:"SLIM FIT",cat:"polo"},
+ {id:10,name:"Dragon",price:1250,img:"dragon.png",tag:"NEW",cat:"tee", colors:["White","Black","Black Acid"]},
+ {id:11,name:"Reality",price:1250,img:"reality.png",tag:"NEW",cat:"tee", colors:["White","Black","Black Acid"]},
+ {id:12,name:"ContourFace",price:1250,img:"contourface.png",tag:"NEW",cat:"tee", colors:["White","Black","Black Acid"]},
+ {id:13,name:"Born To Brew Coffee",price:1250,img:"brew.png",tag:"NEW",cat:"tee", colors:["White","Black","Black Acid"]},
+ {id:14,name:"Everything Will Be OK",price:1250,img:"ok.png",tag:"NEW",cat:"tee", colors:["White","Black","Black Acid"]},
+ {id:15,name:"Astronaut",price:1250,img:"astronaut.png",tag:"NEW",cat:"tee", colors:["White","Black","Black Acid"]},
+ {id:16,name:"Customizable",price:1250,img:"customizable.png",tag:"NEW",cat:"tee", colors:["White","Black","Black Acid"]},
+ {id:17,name:"Black Premium Polo",price:1850,img:"polo-black.png",tag:"SLIM FIT",cat:"polo"},
+ {id:18,name:"White Premium Polo",price:1850,img:"polo-white.png",tag:"SLIM FIT",cat:"polo"},
+ {id:19,name:"Blue Premium Polo",price:1850,img:"polo-navy.png",tag:"SLIM FIT",cat:"polo"},
+ {id:20,name:"Grey Premium Polo",price:1850,img:"polo-grey.png",tag:"SLIM FIT",cat:"polo"},
+ {id:21,name:"Maroon Premium Polo",price:1850,img:"polo-maroon.png",tag:"SLIM FIT",cat:"polo"},
+ {id:22,name:"Brown Premium Polo",price:1850,img:"polo-brown.png",tag:"SLIM FIT",cat:"polo"},
  {id:30,name:"Floral Sketch",price:2999,img:"floral sketch.png",tag:"NEW",cat:"hoodie",colors:["Black","Black Acid"]},
  {id:31,name:"Floral Bloom",price:2999,img:"hoodie-floral.png",tag:"NEW",cat:"hoodie",colors:["Black","Black Acid"]},
  {id:32,name:"Blue Butterfly",price:2999,img:"hoodie-butterfly.png",tag:"NEW",cat:"hoodie",colors:["Black","Black Acid"]},
@@ -98,7 +98,7 @@ const products=[
  {id:38,name:"NewsPaper",price:2999,img:"newspaper.png",tag:"NEW",cat:"hoodie",colors:["Black","Black Acid"]},
  {id:39,name:"SpiderWeb",price:2999,img:"spiderweb.png",tag:"NEW",cat:"hoodie",colors:["Black","Black Acid"]},
  {id:50,name:"Baseball Jacket",price:3500,img:"baseball.png",tag:"NEW",cat:"baseball",colors:["Black"]},
-};
+];
 let currentCat='';
 let cart=JSON.parse(localStorage.getItem('ca_cart')||'[]');
 let selectedSizes={};
@@ -111,23 +111,11 @@ function filterCat(cat,el){
 }
 function selectsSize(id,size,el){
   selectedSizes[id]=size;
-  el.parentElement.querySelectorAll('.size-btn').forEach(b=>{ b.classList.remove('active'); });
-  el.classList.add('active');
-}
-function selectsSize(id,size,el){
-  selectedSizes[id]=size;
-  // Fix: search inside the same card, not just parent
   const card = el.closest('.card');
   card.querySelectorAll('.size-btn').forEach(b=>{
     b.classList.remove('active');
-    b.style.background='transparent';
-    b.style.color='#fff';
-    b.style.borderColor='#555';
   });
   el.classList.add('active');
-  el.style.background='#fff';
-  el.style.color='#000';
-  el.style.borderColor='#fff';
 }
 function selectSize(id,size,el){ return selectsSize(id,size,el); }
 
@@ -136,12 +124,8 @@ function setColor(id,color,el){
   const card = el.closest('.card');
   card.querySelectorAll('.color-btn').forEach(s=>{
     s.classList.remove('active');
-    s.style.background='transparent';
-    s.style.color='#fff';
   });
   el.classList.add('active');
-  el.style.background='#fff';
-  el.style.color='#000';
 }
 function renderProducts(){
   if(!currentCat){
@@ -156,8 +140,7 @@ function renderProducts(){
   document.getElementById('shopGrid').innerHTML=filtered.map(p=>{
     const defSize=selectedSizes[p.id]||'M';
     const defColor=selectedColors[p.id]||(p.colors?p.colors[0]:'Black');
-    const isHoodieOrTee = (p.cat==='hoodie' || p.cat==='tee');
-    const colorHTML = isHoodieOrTee? `<div style="margin-top:8px"><small style="color:#888">COLOR: </small><div style="display:flex;gap:5px;margin-top:3px;flex-wrap:wrap">`+(p.colors?p.colors.map(c=>`<span class="color-btn ${defColor===c?'active':''}" onclick="setColor(${p.id},'${c}',this)" style="border:1px solid #444;padding:3px 8px;font-size:11px;cursor:pointer;background:${defColor===c?'#fff':'transparent'};color:${defColor===c?'#000':'#fff'}">${c}</span>`).join(''):'')+`</div></div>` : '';
+    const colorHTML = p.colors? `<div style="margin-top:8px"><small style="color:#888">COLOR: </small><div style="display:flex;gap:5px;margin-top:3px;flex-wrap:wrap">`+p.colors.map(c=>`<span class="color-btn ${defColor===c?'active':''}" onclick="setColor(${p.id},'${c}',this)" style="border:1px solid #444;padding:3px 8px;font-size:11px;cursor:pointer;background:${defColor===c?'#fff':'transparent'};color:${defColor===c?'#000':'#fff'}">${c}</span>`).join('')+`</div></div>` : '';
     return `<div class="card"><img src="${p.img}" loading="lazy" onerror="this.src='https://via.placeholder.com/400?text=NO+IMAGE'"><h3 style="margin:8px 0 4px">${p.name}</h3><p>Rs. ${p.price}</p><div style="margin-top:8px"><small style="color:#888">SIZE: </small><div style="display:flex;gap:5px;margin-top:3px">${['S','M','L','XL'].map(s=>`<span class="size-btn ${defSize===s?'active':''}" onclick="selectSize(${p.id},'${s}',this)" style="border:1px solid #444;padding:3px 8px;font-size:11px;cursor:pointer;background:${defSize===s?'#fff':'transparent'};color:${defSize===s?'#000':'#fff'}">${s}</span>`).join('')}</div></div>${colorHTML}<button onclick="addToCart(${p.id})" style="width:100%;margin-top:10px;padding:8px;background:#fff;color:#000;border:none;cursor:pointer;border-radius:8px;font-weight:800">ADD TO CART</button></div>`;
   }).join('');
 }
@@ -251,7 +234,8 @@ renderCart();
    <p style="color:#888;font-size:13px;line-height:2">WhatsApp: 0337-2510256<br>Instagram: @comfort.apparelss<br>Email: comfort.apparelss@gmail.com<br>City: Karachi, Pakistan</p>
   </div>
  </div>
- <div style="text-align:center;margin-top:30px;padding-top:20px;border-top:1px solid #222;color:#555;font-size:11px">© 2026 COMFORT APPAREL - <a href="https://instagram.com/comfort.apparelss" style="color:#888">Instagram @comfort.apparelss</a> | <a href="https://wa.me/923372510256" style="color:#888">WhatsApp</a></div>
+ <div style="text-align:center;margin-top:30px;padding-top:20px;border-top:1px solid #222;color:#555;font-size:11px">© 2026 COMFORT APPAREL</div>
 </footer>
-
 <a href="https://wa.me/923372510256" target="_blank" style="position:fixed;bottom:20px;right:20px;width:56px;height:56px;background:#25D366;border-radius:50%;display:grid;place-items:center;z-index:40;box-shadow:0 4px 12px rgba(0,0,0,.4);text-decoration:none;color:#fff;font-weight:900">WA</a>
+</body>
+</html>
