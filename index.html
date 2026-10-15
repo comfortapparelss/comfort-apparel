@@ -54,6 +54,7 @@ nav{padding:14px 5%;display:flex;justify-content:space-between;align-items:cente
 <button class="cat-btn" onclick="filterCat('tee',this)">Oversized Tees</button>
 <button class="cat-btn" onclick="filterCat('polo',this)">Polo Shirts</button>
 <button class="cat-btn" onclick="filterCat('hoodie',this)">Hoodies</button>
+<button class="cat-btn" onclick="filterCat('baseball',this)">Baseball Jackets</button>
 </div>
 <div id="shop">
 <div style="padding:15px 5%;max-width:1300px;margin:0 auto;display:flex;justify-content:space-between"><h2 id="catTitle" style="font-weight:900">Comfortable, Affordable, Adorable</h2><span id="catCount" style="color:#666"></span></div>
@@ -95,6 +96,8 @@ const products=[
  {id:36,name:"Time Has Passed",price:2999,img:"hoodie-time-back.png",tag:"NEW",cat:"hoodie",colors:["Black","Black Acid"]},
  {id:37,name:"Lost",price:2999,img:"hoodie-lost-back.png",tag:"NEW",cat:"hoodie",colors:["Black","Black Acid"]},
  {id:38,name:"NewsPaper",price:2999,img:"newspaper.png",tag:"NEW",cat:"hoodie",colors:["Black","Black Acid"]},
+ {id:39,name:"SpiderWeb",price:2999,img:"spiderweb.png",tag:"NEW",cat:"hoodie",colors:["Black","Black Acid"]},
+ {id:50,name:"Baseball Jacket",price:3500,img:"baseball.png",tag:"NEW",cat:"baseball"]},
 ];
 let currentCat='';
 let cart=JSON.parse(localStorage.getItem('ca_cart')||'[]');
