@@ -141,7 +141,7 @@ function renderProducts(){
     const defSize=selectedSizes[p.id]||'M';
     const defColor=selectedColors[p.id]||(p.colors?p.colors[0]:'Black');
     let displayImg = p.img;
-if(defColor.toLowerCase() === 'blue'){ displayImg = p.img.replace('.png','-blue.png').replace('.PNG','-blue.png'); }
+    if(defColor.toLowerCase() === 'blue'){ displayImg = p.img.replace('.png','-blue.png').replace('.PNG','-blue.png'); }
     const colorHTML = p.colors? `<div style="margin-top:8px"><small style="color:#888">COLOR:</small><div style="display:flex;gap:6px;margin-top:5px;flex-wrap:wrap">`+p.colors.map(c=>`<span class="color-btn ${defColor===c?'active':''}" onclick="setColor(${p.id},'${c}',this)">${c}</span>`).join('')+`</div></div>` : '';
     return `<div class="card"><img src="${displayimg}" loading="lazy" onerror="this.src='https://via.placeholder.com/400?text=NO+IMAGE'"><h3 style="margin:8px 0 4px">${p.name}</h3><p>Rs. ${p.price}</p><div style="margin-top:8px"><small style="color:#888">SIZE:</small><div style="display:flex;gap:6px;margin-top:5px;flex-wrap:wrap">${['S','M','L','XL'].map(s=>`<span class="size-btn ${defSize===s?'active':''}" onclick="selectSize(${p.id},'${s}',this)">${s}</span>`).join('')}</div></div>${colorHTML}<button onclick="addToCart(${p.id})" style="width:100%;margin-top:10px;padding:8px;background:#fff;color:#000;border:none;cursor:pointer;border-radius:8px;font-weight:800">ADD TO CART</button></div>`;
   }).join('');
