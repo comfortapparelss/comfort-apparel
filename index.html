@@ -128,10 +128,13 @@ function setColor(id,color,el){
   const img = card.querySelector('img');
   const product = products.find(x=>x.id===id);
   let newImg = product.img;
-  if(color.toLowerCase() === 'blue'){
-    newImg = product.img.replace('.png','-blue.png').replace('.PNG','-blue.png');
-  }
-  img.src = newImg;
+  let lc = color.toLowerCase();
+  if(lc === 'blue'){
+  newImg = product.img.replace('.png','-blue.png').replace('.PNG','-blue.png');
+} else if(lc === 'white'){
+  newImg = product.img.replace('.png','-white.png').replace('.PNG','-white.png');
+}
+img.src = newImg;
 }
 function renderProducts(){
   const filtered=products.filter(p=>p.cat===currentCat);
@@ -139,19 +142,24 @@ function renderProducts(){
   document.getElementById('catCount').textContent=filtered.length+' items';
   document.getElementById('shopGrid').innerHTML=filtered.map(p=>{
     const defSize=selectedSizes[p.id]||'M';
-    const defColor=selectedColors[p.id]||(p.colors?p.colors[0]:'Black');
+    let defColor = selectedColors[p.id] || (p.colors ? p.colors[0] : 'Black');
     let displayImg = p.img;
-    if(defColor.toLowerCase() === 'blue'){ displayImg = p.img.replace('.png','-blue.png').replace('.PNG','-blue.png'); }
-    const colorHTML = p.colors? `<div style="margin-top:8px"><small style="color:#888">COLOR:</small><div style="display:flex;gap:6px;margin-top:5px;flex-wrap:wrap">`+p.colors.map(c=>`<span class="color-btn ${defColor===c?'active':''}" onclick="setColor(${p.id},'${c}',this)">${c}</span>`).join('')+`</div></div>` : '';
-    return `<div class="card"><img src="${displayImg}" loading="lazy" onerror="this.src='https://via.placeholder.com/400?text=NO+IMAGE'"><h3 style="margin:8px 0 4px">${p.name}</h3><p>Rs. ${p.price}</p><div style="margin-top:8px"><small style="color:#888">SIZE:</small><div style="display:flex;gap:6px;margin-top:5px;flex-wrap:wrap">${['S','M','L','XL'].map(s=>`<span class="size-btn ${defSize===s?'active':''}" onclick="selectSize(${p.id},'${s}',this)">${s}</span>`).join('')}</div></div>${colorHTML}<button onclick="addToCart(${p.id})" style="width:100%;margin-top:10px;padding:8px;background:#fff;color:#000;border:none;cursor:pointer;border-radius:8px;font-weight:800">ADD TO CART</button></div>`;
-  }).join('');
+    let lowerColor = defColor.toLowerCase();
+    if(lowerColor === 'blue'){
+    displayImg = p.img.replace('.png','-blue.png').replace('.PNG','-blue.png');
+}   else if(lowerColor === 'white'){
+    displayImg = p.img.replace('.png','-white.png').replace('.PNG','-white.png');
 }
 function addToCart(id){
   const p = products.find(x=>x.id===id);
   const size = selectedSizes[id] || 'M';
   const color = selectedColors[id] || (p.colors? p.colors[0] : 'Black');
+  let cartImg = p.img;
+  let lc = color.toLowerCase();
+  if(lc === 'blue'){ cartImg = p.img.replace('.png','-blue.png').replace('.PNG','-blue.png'); }
+  else if(lc === 'white'){ cartImg = p.img.replace('.png','-white.png').replace('.PNG','-white.png'); }
   let idx = cart.findIndex(item => item.id === id && item.size === size && item.color === color);
-  if(idx>-1){ cart[idx].qty+=1; } else { cart.push({ id:p.id, name:p.name, price:p.price, size:size, color:color, qty:1, img:p.img }); }
+  if(idx>-1){ cart[idx].qty+=1; } else { cart.push({ id:p.id, name:p.name, price:p.price, size:size, color:color, qty:1, img:cartImg }); }
   save(); openCart();
 }
 function save(){ localStorage.setItem('ca_cart', JSON.stringify(cart)); renderCart(); }
