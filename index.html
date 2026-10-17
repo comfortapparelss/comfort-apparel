@@ -137,27 +137,39 @@ function setColor(id,color,el){
 img.src = newImg;
 }
 function renderProducts(){
-  const filtered=products.filter(p=>p.cat===currentCat);
-  document.getElementById('catTitle').textContent=currentCat+' - '+filtered.length+' products';
-  document.getElementById('catCount').textContent=filtered.length+' items';
-  document.getElementById('shopGrid').innerHTML=filtered.map(p=>{
+  const filtered = products.filter(p=>p.cat===currentCat);
+  if(document.getElementById('catTitle')){
+    document.getElementById('catTitle').textContent=currentCat+' - '+filtered.length+' products';
+  }
+  if(document.getElementById('catCount')){
+    document.getElementById('catCount').textContent=filtered.length+' items';
+  }
+  const grid = document.getElementById('shopGrid');
+  if(!grid) return;
+  grid.innerHTML=filtered.map(p=>{
     const defSize=selectedSizes[p.id]||'M';
-    let defColor = selectedColors[p.id] || (p.colors ? p.colors[0] : 'Black');
+    const defColor = selectedColors[p.id] || (p.colors ? p.colors[0] : 'Black');
     let displayImg = p.img;
     let lowerColor = defColor.toLowerCase();
     if(lowerColor === 'blue'){
-    displayImg = p.img.replace('.png','-blue.png').replace('.PNG','-blue.png');
-}   else if(lowerColor === 'white'){
-    displayImg = p.img.replace('.png','-white.png').replace('.PNG','-white.png');
+      displayImg = p.img.replace('.png','-blue.png').replace('.PNG','-blue.png').replace('.jpg','-blue.jpg');
+    } else if(lowerColor === 'white'){
+      displayImg = p.img.replace('.png','-white.png').replace('.PNG','-white.png').replace('.jpg','-white.jpg');
+    }
+    const sizeBtns = ['S','M','L','XL'].map(s=>`<button class="size-btn ${defSize===s?'active':''}" onclick="selectSize(${p.id},'${s}',this)">${s}</button>`).join('');
+    const colorBtns = (p.colors||['Black']).map(c=>`<button class="color-btn ${defColor===c?'active':''}" onclick="setColor(${p.id},'${c}',this)">${c}</button>`).join('');
+    return `<div class="card"><img src="${displayImg}" loading="lazy"><h3>${p.name}</h3><p>Rs.${p.price}</p><div>${sizeBtns}</div><div>${colorBtns}</div><button onclick="addToCart(${p.id})">Add to Cart</button></div>`;
+  }).join('');
 }
+
 function addToCart(id){
   const p = products.find(x=>x.id===id);
   const size = selectedSizes[id] || 'M';
   const color = selectedColors[id] || (p.colors? p.colors[0] : 'Black');
   let cartImg = p.img;
-  let lc = color.toLowerCase();
-  if(lc === 'blue'){ cartImg = p.img.replace('.png','-blue.png').replace('.PNG','-blue.png'); }
-  else if(lc === 'white'){ cartImg = p.img.replace('.png','-white.png').replace('.PNG','-white.png'); }
+  let lc2 = color.toLowerCase();
+  if(lc2 === 'blue'){ cartImg = p.img.replace('.png','-blue.png').replace('.PNG','-blue.png'); }
+  else if(lc2 === 'white'){ cartImg = p.img.replace('.png','-white.png').replace('.PNG','-white.png'); }
   let idx = cart.findIndex(item => item.id === id && item.size === size && item.color === color);
   if(idx>-1){ cart[idx].qty+=1; } else { cart.push({ id:p.id, name:p.name, price:p.price, size:size, color:color, qty:1, img:cartImg }); }
   save(); openCart();
