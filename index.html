@@ -143,6 +143,16 @@ function setColor(Id,color,el){
   }
   img.src = newImg;
 }
+// Preload blue/white images so color switch is instant
+function preloadImages(){
+  products.forEach(p=>{
+    ['-blue.png','-white.png'].forEach(suffix=>{
+      const src = p.img.replace('.png', suffix).replace('.PNG', suffix);
+      const im = new Image();
+      im.src = src;
+    });
+  });
+}
 function renderProducts(){
   const filtered = products.filter(p=>p.cat===currentCat);
   if(document.getElementById('catTitle')){
@@ -176,7 +186,7 @@ function renderProducts(){
     return `
     <div class="card" style="border:1px solid #222; border-radius:12px; padding:10px; background:#000;">
       <div style="background:#000; border-radius:8px;">
-        <img src="${displayImg}" style="width:100%; height:260px; object-fit:cover; border-radius:8px; background:#000;">
+        <img src="${displayImg}" loading="lazy" decoding="async" style="width:100%; height:260px; object-fit:cover; border-radius:8px; background:#000;">
       </div>
       <h3 style="margin:8px 0 2px; font-size:16px; color:#fff;">${p.name}</h3>
       <p style="margin:0 0 8px; font-weight:bold; color:#fff;">Rs.${p.price}</p>
