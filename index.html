@@ -136,7 +136,7 @@ function setColor(Id,color,el){
   if(!product || !img) return;
   let newImg = product.img;
   let lc = color.toLowerCase();
-  if(lc === 'blue'){
+  if(lc === 'grey'){
     newImg = product.img.replace('.png','-grey.png').replace('.PNG','-grey.png');
   } else if(lc === 'white'){
     newImg = product.img.replace('.png','-white.png').replace('.PNG','-white.png');
@@ -170,7 +170,7 @@ function renderProducts(){
     
     const catLower = (p.cat || currentCat || '').toLowerCase();
     const showColor = catLower.includes('hoodie') || catLower.includes('oversized') || catLower.includes('tee');
-    const allColors = ['Black','Blue','White'];
+    const allColors = ['Black','Grey','White'];
     
     let colorHtml = '';
     if(showColor){
