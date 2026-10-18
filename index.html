@@ -111,30 +111,40 @@ function filterCat(cat,el){
   el.classList.add('active');
   renderProducts();
 }
-function selectsSize(id,size,el){
-  selectedSizes[id]=size;
+function selectSize(Id,size,el){
+  selectedSizes[Id]=size;
   const card = el.closest('.card');
-  card.querySelectorAll('.size-btn').forEach(b=>b.classList.remove('active'));
-  el.classList.add('active');
+  const btns = card.querySelectorAll('[onclick*="selectSize"]');
+  btns.forEach(b=>{
+    b.style.background='#000';
+    b.style.color='#fff';
+  });
+  el.style.background='#fff';
+  el.style.color='#000';
 }
 function selectSize(id,size,el){ return selectsSize(id,size,el); }
-function setColor(id,color,el){
-  selectedColors[id]=color;
+function setColor(Id,color,el){
+  selectedColors[Id]=color;
   const card = el.closest('.card');
-  card.querySelectorAll('.color-btn').forEach(b=>b.classList.remove('active'));
-  el.classList.add('active');
-  
-  // THIS IS THE FIX - change image to blue
+  const btns = card.querySelectorAll('[onclick*="setColor"]');
+  btns.forEach(b=>{
+    b.style.background='#000';
+    b.style.color='#fff';
+  });
+  el.style.background='#fff';
+  el.style.color='#000';
+
   const img = card.querySelector('img');
-  const product = products.find(x=>x.id===id);
+  const product = products.find(x=>x.id==Id);
+  if(!product || !img) return;
   let newImg = product.img;
   let lc = color.toLowerCase();
   if(lc === 'blue'){
-  newImg = product.img.replace('.png','-blue.png').replace('.PNG','-blue.png');
-} else if(lc === 'white'){
-  newImg = product.img.replace('.png','-white.png').replace('.PNG','-white.png');
-}
-img.src = newImg;
+    newImg = product.img.replace('.png','-blue.png').replace('.PNG','-blue.png');
+  } else if(lc === 'white'){
+    newImg = product.img.replace('.png','-white.png').replace('.PNG','-white.png');
+  }
+  img.src = newImg;
 }
 function renderProducts(){
   const filtered = products.filter(p=>p.cat===currentCat);
