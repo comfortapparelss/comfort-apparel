@@ -255,9 +255,11 @@ async function placeOrder(){
     document.getElementById('orderIdText').innerHTML=`Thank you for ordering! ❤️<br><br>You will get confirmation message soon.<br><br>Order ID: <b>${orderId}</b>`;
     document.getElementById('success').classList.add('show'); cart=[]; save(); closeCart();
     document.getElementById('custName').value=''; document.getElementById('custPhone').value=''; document.getElementById('custAddr').value=''; document.getElementById('custCity').value='';
-  }catch(e){ alert('Error. WhatsApp 0337-2510256'); } finally{ btn.textContent='PLACE ORDER - COD'; btn.disabled=false; }
+  }catch(e){ alert('Error. WhatsApp 0337-2510256'); } finally{ btn.textContent='Place Order'; }
 });
 }
+
+renderProducts(); renderCart();
 renderProducts(); renderCart();
 document.querySelectorAll('.cat-btn')[0].classList.add('active');
 </script>
