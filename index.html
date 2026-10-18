@@ -146,19 +146,33 @@ function renderProducts(){
   }
   const grid = document.getElementById('shopGrid');
   if(!grid) return;
-  grid.innerHTML=filtered.map(p=>{
+  grid.innerHTML = filtered.map(p=>{
     const defSize=selectedSizes[p.id]||'M';
     const defColor = selectedColors[p.id] || (p.colors ? p.colors[0] : 'Black');
     let displayImg = p.img;
     let lowerColor = defColor.toLowerCase();
     if(lowerColor === 'blue'){
-      displayImg = p.img.replace('.png','-blue.png').replace('.PNG','-blue.png').replace('.jpg','-blue.jpg');
+      displayImg = p.img.replace('.png','-blue.png').replace('.PNG','-blue.png');
     } else if(lowerColor === 'white'){
-      displayImg = p.img.replace('.png','-white.png').replace('.PNG','-white.png').replace('.jpg','-white.jpg');
+      displayImg = p.img.replace('.png','-white.png').replace('.PNG','-white.png');
     }
-    const sizeBtns = ['S','M','L','XL'].map(s=>`<button class="size-btn ${defSize===s?'active':''}" onclick="selectSize(${p.id},'${s}',this)">${s}</button>`).join('');
-    const colorBtns = (p.colors||['Black']).map(c=>`<button class="color-btn ${defColor===c?'active':''}" onclick="setColor(${p.id},'${c}',this)">${c}</button>`).join('');
-    return `<div class="card"><img src="${displayImg}" loading="lazy"><h3>${p.name}</h3><p>Rs.${p.price}</p><div>${sizeBtns}</div><div>${colorBtns}</div><button onclick="addToCart(${p.id})">Add to Cart</button></div>`;
+    
+    return `
+    <div class="card" style="border:1px solid #eee; border-radius:12px; padding:10px; background:#fff;">
+      <img src="${displayImg}" style="width:100%; height:260px; object-fit:cover; border-radius:8px;">
+      <h3 style="margin:8px 0 2px; font-size:16px;">${p.name}</h3>
+      <p style="margin:0 0 8px; font-weight:bold;">Rs.${p.price}</p>
+      
+      <div style="display:flex; gap:5px; margin:6px 0;">
+        ${['S','M','L','XL'].map(s=>`<button style="width:38px; height:32px; border:1px solid #ccc; border-radius:6px; background:${defSize===s?'#000':'#fff'}; color:${defSize===s?'#fff':'#000'}; font-size:12px; cursor:pointer;" onclick="selectSize(${p.id},'${s}',this)">${s}</button>`).join('')}
+      </div>
+      
+      <div style="display:flex; gap:5px; margin:6px 0;">
+        ${(p.colors||['Black','Blue','White']).map(c=>`<button style="min-width:52px; height:32px; padding:0 10px; border:1px solid #ccc; border-radius:6px; background:${defColor===c?'#000':'#fff'}; color:${defColor===c?'#fff':'#000'}; font-size:12px; cursor:pointer;" onclick="setColor(${p.id},'${c}',this)">${c}</button>`).join('')}
+      </div>
+      
+      <button style="width:100%; padding:10px; background:#000; color:#fff; border:none; border-radius:8px; margin-top:8px; cursor:pointer; font-weight:bold;" onclick="addToCart(${p.id})">Add to Cart</button>
+    </div>`;
   }).join('');
 }
 
