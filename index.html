@@ -180,7 +180,7 @@ function renderProducts(){
     
     const catLower = (p.cat || currentCat || '').toLowerCase();
     const showColor = catLower.includes('hoodie') || catLower.includes('oversized') || catLower.includes('tee');
-    const allColors = catLower.includes('tee') ? ['Black','Grey','White'] : ['Black','Blue','White'];
+    const allColors = catLower.includes('tee') ? ['Black'] : ['Black','Blue'];
     
     let colorHtml = '';
     if(showColor){
