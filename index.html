@@ -165,8 +165,12 @@ function renderProducts(){
   if(!grid) return;
   grid.innerHTML = filtered.map(p=>{
     const defSize=selectedSizes[p.id]||'M';
-    const defColor = selectedColors[p.id] || (p.colors ? p.colors[0] : 'Black');
+    const defColor=selectedColors[p.id] || (p.colors ? p.colors[0] : 'Black');
     let displayImg = p.img;
+    const ck = defColor.toLowerCase();
+    if(p['img_'+ck]) displayImg = p['img_'+ck];
+    if(p.images && p.images[defColor]) displayImg = p.images[defColor];
+    if(p.images && p.images[ck]) displayImg = p.images[ck];
     
     const catLower = (p.cat || currentCat || '').toLowerCase();
     const showColor = catLower.includes('hoodie') || catLower.includes('oversized') || catLower.includes('tee');
