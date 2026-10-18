@@ -145,10 +145,11 @@ function setColor(Id,color,el){
   } else if(lc === 'white'){
     // For Tee we DON'T have white image, so show black image only
     newImg = isTee ? product.img : product.img.replace('.png','-white.png').replace('.PNG','-white.png');
-  } else if(lc === 'blue'){
-    newImg = product.img; // hoodie blue uses same image (or -blue.png if you have)
+    } else if(lc === 'blue'){
+    newImg = product.img;
+  }
+  img.src=newImg;
 }
-// Preload blue/white images so color switch is instant
 function preloadImages(){
   products.forEach(p=>{
     ['-grey.png','-white.png'].forEach(suffix=>{
