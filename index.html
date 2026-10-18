@@ -147,7 +147,7 @@ function setColor(Id,color,el){
     newImg = isTee ? product.img : product.img.replace('.png','-white.png').replace('.PNG','-white.png');
   } else if(lc === 'blue'){
     newImg = product.img; // hoodie blue uses same image (or -blue.png if you have)
-  }
+}
 // Preload blue/white images so color switch is instant
 function preloadImages(){
   products.forEach(p=>{
