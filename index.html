@@ -146,8 +146,8 @@ function setColor(Id,color,el){
     // For Tee we DON'T have white image, so show black image only
     newImg = isTee ? product.img : product.img.replace('.png','-white.png').replace('.PNG','-white.png');
     } else if(lc === 'blue'){
-    newImg = product.img;
-  }
+  newImg = product.img.replace('.png','-blue.png').replace('.PNG','-blue.png');
+}
   img.src=newImg;
 }
 function preloadImages(){
