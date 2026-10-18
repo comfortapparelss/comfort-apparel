@@ -66,19 +66,19 @@ nav{padding:14px 5%;display:flex;justify-content:space-between;align-items:cente
 
 <script>
 const products=[
- {id:1,name:"Rose",price:1250,img:"Rose.png",tag:"NEW",cat:"tee", colors:["Black","Blue","White"]},
- {id:2,name:"Butterfly",price:1250,img:"Butterfly.png",tag:"NEW",cat:"tee", colors:["Black","Blue","White"]},
- {id:3,name:"Pink Bloom Floral",price:1250,img:"floral.png",tag:"NEW",cat:"tee", colors:["Black","Blue","White"]},
- {id:4,name:"Sunflower",price:1250,img:"sunflower.png",tag:"NEW",cat:"tee", colors:["Black","Blue","White"]},
- {id:5,name:"Inspiration",price:1250,img:"inspiration.png",tag:"NEW",cat:"tee", colors:["Black","Blue","White"]},
- {id:6,name:"Memory",price:1250,img:"memory.png",tag:"NEW",cat:"tee", colors:["Black","Blue","White"]},
- {id:7,name:"Stand Out",price:1250,img:"standout.png",tag:"NEW",cat:"tee", colors:["Black","Blue","White"]},
- {id:8,name:"Moon",price:1250,img:"moon.png",tag:"NEW",cat:"tee", colors:["Black","Blue","White"]},
- {id:9,name:"Born Broke Die Rich",price:1250,img:"born-broke.png",tag:"NEW",cat:"tee", colors:["Black","Blue","White"]},
- {id:10,name:"Dragon",price:1250,img:"dragon.png",tag:"NEW",cat:"tee", colors:["Black","Blue","White"]},
- {id:11,name:"Reality",price:1250,img:"reality.png",tag:"NEW",cat:"tee", colors:["Black","Blue","White"]},
- {id:12,name:"ContourFace",price:1250,img:"contourface.png",tag:"NEW",cat:"tee", colors:["Black","Blue","White"]},
- {id:13,name:"Customizable",price:1250,img:"customizable.png",tag:"NEW",cat:"tee", colors:["Black","White","Blue"]},
+ {id:1,name:"Rose",price:1250,img:"Rose.png",tag:"NEW",cat:"tee", colors:["Black","Grey","White"]},
+ {id:2,name:"Butterfly",price:1250,img:"Butterfly.png",tag:"NEW",cat:"tee", colors:["Black","Grey","White"]},
+ {id:3,name:"Pink Bloom Floral",price:1250,img:"floral.png",tag:"NEW",cat:"tee", colors:["Black","Grey","White"]},
+ {id:4,name:"Sunflower",price:1250,img:"sunflower.png",tag:"NEW",cat:"tee", colors:["Black","Grey","White"]},
+ {id:5,name:"Inspiration",price:1250,img:"inspiration.png",tag:"NEW",cat:"tee", colors:["Black","Grey","White"]},
+ {id:6,name:"Memory",price:1250,img:"memory.png",tag:"NEW",cat:"tee", colors:["Black","Grey","White"]},
+ {id:7,name:"Stand Out",price:1250,img:"standout.png",tag:"NEW",cat:"tee", colors:["Black","Grey","White"]},
+ {id:8,name:"Moon",price:1250,img:"moon.png",tag:"NEW",cat:"tee", colors:["Black","Grey","White"]},
+ {id:9,name:"Born Broke Die Rich",price:1250,img:"born-broke.png",tag:"NEW",cat:"tee", colors:["Black","Grey","White"]},
+ {id:10,name:"Dragon",price:1250,img:"dragon.png",tag:"NEW",cat:"tee", colors:["Black","Grey","White"]},
+ {id:11,name:"Reality",price:1250,img:"reality.png",tag:"NEW",cat:"tee", colors:["Black","Grey","White"]},
+ {id:12,name:"ContourFace",price:1250,img:"contourface.png",tag:"NEW",cat:"tee", colors:["Black","Grey","White"]},
+ {id:13,name:"Customizable",price:1250,img:"customizable.png",tag:"NEW",cat:"tee", colors:["Black","White","Grey"]},
  {id:17,name:"Black Premium Polo",price:1100,img:"polo-black.png",tag:"SLIM FIT",cat:"polo"},
  {id:18,name:"White Premium Polo",price:1100,img:"polo-white.png",tag:"SLIM FIT",cat:"polo"},
  {id:19,name:"Blue Premium Polo",price:1100,img:"polo-navy.png",tag:"SLIM FIT",cat:"polo"},
@@ -137,7 +137,7 @@ function setColor(Id,color,el){
   let newImg = product.img;
   let lc = color.toLowerCase();
   if(lc === 'blue'){
-    newImg = product.img.replace('.png','-blue.png').replace('.PNG','-blue.png');
+    newImg = product.img.replace('.png','-grey.png').replace('.PNG','-grey.png');
   } else if(lc === 'white'){
     newImg = product.img.replace('.png','-white.png').replace('.PNG','-white.png');
   }
@@ -146,7 +146,7 @@ function setColor(Id,color,el){
 // Preload blue/white images so color switch is instant
 function preloadImages(){
   products.forEach(p=>{
-    ['-blue.png','-white.png'].forEach(suffix=>{
+    ['-grey.png','-white.png'].forEach(suffix=>{
       const src = p.img.replace('.png', suffix).replace('.PNG', suffix);
       const im = new Image();
       im.src = src;
@@ -214,7 +214,7 @@ function addToCart(id){
   const color = selectedColors[id] || (p.colors? p.colors[0] : 'Black');
   let cartImg = p.img;
   let lc2 = color.toLowerCase();
-  if(lc2 === 'blue'){ cartImg = p.img.replace('.png','-blue.png').replace('.PNG','-blue.png'); }
+  if(lc2 === 'blue'){ cartImg = p.img.replace('.png','-grey.png').replace('.PNG','-grey.png'); }
   else if(lc2 === 'white'){ cartImg = p.img.replace('.png','-white.png').replace('.PNG','-white.png'); }
   let idx = cart.findIndex(item => item.id === id && item.size === size && item.color === color);
   if(idx>-1){ cart[idx].qty+=1; } else { cart.push({ id:p.id, name:p.name, price:p.price, size:size, color:color, qty:1, img:cartImg }); }
