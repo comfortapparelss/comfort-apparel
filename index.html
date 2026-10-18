@@ -136,22 +136,18 @@ function setColor(Id,color,el){
   if(!product || !img) return;
   let newImg = product.img;
   let lc = color.toLowerCase();
+  let isTee = (product.cat||'').toLowerCase().includes('tee');
 
-  // TEE -> Black is original, Grey/White has suffix
-  // HOODIE -> Black is original, Blue is original (or -blue.png if you have it)
   if(lc === 'black'){
     newImg = product.img;
   } else if(lc === 'grey'){
     newImg = product.img.replace('.png','-grey.png').replace('.PNG','-grey.png');
   } else if(lc === 'white'){
-    newImg = product.img.replace('.png','-white.png').replace('.PNG','-white.png');
+    // For Tee we DON'T have white image, so show black image only
+    newImg = isTee ? product.img : product.img.replace('.png','-white.png').replace('.PNG','-white.png');
   } else if(lc === 'blue'){
-    // if you have blue file like hoodie-blue.png it will use it, otherwise stays original
-    let tryBlue = product.img.replace('.png','-blue.png').replace('.PNG','-blue.png');
-    newImg = tryBlue; 
+    newImg = product.img; // hoodie blue uses same image (or -blue.png if you have)
   }
-  img.src = newImg;
-}
 // Preload blue/white images so color switch is instant
 function preloadImages(){
   products.forEach(p=>{
@@ -227,9 +223,9 @@ function addToCart(id){
   const color = selectedColors[id] || (p.colors? p.colors[0] : 'Black');
   let cartImg = p.img;
   let lc2 = color.toLowerCase();
+  let isTee2 = (p.cat||'').toLowerCase().includes('tee');
   if(lc2 === 'grey'){ cartImg = p.img.replace('.png','-grey.png').replace('.PNG','-grey.png'); }
-  else if(lc2 === 'white'){ cartImg = p.img.replace('.png','-white.png').replace('.PNG','-white.png'); }
-  else if(lc2 === 'blue'){ cartImg = p.img; }
+  else if(lc2 === 'white'){ cartImg = isTee2 ? p.img : p.img.replace('.png','-white.png'); }
   else { cartImg = p.img; }
   let idx = cart.findIndex(item => item.id === id && item.size === size && item.color === color);
   if(idx>-1){ cart[idx].qty+=1; } else { cart.push({ id:p.id, name:p.name, price:p.price, size:size, color:color, qty:1, img:cartImg }); }
