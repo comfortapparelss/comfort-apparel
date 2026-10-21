@@ -63,7 +63,6 @@ nav{padding:14px 5%;display:flex;justify-content:space-between;align-items:cente
 <button class="cat-btn" onclick="filterCat('polo',this)">Polo Shirts</button>
 <button class="cat-btn" onclick="filterCat('hoodie',this)">Hoodies</button>
 <button class="cat-btn" onclick="filterCat('baseball',this)">Baseball Jackets</button>
-<button class="cat-btn" onclick="filterCat('shirt',this)">Shirts</button>
 </div>
 <div id="shop">
 <div style="padding:15px 5%;max-width:1300px;margin:0 auto;display:flex;justify-content:space-between"><h2 id="catTitle" style="font-weight:900">Comfortable, Affordable, Adorable</h2><span id="catCount" style="color:#666"></span></div>
@@ -109,8 +108,6 @@ const products=[
  {id:42,name:"Customizable",price:1699,img:"custo.png",tag:"NEW",cat:"hoodie",colors:["Black","Blue"]},
  {id:50,name:"Black",price:1950,img:"baseball-black.png",tag:"NEW",cat:"baseball"},
  {id:51,name:"Lavender",price:1950,img:"baseball-lavender.png",tag:"NEW",cat:"baseball"},
- {id:52,name:"Classic Blue Lining Shirt",price:1999,img:"blueds.png",tag:"LIMITED PIECES",cat:"shirt"},
- {id:53,name:"Classic Pink Lining Shirt",price:2199,img:"pinkds.png",tag:"LIMITED PIECES",cat:"shirt"},
 ]
 let currentCat='tee';
 let cart=JSON.parse(localStorage.getItem('ca_cart')||'[]');
