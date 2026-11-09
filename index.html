@@ -66,9 +66,16 @@ nav{padding:14px 5%;display:flex;justify-content:space-between;align-items:cente
 <button class="cat-btn" onclick="filterCat('bottleneck',this)">Bottleneck</button>
 <button class="cat-btn" onclick="filterCat('bundles',this)">Bundles</button>
 </div>
+
 <div id="shop">
-<!-- BUNDLES INSIDE SHOP -->
-<div id="bundlesSection" style="display:none">
+<div style="padding:15px 5%;max-width:1300px;margin:0 auto;display:flex;justify-content:space-between"><h2 id="catTitle" style="font-weight:900">Comfortable, Affordable, Adorable</h2><span id="catCount" style="color:#666"></span></div>
+<div class="grid" id="shopGrid"></div>
+</div>
+
+<!-- BUNDLES INSIDE SHOP - FIXED: OUTSIDE #shop -->
+<div id="bundlesSection" style="display:none;padding:15px 5% 40px;max-width:1300px;margin:0 auto">
+  <h2 style="font-weight:900;font-size:24px">BUNDLES</h2>
+  <p style="color:#888;font-size:13px;margin:8px 0 20px">Select your favourites.</p>
   <div style="background:#111;border:1px solid #222;border-radius:16px;padding:16px;margin-bottom:20px">
     <h3 style="font-size:18px">PACK OF 2</h3>
     <p style="color:#888;font-size:13px;margin:8px 0">Select any 2 - Tees or Hoodies</p>
@@ -92,10 +99,7 @@ nav{padding:14px 5%;display:flex;justify-content:space-between;align-items:cente
     <button onclick="addBundle3()" style="width:100%;padding:12px;background:#fff;color:#000;border:0;border-radius:8px;font-weight:800;cursor:pointer;margin-top:10px">ADD PACK OF 3 TO CART</button>
   </div>
 </div>
-<!-- BUNDLES INSIDE SHOP END -->
-<div style="padding:15px 5%;max-width:1300px;margin:0 auto;display:flex;justify-content:space-between"><h2 id="catTitle" style="font-weight:900">Comfortable, Affordable, Adorable</h2><span id="catCount" style="color:#666"></span></div>
-<div class="grid" id="shopGrid"></div>
-</div>
+
 <div class="cart-overlay" id="overlay" onclick="closeCart()"></div>
 <div class="cart-drawer" id="drawer"><div class="cart-head"><b>Your Cart</b><button onclick="closeCart()" style="background:#222;color:#fff;border:0;width:32px;height:32px;border-radius:50%;cursor:pointer">✕</button></div><div class="cart-items" id="cartItems"></div><div class="cart-foot"><div class="row"><span>Subtotal</span><b id="subtotal">Rs.0</b></div><div class="row"><span>Delivery</span><span id="delivery">Rs.250</span></div><div class="row" style="border-top:1px solid #222;padding-top:10px"><span>Total</span><b id="total">Rs.0</b></div><input class="input" id="custName" placeholder="Full Name *"><input class="input" id="custPhone" placeholder="Phone *"><input class="input" id="custAddr" placeholder="Full Address *"><select id="custCity" class="input"><option value="">Select City *</option><option>Karachi</option><option>Lahore</option><option>Islamabad</option><option>Rawalpindi</option><option>Faisalabad</option><option>Multan</option><option>Peshawar</option><option>Quetta</option><option>Other</option></select><button class="checkout-btn" id="placeBtn" onclick="placeOrder()">PLACE ORDER - COD</button></div></div>
 <div class="success" id="success"><div class="success-box"><h2>✓ Order Confirmed!</h2><p id="orderIdText" style="color:#888;margin:12px 0"></p><button class="checkout-btn" style="background:#fff" onclick="document.getElementById('success').classList.remove('show')">Continue Shopping</button></div></div>
@@ -150,11 +154,10 @@ function filterCat(cat,el){
   if(cat==='bundles'){
     document.getElementById('shop').style.display='none';
     document.getElementById('bundlesSection').style.display='block';
-    document.getElementById('catTitle').textContent='Bundles - Select Your Pack';
     showBundle2('tee'); showBundle3('tee');
     return;
   }
-  document.getElementById('shop').style.display='grid';
+  document.getElementById('shop').style.display='block';
   document.getElementById('bundlesSection').style.display='none';
   renderProducts();
 }
@@ -169,7 +172,6 @@ function selectSize(Id,size,el){
   el.style.background='#fff';
   el.style.color='#000';
 }
-
 function setColor(Id,color,el){
   selectedColors[Id]=color;
   const card = el.closest('.card');
@@ -180,20 +182,17 @@ function setColor(Id,color,el){
   });
   el.style.background='#fff';
   el.style.color='#000';
-
   const img = card.querySelector('img');
   const product = products.find(x=>x.id==Id);
   if(!product || !img) return;
   let newImg = product.img;
   let lc = color.toLowerCase();
   let isTee = (product.cat||'').toLowerCase().includes('tee');
-
   if(lc === 'black'){
     newImg = product.img;
   } else if(lc === 'grey'){
     newImg = product.img.replace('.png','-grey.png').replace('.PNG','-grey.png');
   } else if(lc === 'white'){
-    // For Tee we DON'T have white image, so show black image only
     newImg = isTee ? product.img : product.img.replace('.png','-white.png').replace('.PNG','-white.png');
     } else if(lc === 'blue'){
   newImg = product.img.replace('.png','-blue.png').replace('.PNG','-blue.png');
@@ -227,11 +226,9 @@ function renderProducts(){
     if(p['img_'+ck]) displayImg = p['img_'+ck];
     if(p.images && p.images[defColor]) displayImg = p.images[defColor];
     if(p.images && p.images[ck]) displayImg = p.images[ck];
-    
     const catLower = (p.cat || currentCat || '').toLowerCase();
     const showColor = catLower.includes('hoodie') || catLower.includes('oversized') || catLower.includes('tee');
     const allColors = catLower.includes('tee') ? ['Black','Grey','White'] : ['Black','Blue'];
-    
     let colorHtml = '';
     if(showColor){
       let btns = '';
@@ -242,20 +239,17 @@ function renderProducts(){
       }
       colorHtml = '<div style="display:flex; gap:5px; margin:6px 0;">'+btns+'</div>';
     }
-
     let sizeBtns = '';
     for(let s of ['S','M','L','XL']){
       let bg = (defSize===s) ? '#fff' : '#000';
       let col = (defSize===s) ? '#000' : '#fff';
       sizeBtns += '<button style="width:38px; height:32px; border:1px solid #555; border-radius:6px; background:'+bg+'; color:'+col+'; font-size:12px; cursor:pointer;" onclick="selectSize('+p.id+',\''+s+'\',this)">'+s+'</button>';
     }
-
     let tagHtml = '';
     if(p.tag){
       let tagBg = (p.tag==='NEW') ? '#00ff88' : '#fff';
       tagHtml = '<span style="position:absolute; top:8px; left:8px; background:'+tagBg+'; color:#000; font-size:10px; font-weight:bold; padding:3px 8px; border-radius:4px; z-index:2;">'+p.tag+'</span>';
     }
-
     return '<div class="card" style="border:1px solid #222; border-radius:12px; padding:10px; background:#000; position:relative; overflow:hidden;">'
       + tagHtml
       + '<div style="background:#000; border-radius:8px;"><img src="'+displayImg+'" loading="lazy" style="width:100%; height:260px; object-fit:contain; border-radius:8px; background:#000;"></div>'
@@ -267,7 +261,6 @@ function renderProducts(){
       + '</div>';
   }).join('');
 }
-
 function addToCart(id){
   const p = products.find(x=>x.id===id);
   const size = selectedSizes[id] || 'M';
@@ -320,12 +313,18 @@ async function placeOrder(){
   }catch(e){ alert('Error. WhatsApp 0337-2510256'); } finally{ btn.textContent='Place Order'; }
 };
 
-renderProducts(); renderCart();
+// BUNDLES FUNCTIONS - FIXED: INSIDE SCRIPT TAG
+let sel2=[];let sel3=[];let cat2='tee';let cat3='tee';
+function showBundle2(cat){cat2=cat;document.getElementById('b2-tee').style.background=cat==='tee'?'#fff':'#1a1a1a';document.getElementById('b2-tee').style.color=cat==='tee'?'#000':'#888';document.getElementById('b2-hoodie').style.background=cat==='hoodie'?'#fff':'#1a1a1a';document.getElementById('b2-hoodie').style.color=cat==='hoodie'?'#000':'#888';const list=products.filter(p=>p.cat===cat);document.getElementById('grid-bundle2').innerHTML=list.map(p=>{const s=sel2.find(x=>x.id===p.id);return `<div onclick="toggleBundle2(${p.id})" style="border:1px solid ${s?'#fff':'#222'};border-radius:12px;padding:8px;background:#000;cursor:pointer;position:relative"><div style="position:absolute;top:6px;right:6px;width:22px;height:22px;border-radius:50%;background:${s?'#fff':'#222'};color:${s?'#000':'#fff'};display:grid;place-items:center;font-size:12px;font-weight:900">${s?'✓':'+'}</div><img src="${p.img}" style="width:100%;height:130px;object-fit:contain;border-radius:8px;background:#000"><div style="font-size:13px;margin-top:5px">${p.name}</div><div style="font-weight:bold;font-size:12px">Rs.${p.price}</div></div>`;}).join('');}
+function showBundle3(cat){cat3=cat;document.getElementById('b3-tee').style.background=cat==='tee'?'#fff':'#1a1a1a';document.getElementById('b3-tee').style.color=cat==='tee'?'#000':'#888';document.getElementById('b3-hoodie').style.background=cat==='hoodie'?'#fff':'#1a1a1a';document.getElementById('b3-hoodie').style.color=cat==='hoodie'?'#000':'#888';const list=products.filter(p=>p.cat===cat);document.getElementById('grid-bundle3').innerHTML=list.map(p=>{const s=sel3.find(x=>x.id===p.id);return `<div onclick="toggleBundle3(${p.id})" style="border:1px solid ${s?'#fff':'#222'};border-radius:12px;padding:8px;background:#000;cursor:pointer;position:relative"><div style="position:absolute;top:6px;right:6px;width:22px;height:22px;border-radius:50%;background:${s?'#fff':'#222'};color:${s?'#000':'#fff'};display:grid;place-items:center;font-size:12px;font-weight:900">${s?'✓':'+'}</div><img src="${p.img}" style="width:100%;height:130px;object-fit:contain;border-radius:8px;background:#000"><div style="font-size:13px;margin-top:5px">${p.name}</div><div style="font-weight:bold;font-size:12px">Rs.${p.price}</div></div>`;}).join('');}
+function toggleBundle2(id){const i=sel2.findIndex(x=>x.id===id);if(i>-1){sel2.splice(i,1);}else{if(sel2.length>=2){alert('Select only 2');return;}sel2.push(products.find(x=>x.id===id));}document.getElementById('count-bundle2').textContent=sel2.length+' / 2';showBundle2(cat2);}
+function toggleBundle3(id){const i=sel3.findIndex(x=>x.id===id);if(i>-1){sel3.splice(i,1);}else{if(sel3.length>=3){alert('Select only 3');return;}sel3.push(products.find(x=>x.id===id));}document.getElementById('count-bundle3').textContent=sel3.length+' / 3';showBundle3(cat3);}
+function addBundle2(){if(sel2.length!==2){alert('Please select 2 items');return;}sel2.forEach(p=>{cart.push({id:p.id,name:p.name+' (Pack of 2)',price:p.price,size:'M',color:'Black',qty:1,img:p.img});});save();openCart();sel2=[];document.getElementById('count-bundle2').textContent='0 / 2';showBundle2(cat2);}
+function addBundle3(){if(sel3.length!==3){alert('Please select 3 items');return;}sel3.forEach(p=>{cart.push({id:p.id,name:p.name+' (Pack of 3)',price:p.price,size:'M',color:'Black',qty:1,img:p.img});});save();openCart();sel3=[];document.getElementById('count-bundle3').textContent='0 / 3';showBundle3(cat3);}
+
 renderProducts(); renderCart();
 document.querySelectorAll('.cat-btn')[0].classList.add('active');
 </script>
-
-</footer>
 
 <a href="https://wa.me/923372510256" target="_blank" style="position:fixed;bottom:20px;right:20px;width:56px;height:56px;background:#25D366;border-radius:50%;display:grid;place-items:center;z-index:40;box-shadow:0 4px 12px rgba(0,0,0,.4);text-decoration:none;color:#fff;font-weight:900">WA</a>
 
@@ -345,48 +344,6 @@ document.querySelectorAll('.cat-btn')[0].classList.add('active');
   </div>
  </div>
  <div style="text-align:center;margin-top:30px;padding-top:20px;border-top:1px solid #222;color:#555;font-size:11px">© 2026 COMFORT APPAREL</div>
-<!-- BUNDLES SECTION -->
-<div id="bundles" style="padding:15px 5% 40px;max-width:1300px;margin:0 auto">
-  <h2 style="font-weight:900;font-size:24px">BUNDLES</h2>
-  <p style="color:#888;font-size:13px;margin:8px 0 20px">Select your favourites.</p>
-
-  <!-- PACK OF 2 -->
-  <div style="background:#111;border:1px solid #222;border-radius:16px;padding:16px;margin-bottom:20px">
-    <h3 style="font-size:18px">PACK OF 2</h3>
-    <p style="color:#888;font-size:13px;margin:8px 0">Select any 2 - Tees or Hoodies</p>
-    <div style="display:flex;gap:8px;margin-bottom:12px">
-      <button onclick="showBundle2('tee')" id="b2-tee" style="background:#fff;color:#000;border:0;padding:8px 16px;border-radius:100px;font-weight:700;cursor:pointer;font-size:12px">Tees</button>
-      <button onclick="showBundle2('hoodie')" id="b2-hoodie" style="background:#1a1a1a;color:#888;border:1px solid #333;padding:8px 16px;border-radius:100px;font-weight:700;cursor:pointer;font-size:12px">Hoodies</button>
-    </div>
-    <div id="grid-bundle2" style="display:grid;grid-template-columns:repeat(auto-fill,minmax(140px,1fr));gap:10px"></div>
-    <p style="color:#aaa;font-size:14px;margin-top:12px">Selected: <b id="count-bundle2" style="color:#fff">0 / 2</b></p>
-    <button onclick="addBundle2()" style="width:100%;padding:12px;background:#fff;color:#000;border:0;border-radius:8px;font-weight:800;cursor:pointer;margin-top:10px">ADD PACK OF 2 TO CART</button>
-  </div>
-
-  <!-- PACK OF 3 -->
-  <div style="background:#111;border:1px solid #222;border-radius:16px;padding:16px">
-    <h3 style="font-size:18px">PACK OF 3</h3>
-    <p style="color:#888;font-size:13px;margin:8px 0">Select any 3 - Tees or Hoodies</p>
-    <div style="display:flex;gap:8px;margin-bottom:12px">
-      <button onclick="showBundle3('tee')" id="b3-tee" style="background:#fff;color:#000;border:0;padding:8px 16px;border-radius:100px;font-weight:700;cursor:pointer;font-size:12px">Tees</button>
-      <button onclick="showBundle3('hoodie')" id="b3-hoodie" style="background:#1a1a1a;color:#888;border:1px solid #333;padding:8px 16px;border-radius:100px;font-weight:700;cursor:pointer;font-size:12px">Hoodies</button>
-    </div>
-    <div id="grid-bundle3" style="display:grid;grid-template-columns:repeat(auto-fill,minmax(140px,1fr));gap:10px"></div>
-    <p style="color:#aaa;font-size:14px;margin-top:12px">Selected: <b id="count-bundle3" style="color:#fff">0 / 3</b></p>
-    <button onclick="addBundle3()" style="width:100%;padding:12px;background:#fff;color:#000;border:0;border-radius:8px;font-weight:800;cursor:pointer;margin-top:10px">ADD PACK OF 3 TO CART</button>
-  </div>
-</div>
-
-let sel2=[];let sel3=[];let cat2='tee';let cat3='tee';
-function showBundle2(cat){cat2=cat;document.getElementById('b2-tee').style.background=cat==='tee'?'#fff':'#1a1a1a';document.getElementById('b2-tee').style.color=cat==='tee'?'#000':'#888';document.getElementById('b2-hoodie').style.background=cat==='hoodie'?'#fff':'#1a1a1a';document.getElementById('b2-hoodie').style.color=cat==='hoodie'?'#000':'#888';const list=products.filter(p=>p.cat===cat);document.getElementById('grid-bundle2').innerHTML=list.map(p=>{const s=sel2.find(x=>x.id===p.id);return `<div onclick="toggleBundle2(${p.id})" style="border:1px solid ${s?'#fff':'#222'};border-radius:12px;padding:8px;background:#000;cursor:pointer;position:relative"><div style="position:absolute;top:6px;right:6px;width:22px;height:22px;border-radius:50%;background:${s?'#fff':'#222'};color:${s?'#000':'#fff'};display:grid;place-items:center;font-size:12px;font-weight:900">${s?'✓':'+'}</div><img src="${p.img}" style="width:100%;height:130px;object-fit:contain;border-radius:8px;background:#000"><div style="font-size:13px;margin-top:5px">${p.name}</div><div style="font-weight:bold;font-size:12px">Rs.${p.price}</div></div>`;}).join('');}
-function showBundle3(cat){cat3=cat;document.getElementById('b3-tee').style.background=cat==='tee'?'#fff':'#1a1a1a';document.getElementById('b3-tee').style.color=cat==='tee'?'#000':'#888';document.getElementById('b3-hoodie').style.background=cat==='hoodie'?'#fff':'#1a1a1a';document.getElementById('b3-hoodie').style.color=cat==='hoodie'?'#000':'#888';const list=products.filter(p=>p.cat===cat);document.getElementById('grid-bundle3').innerHTML=list.map(p=>{const s=sel3.find(x=>x.id===p.id);return `<div onclick="toggleBundle3(${p.id})" style="border:1px solid ${s?'#fff':'#222'};border-radius:12px;padding:8px;background:#000;cursor:pointer;position:relative"><div style="position:absolute;top:6px;right:6px;width:22px;height:22px;border-radius:50%;background:${s?'#fff':'#222'};color:${s?'#000':'#fff'};display:grid;place-items:center;font-size:12px;font-weight:900">${s?'✓':'+'}</div><img src="${p.img}" style="width:100%;height:130px;object-fit:contain;border-radius:8px;background:#000"><div style="font-size:13px;margin-top:5px">${p.name}</div><div style="font-weight:bold;font-size:12px">Rs.${p.price}</div></div>`;}).join('');}
-function toggleBundle2(id){const i=sel2.findIndex(x=>x.id===id);if(i>-1){sel2.splice(i,1);}else{if(sel2.length>=2){alert('Select only 2');return;}sel2.push(products.find(x=>x.id===id));}document.getElementById('count-bundle2').textContent=sel2.length+' / 2';showBundle2(cat2);}
-function toggleBundle3(id){const i=sel3.findIndex(x=>x.id===id);if(i>-1){sel3.splice(i,1);}else{if(sel3.length>=3){alert('Select only 3');return;}sel3.push(products.find(x=>x.id===id));}document.getElementById('count-bundle3').textContent=sel3.length+' / 3';showBundle3(cat3);}
-function addBundle2(){if(sel2.length!==2){alert('Please select 2 items');return;}sel2.forEach(p=>{cart.push({id:p.id,name:p.name+' (Pack of 2)',price:p.price,size:'M',color:'Black',qty:1,img:p.img});});save();openCart();sel2=[];document.getElementById('count-bundle2').textContent='0 / 2';showBundle2(cat2);}
-function addBundle3(){if(sel3.length!==3){alert('Please select 3 items');return;}sel3.forEach(p=>{cart.push({id:p.id,name:p.name+' (Pack of 3)',price:p.price,size:'M',color:'Black',qty:1,img:p.img});});save();openCart();sel3=[];document.getElementById('count-bundle3').textContent='0 / 3';showBundle3(cat3);}
-</script>
-<!-- BUNDLES END -->
-<footer> ... full footer ... </footer>
-<a href="https://wa.me/...">WA</a>
+</footer>
 </body>
 </html>
