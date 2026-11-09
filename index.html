@@ -125,10 +125,10 @@ const products=[
  {id:20,name:"Grey Premium Polo",price:1150,img:"polo-grey.png",tag:"SLIM FIT",cat:"polo"},
  {id:21,name:"Maroon Premium Polo",price:1150,img:"polo-maroon.png",tag:"SLIM FIT",cat:"polo"},
  {id:22,name:"Brown Premium Polo",price:1150,img:"polo-brown.png",tag:"SLIM FIT",cat:"polo"},
- {id:30,name:"Floral Sketch",price:1599,img:"floral sketch.png",tag:"NEW",cat:"hoodie",colors:["Black","Blue"]},
- {id:31,name:"Floral Bloom",price:1599,img:"hoodie-floral.png",tag:"NEW",cat:"hoodie",colors:["Black","Blue"]},
- {id:32,name:"Blue Butterfly",price:1599,img:"hoodie-butterfly.png",tag:"NEW",cat:"hoodie",colors:["Black","Blue"]},
- {id:33,name:"FILTER Cat",price:1599,img:"hoodie-filter-cat.png",tag:"NEW",cat:"hoodie",colors:["Black","Blue"]},
+ {id:30,name:"Floral Sketch",price:1699,img:"floral sketch.png",tag:"NEW",cat:"hoodie",colors:["Black","Blue"]},
+ {id:31,name:"Floral Bloom",price:1699,img:"hoodie-floral.png",tag:"NEW",cat:"hoodie",colors:["Black","Blue"]},
+ {id:32,name:"Blue Butterfly",price:1699,img:"hoodie-butterfly.png",tag:"NEW",cat:"hoodie",colors:["Black","Blue"]},
+ {id:33,name:"FILTER Cat",price:1699,img:"hoodie-filter-cat.png",tag:"NEW",cat:"hoodie",colors:["Black","Blue"]},
  {id:34,name:"Angelic",price:1699,img:"Angelic.png",tag:"NEW",cat:"hoodie",colors:["Black","Blue"]},
  {id:35,name:"Freedom",price:1699,img:"Freedom.png",tag:"NEW",cat:"hoodie",colors:["Black","Blue"]},
  {id:36,name:"Time Has Passed",price:1699,img:"hoodie-time-back.png",tag:"NEW",cat:"hoodie",colors:["Black","Blue"]},
@@ -316,7 +316,7 @@ async function placeOrder(){
 
 // BUNDLES FUNCTIONS - FIXED: INSIDE SCRIPT TAG
 let sel2=[];let sel3=[];let cat2='tee';let cat3='tee';
-let bundlePrice = { tee: {2:2499, 3:3499}, hoodie: {2:2899, 3:4199} };
+let bundlePrice = { tee: {2:2499, 3:3750}, hoodie: {2:2999, 3:4499} };
 
 function showBundle2(cat){cat2=cat;
   document.getElementById('price-bundle2').textContent='Rs.'+bundlePrice[cat][2];
