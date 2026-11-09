@@ -63,6 +63,7 @@ nav{padding:14px 5%;display:flex;justify-content:space-between;align-items:cente
 <button class="cat-btn" onclick="filterCat('polo',this)">Polo Shirts</button>
 <button class="cat-btn" onclick="filterCat('hoodie',this)">Hoodies</button>
 <button class="cat-btn" onclick="filterCat('baseball',this)">Baseball Jackets</button>
+<button class="cat-btn" onclick="filterCat('bottleneck',this)">Bottleneck</button>
 </div>
 <div id="shop">
 <div style="padding:15px 5%;max-width:1300px;margin:0 auto;display:flex;justify-content:space-between"><h2 id="catTitle" style="font-weight:900">Comfortable, Affordable, Adorable</h2><span id="catCount" style="color:#666"></span></div>
@@ -108,6 +109,8 @@ const products=[
  {id:42,name:"Customizable",price:1699,img:"custo.png",tag:"NEW",cat:"hoodie",colors:["Black","Blue"]},
  {id:50,name:"Black",price:1950,img:"baseball-black.png",tag:"NEW",cat:"baseball"},
  {id:51,name:"Lavender",price:1950,img:"baseball-lavender.png",tag:"NEW",cat:"baseball"},
+ {id:60,name:"Black Bottle Neck",price:1399,img:"blackbn.png",tag:"New",cat:"bottleneck"},
+ {id:61,name:"Blue Bottle Neck",price:1150,img:"bluebn.png",tag:"New",cat:"bottleneck"},
 ]
 let currentCat='tee';
 let cart=JSON.parse(localStorage.getItem('ca_cart')||'[]');
